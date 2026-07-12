@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OPL AI Feedback — UI/UX Design Spec + GPT Image Prompt Library</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--g:#1B5E20;--g2:#2E7D32;--gl:#E8F5E9;--accent:#C62828;--amber:#F9A825;--ink:#263238;--mut:#607D8B;}
+*{font-family:'Sarabun',Tahoma,sans-serif}
+body{color:var(--ink);background:#f4f6f4}
+.hero{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:#fff;padding:42px 0}
+.hero h1{font-weight:700;font-size:1.9rem}
+.badge-soft{background:rgba(255,255,255,.18);color:#fff;font-weight:600}
+.sticky-toc{position:sticky;top:12px}
+.toc a{display:block;padding:.3rem .6rem;border-radius:6px;color:var(--ink);text-decoration:none;font-size:.92rem}
+.toc a:hover{background:var(--gl)}
+.toc a.h{font-weight:700;color:var(--g)}
+section{scroll-margin-top:14px}
+h2.sec{color:var(--g);font-weight:700;border-left:6px solid var(--g2);padding-left:12px;margin:8px 0 16px}
+h3.sub{color:var(--g2);font-weight:700;font-size:1.12rem;margin-top:18px}
+.card-k{border:0;border-radius:14px;box-shadow:0 4px 14px rgba(0,0,0,.06)}
+.tag{display:inline-block;font-size:.72rem;font-weight:700;padding:.15rem .5rem;border-radius:20px}
+.tag-basic{background:#E3F2FD;color:#1565C0}.tag-kaizen{background:#E8F5E9;color:#2E7D32}.tag-trouble{background:#FFEBEE;color:#C62828}
+table.tbl{font-size:.88rem}
+table.tbl th{background:var(--ink);color:#fff;font-weight:600}
+table.tbl td{vertical-align:top}
+code,.mono{font-family:ui-monospace,Consolas,monospace}
+.prompt-box{background:#0f1b12;color:#d7f5db;border-radius:10px;padding:14px 16px;font-family:ui-monospace,Consolas,monospace;font-size:.82rem;white-space:pre-wrap;position:relative}
+.prompt-box .ph{color:#FFD54F}
+.note{background:var(--gl);border-left:4px solid var(--g2);padding:10px 14px;border-radius:8px;font-size:.9rem}
+.warn{background:#FFF3E0;border-left:4px solid var(--amber);padding:10px 14px;border-radius:8px;font-size:.9rem}
+/* ===== Chat mockup ===== */
+.mock{border:2px dashed #90A4AE;border-radius:16px;overflow:hidden;background:#fff}
+.mock-bar{background:#ECEFF1;font-size:.74rem;color:#546E7A;padding:4px 12px;border-bottom:1px solid #cfd8dc}
+.mock-grid{display:grid;grid-template-columns:210px 1fr 250px;min-height:540px}
+.m-side{background:#102814;color:#cfe9d3;padding:12px}
+.m-side .new{background:var(--g2);color:#fff;border-radius:8px;padding:7px;text-align:center;font-size:.82rem;font-weight:600}
+.m-side .item{font-size:.78rem;padding:7px;border-radius:7px;margin-top:6px;background:rgba(255,255,255,.06)}
+.m-side .item.active{background:rgba(255,255,255,.16);border-left:3px solid #81C784}
+.m-main{display:flex;flex-direction:column;background:#fafdfb}
+.m-head{padding:8px 14px;border-bottom:1px solid #e0e6e1;font-weight:600;color:var(--g);font-size:.9rem;display:flex;justify-content:space-between;align-items:center}
+.m-thread{padding:14px;flex:1;overflow:auto}
+.bub{max-width:86%;padding:10px 13px;border-radius:14px;margin-bottom:12px;font-size:.84rem;line-height:1.5}
+.bub.ai{background:#fff;border:1px solid #e0e6e1;border-top-left-radius:3px}
+.bub.user{background:var(--g2);color:#fff;margin-left:auto;border-top-right-radius:3px}
+.bub.sys{background:#FFFDE7;border:1px dashed #FBC02D;font-size:.8rem}
+.avatar{width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.7rem;color:#fff;background:var(--g);margin-right:6px}
+.scorechip{display:inline-flex;align-items:center;gap:6px;background:var(--gl);border:1px solid #A5D6A7;border-radius:30px;padding:3px 12px;font-weight:700;color:var(--g);font-size:.82rem}
+.m-input{border-top:1px solid #e0e6e1;padding:10px;display:flex;gap:8px;align-items:center;background:#fff}
+.m-input .box{flex:1;border:1px solid #cfd8dc;border-radius:22px;padding:8px 14px;color:#90A4AE;font-size:.84rem}
+.m-right{background:#fff;border-left:1px solid #e0e6e1;padding:12px}
+.m-right h6{color:var(--g);font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.4px}
+.model-pill{display:flex;align-items:center;gap:8px;border:1px solid #cfd8dc;border-radius:10px;padding:7px 9px;margin-bottom:7px;font-size:.8rem;cursor:default}
+.model-pill.sel{border-color:var(--g2);background:var(--gl);font-weight:700}
+.bar{height:7px;border-radius:6px;background:#e0e6e1;overflow:hidden;margin:3px 0 8px}
+.bar>span{display:block;height:100%;background:var(--g2)}
+.rubric-row{font-size:.78rem;display:flex;justify-content:space-between}
+.step-dot{width:26px;height:26px;border-radius:50%;background:var(--g2);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:.8rem;flex:0 0 auto}
+@media(max-width:991px){.mock-grid{grid-template-columns:1fr}.m-side,.m-right{display:none}}
+.footer{background:var(--ink);color:#cfd8dc;padding:24px 0;font-size:.85rem;margin-top:40px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+ <div class="container">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+   <div>
+    <span class="badge badge-soft mb-2">Design Specification · v1.0 · พ.ค. 2026</span>
+    <h1 class="mb-1">OPL AI Feedback System — UI/UX Design Spec</h1>
+    <div class="opacity-75">หน้า Chat ตรวจ &amp; แนะนำ One-Point Lesson (สไตล์ ChatGPT) + คลัง Prompt วาดรูป GPT Image 2.0</div>
+   </div>
+   <div class="text-end small opacity-75">
+    Stack: HTML5 · Bootstrap 5 · Vanilla JS · PHP · MySQLi<br>
+    เชื่อมระบบ OPL เดิม (4 actors · approval flow)<br>
+    <b>หมายเหตุ: เอกสารออกแบบ — ไม่ใช่โค้ดรันได้จริง</b>
+   </div>
+  </div>
+ </div>
+</div>
+
+<div class="container my-4">
+<div class="row g-4">
+ <!-- TOC -->
+ <div class="col-lg-3">
+  <div class="sticky-toc toc card-k card p-3">
+   <div class="fw-bold text-uppercase small text-muted mb-2">สารบัญ</div>
+   <a class="h" href="#a">A. ตกผลึกเทคนิค OPL (3 ประเภท)</a>
+   <a href="#a1">— หลักร่วม 5 นาที / 80:20</a>
+   <a href="#a2">— เทคนิคแยกตามประเภท</a>
+   <a class="h" href="#b">B. Chat Feedback UI/UX</a>
+   <a href="#b1">— Wireframe Mockup</a>
+   <a href="#b2">— Component &amp; State Spec</a>
+   <a href="#b3">— Model Selector</a>
+   <a href="#b4">— Sample Dialogues 3 ประเภท</a>
+   <a class="h" href="#c">C. GPT Image 2.0 Prompt Library</a>
+   <a href="#c1">— โครงสร้าง Prompt</a>
+   <a href="#c2">— Template 3 สไตล์</a>
+   <a class="h" href="#d">D. การเชื่อมกับ Rubric &amp; Agents</a>
+  </div>
+ </div>
+
+ <div class="col-lg-9">
+
+ <!-- ============ PART A ============ -->
+ <section id="a" class="mb-5">
+  <h2 class="sec">A. ตกผลึกเทคนิคการเขียน OPL ที่เข้าใจใน 5 นาที</h2>
+  <p class="text-muted">สกัดจาก <b>Make OPL Sheet (JIPM)</b>, <b>Example of OPL Japan (Yokohama)</b> และ <b>IKEA Concept (SCG)</b> — ใช้เป็นฐานความรู้ของเกณฑ์ประเมินและ AI Feedback</p>
+
+  <div id="a1"></div>
+  <div class="row g-3 mb-3">
+   <div class="col-md-4"><div class="card card-k h-100 p-3"><div class="fs-2 text-success"><i class="fa-solid fa-1"></i></div><b>1 แผ่น = 1 ประเด็น = 5 นาที</b><div class="small text-muted mt-1">5分間教育 (go-fun-kan kyōiku = การศึกษา 5 นาที). ถ้าเกิน → แตกเป็นหลายใบ</div></div></div>
+   <div class="col-md-4"><div class="card card-k h-100 p-3"><div class="fs-2 text-success"><i class="fa-solid fa-image"></i></div><b>ภาพ 80% : ข้อความ 20%</b><div class="small text-muted mt-1">ทดสอบ: ปิดข้อความแล้วยังเข้าใจ = ผ่าน</div></div></div>
+   <div class="col-md-4"><div class="card card-k h-100 p-3"><div class="fs-2 text-success"><i class="fa-solid fa-palette"></i></div><b>สี 70 : 25 : 5</b><div class="small text-muted mt-1">พื้นหลัง 70% · เนื้อหา 25% · <span style="color:var(--accent);font-weight:700">สีเน้น 5%</span> ที่จุดสำคัญสุดจุดเดียว</div></div></div>
+  </div>
+  <div class="note mb-3"><b>ปรัชญาแกน:</b> "เปลี่ยนตัวอย่างความล้มเหลวให้เป็นสมบัติ" (Change the failure example to the treasure) — 1 แผ่น/คน/เดือน, ประกาศหน้าบอร์ดเช้า 3 นาที/แผ่น</div>
+
+  <h3 id="a2" class="sub">เทคนิคแยกตามประเภท (3 ประเภทตาม JIPM)</h3>
+  <table class="table table-bordered tbl">
+   <thead><tr><th style="width:16%">ประเภท</th><th style="width:28%">เป้าหมาย</th><th style="width:30%">โครงเนื้อหาที่ต้องมี</th><th style="width:26%">สไตล์ภาพที่เหมาะ</th></tr></thead>
+   <tbody>
+    <tr><td><span class="tag tag-basic">Basic Knowledge</span><div class="small mt-1 mono">基礎知識<br>Kiso-Chishiki</div></td>
+        <td>สอนหลักการ/วิธีใช้/มาตรฐานพื้นฐาน ให้ทำถูกตั้งแต่แรก</td>
+        <td>นิยาม/หลักการถูกต้อง → ขั้นตอน 1-2-3 → "ทำไมสำคัญ / ถ้าทำผิดเกิดอะไร"</td>
+        <td>IKEA Line-art (ขั้นตอน) + Cross-section (หลักการกลไก)</td></tr>
+    <tr><td><span class="tag tag-kaizen">Kaizen Case</span><div class="small mt-1 mono">改善事例<br>Kaizen-Jirei</div></td>
+        <td>เผยแพร่การปรับปรุงให้คนอื่นทำตาม (Yokoten 横展開)</td>
+        <td>Before (ปัญหา+Loss) → ไอเดีย/กลไกที่ปรับ → After + ผลเป็น<b>ตัวเลข</b></td>
+        <td>Same-angle Before/After + Cross-section กลไกที่เปลี่ยน</td></tr>
+    <tr><td><span class="tag tag-trouble">Trouble Case</span><div class="small mt-1 mono">トラブル事例<br>Trouble-Jirei</div></td>
+        <td>กันการเกิดซ้ำของปัญหา/เครื่องเสีย</td>
+        <td>อาการ (ภาพจุดจริง) → Why-Why ถึงราก → มาตรการแก้ + กันซ้ำ (Poka-yoke/มาตรฐาน)</td>
+        <td>Photo+Annotation (จุดจริงวงแดง) + Visual Why-Why</td></tr>
+   </tbody>
+  </table>
+  <div class="warn"><b>กฎทอง 7 ข้อ:</b> (1) 1 ประเด็น/แผ่น (2) ภาพ 80:20 (3) สีเน้นจุดเดียว (4) ทุกภาพมีลูกศร/วงกลมชี้จุด (5) มีคู่เทียบ OK/NG หรือ Before/After (6) อักษรใหญ่-เข้ม-คำง่าย (7) มีตาราง tracking + ขยายผล Yokoten</div>
+ </section>
+
+ <!-- ============ PART B ============ -->
+ <section id="b" class="mb-5">
+  <h2 class="sec">B. หน้า AI Feedback แบบ Chat (สไตล์ ChatGPT)</h2>
+  <p class="text-muted">ผู้ใช้ (ผู้จัดทำ OPL) อัปโหลดแผ่น → ระบบให้คะแนนตาม Rubric → คุยโต้ตอบเป็น chat bubble: ชี้จุดต้องปรับ + เสนอวิธีเขียนที่<b>กระชับกว่า</b> โดยอ้างอิง Best Practice แต่ละประเภท</p>
+
+  <h3 id="b1" class="sub">B.1 Wireframe Mockup (Static — สำหรับอ้างอิงการออกแบบ)</h3>
+  <div class="mock mb-3">
+   <div class="mock-bar"><i class="fa-solid fa-circle-info"></i> STATIC MOCKUP — ภาพจำลองหน้าจอ ไม่ใช่ระบบที่ทำงานจริง · ทีม Programmer นำไปพัฒนาต่อด้วย Bootstrap 5 + Vanilla JS</div>
+   <div class="mock-grid">
+    <!-- left sidebar -->
+    <div class="m-side">
+     <div class="new"><i class="fa-solid fa-plus"></i> ตรวจ OPL ใหม่</div>
+     <div class="small mt-3 mb-1 opacity-75">ประวัติการตรวจ</div>
+     <div class="item active">P-101 Seal ตรวจรอยรั่ว <span class="badge bg-success">88</span></div>
+     <div class="item">ไคเซ็นชุดจับชิ้นงาน <span class="badge bg-warning text-dark">72</span></div>
+     <div class="item">มอเตอร์ไหม้ Line 3 <span class="badge bg-danger">54</span></div>
+     <div class="item">วิธีตั้งค่าหัวฉีด</div>
+     <div class="position-absolute" style="bottom:14px;font-size:.74rem;opacity:.7"><i class="fa-solid fa-user"></i> สมชาย (ผู้จัดทำ)</div>
+    </div>
+    <!-- center -->
+    <div class="m-main">
+     <div class="m-head"><span><i class="fa-solid fa-robot"></i> OPL Assistant</span><span class="scorechip"><i class="fa-solid fa-star"></i> 88/100 · 🟢 Good</span></div>
+     <div class="m-thread">
+      <div class="bub sys"><i class="fa-solid fa-file-arrow-up"></i> อัปโหลด: <b>OPL_P101_Seal.jpg</b> · ประเภท: <span class="tag tag-trouble">Trouble</span> · กำลังตรวจตาม Rubric…</div>
+      <div class="bub ai"><span class="avatar"><i class="fa-solid fa-robot"></i></span><b>ผลตรวจ: 88/100 (🟢 Good)</b><br>เด่นมาก 3 จุด ✓ ภาพจุดจริงวงแดงชัด ✓ Why-Why ถึงราก ✓ ฟอร์มครบ<br>มี <b>2 จุดควรปรับ</b> ให้ขึ้นระดับ World-Class — เริ่มจากข้อสำคัญสุดเลยนะครับ 👇</div>
+      <div class="bub ai"><span class="avatar">2</span><b>① ผลลัพธ์ยังไม่เป็นตัวเลข (เกณฑ์ 2.3 = 3/6)</b><br>ตอนนี้เขียนว่า "ลดการเสียลงมาก" — assessor วัดไม่ได้<br><span class="text-success"><i class="fa-solid fa-pen"></i> เขียนใหม่ให้กระชับ+วัดได้:</span> <i>"Breakdown 4 ครั้ง/เดือน → 0 (3 เดือนติด)"</i></div>
+      <div class="bub user">ขอข้อ 2 ต่อเลย</div>
+      <div class="bub ai"><span class="avatar">2</span><b>② ข้อความยาวเกิน (เกณฑ์ 4.1 = 3/5)</b><br>ย่อหน้าอธิบาย 4 บรรทัด → ตัดเหลือ bullet สั้น<br><span class="text-success"><i class="fa-solid fa-pen"></i></span> <i>"• คลายโบลต์ 2 ตัว • ดึง seal • วัดสึก &gt;0.5mm = เปลี่ยน"</i><br><span class="small text-muted">อ้างอิง Best Practice สไตล์ B (IKEA): 1 ขั้น = 1 ภาพ = 1 ประโยค</span></div>
+      <div class="bub ai"><span class="avatar"><i class="fa-solid fa-image"></i></span>อยากให้ผมสร้าง <b>Prompt วาดรูป (GPT Image 2.0)</b> สำหรับภาพตัดขวาง seal ไหมครับ? <button class="btn btn-sm btn-success py-0">สร้าง Prompt</button></div>
+     </div>
+     <div class="m-input"><i class="fa-solid fa-paperclip text-muted"></i><div class="box">พิมพ์คำถาม หรือลากไฟล์ OPL มาวาง…</div><button class="btn btn-success btn-sm rounded-circle"><i class="fa-solid fa-arrow-up"></i></button></div>
+    </div>
+    <!-- right -->
+    <div class="m-right">
+     <h6>AI Model</h6>
+     <div class="model-pill sel"><i class="fa-solid fa-circle-check text-success"></i> Claude Opus 4.7</div>
+     <div class="model-pill"><i class="fa-regular fa-circle"></i> Claude Sonnet 4.6</div>
+     <div class="model-pill"><i class="fa-regular fa-circle"></i> GPT 5.4</div>
+     <div class="model-pill"><i class="fa-regular fa-circle"></i> Gemini 3.5 Flash</div>
+     <h6 class="mt-3">คะแนนตาม Rubric</h6>
+     <div class="rubric-row"><span>S1 หัวเรื่อง/โฟกัส</span><b>15/15</b></div><div class="bar"><span style="width:100%"></span></div>
+     <div class="rubric-row"><span>S2 เนื้อหา</span><b>14/20</b></div><div class="bar"><span style="width:70%"></span></div>
+     <div class="rubric-row"><span>S3 ภาพ</span><b>23/25</b></div><div class="bar"><span style="width:92%"></span></div>
+     <div class="rubric-row"><span>S4 ข้อความ</span><b>11/15</b></div><div class="bar"><span style="width:73%"></span></div>
+     <div class="rubric-row"><span>S5 สี/ฟอร์ม</span><b>10/10</b></div><div class="bar"><span style="width:100%"></span></div>
+     <div class="rubric-row"><span>S6 5 นาที/ถ่ายทอด</span><b>15/15</b></div><div class="bar"><span style="width:100%"></span></div>
+     <button class="btn btn-outline-success btn-sm w-100 mt-2"><i class="fa-solid fa-file-excel"></i> Export รายงาน</button>
+    </div>
+   </div>
+  </div>
+
+  <h3 id="b2" class="sub">B.2 Component &amp; State Spec</h3>
+  <div class="row g-3">
+   <div class="col-md-6">
+    <table class="table table-sm tbl">
+     <thead><tr><th>Component (Bootstrap 5)</th><th>หน้าที่</th></tr></thead>
+     <tbody>
+      <tr><td>Sidebar (offcanvas-lg)</td><td>รายการ OPL ที่เคยตรวจ + คะแนน badge + ปุ่ม "ตรวจใหม่"</td></tr>
+      <tr><td>Upload dropzone (card + JS drag)</td><td>ลากไฟล์ OPL (รูป/PDF) เริ่ม Agent 1</td></tr>
+      <tr><td>Chat thread (.bub)</td><td>ฟอง AI / User / System; ปุ่ม inline action</td></tr>
+      <tr><td>Score chip + progress bar</td><td>คะแนนรวม + แยกราย Section จาก Rubric</td></tr>
+      <tr><td>Model selector (list-group)</td><td>เลือก 1 ใน 4 model ก่อนถาม</td></tr>
+      <tr><td>Toast / spinner</td><td>สถานะ "กำลังวิเคราะห์…"</td></tr>
+     </tbody>
+    </table>
+   </div>
+   <div class="col-md-6">
+    <table class="table table-sm tbl">
+     <thead><tr><th>State</th><th>สิ่งที่แสดง</th></tr></thead>
+     <tbody>
+      <tr><td>1. Empty</td><td>dropzone กลางจอ + ข้อความชวนอัปโหลด</td></tr>
+      <tr><td>2. Uploading</td><td>thumbnail + progress + ยกเลิกได้</td></tr>
+      <tr><td>3. Analyzing</td><td>spinner "Agent 1→2 กำลังตรวจตาม Rubric…"</td></tr>
+      <tr><td>4. Feedback</td><td>score chip + bubble เรียงจุดต้องปรับ (สำคัญสุดก่อน)</td></tr>
+      <tr><td>5. Refine (chat)</td><td>ผู้ใช้ถามต่อ → Agent 3 ตอบอ้าง Best Practice</td></tr>
+      <tr><td>6. Accepted</td><td>ปุ่ม "รับคำแนะนำ" → บันทึกเวอร์ชัน + ส่งเข้า workflow approval เดิม</td></tr>
+     </tbody>
+    </table>
+   </div>
+  </div>
+  <div class="note mt-2"><b>หลัก UX:</b> เรียง feedback จาก "คะแนนหายมากสุด" ก่อนเสมอ · ทุกคำแนะนำต้องมีตัวอย่าง "เขียนใหม่ให้กระชับ" · ปุ่มสร้าง Prompt วาดรูปแทรกเมื่อจุดอ่อนคือเรื่องภาพ (S3) · ธีมเขียวเดียวกับระบบเดิม</div>
+
+  <h3 id="b3" class="sub">B.3 Model Selector — 4 ตัวเลือก</h3>
+  <table class="table table-bordered tbl">
+   <thead><tr><th>Model</th><th>จุดเด่น (แนะนำใช้เมื่อ)</th><th>ค่าเริ่มต้น</th></tr></thead>
+   <tbody>
+    <tr><td><b>Claude Opus 4.7</b></td><td>วิเคราะห์ลึก เขียน feedback คุณภาพสูงสุด — งานเตรียม JIPM Award</td><td>✅ Default</td></tr>
+    <tr><td><b>Claude Sonnet 4.6</b></td><td>สมดุล เร็ว/ดี — งานตรวจประจำวันจำนวนมาก</td><td>—</td></tr>
+    <tr><td><b>GPT 5.4</b></td><td>ทางเลือกข้าม vendor / สร้าง Prompt ภาพ GPT Image 2.0 ต่อเนื่อง</td><td>—</td></tr>
+    <tr><td><b>Gemini 3.5 Flash</b></td><td>เร็วสุด ต้นทุนต่ำ — ตรวจร่างเบื้องต้น (draft pre-check)</td><td>—</td></tr>
+   </tbody>
+  </table>
+  <div class="warn">การเลือก model ส่งผลเฉพาะ <b>Agent 3</b> (ขั้นเรียบเรียงคำแนะนำ). Agent 1 (อ่าน) และ Agent 2 (เทียบเกณฑ์) ทำงานเหมือนกันทุก model เพื่อให้คะแนน Rubric คงที่เปรียบเทียบได้</div>
+
+  <h3 id="b4" class="sub">B.4 ตัวอย่างบทสนทนา Feedback (3 ประเภท)</h3>
+  <div class="row g-3">
+   <div class="col-12"><div class="card card-k p-3"><div><span class="tag tag-basic">Basic Knowledge</span> — "วิธีอ่านเกจวัดแรงดัน"</div>
+    <div class="small mt-2"><b>AI:</b> คะแนน 68/100 🟡 — โฟกัส 1 ประเด็นดีแล้ว แต่ <b>S3 ภาพ = 12/25</b><br>
+    • ภาพเกจเป็นรูปถ่ายไกล ไม่เห็นเข็ม → <span class="text-success">เพิ่ม Close-up + วงแดงช่วงปลอดภัย (เขียว) / อันตราย (แดง)</span><br>
+    • ขั้นตอนเป็นพรืด → <span class="text-success">ทำเป็น 1-2-3 แบบ IKEA: "①มองตรงเข็ม ②อ่านช่วงเขียว ③เกินแดง=แจ้งหัวหน้า"</span></div></div></div>
+
+   <div class="col-12"><div class="card card-k p-3"><div><span class="tag tag-kaizen">Kaizen Case</span> — "ไคเซ็นชุดจับชิ้นงานลดเวลา setup"</div>
+    <div class="small mt-2"><b>AI:</b> คะแนน 72/100 🟡 — ไอเดียดี แต่ <b>S2.3 ผลตัวเลข = 2/6</b><br>
+    • เขียน "เร็วขึ้นเยอะ" → <span class="text-success">"Setup 12 นาที → 4 นาที (-67%), 20 ครั้ง/วัน = เซฟ 2.7 ชม./วัน"</span><br>
+    • Before/After คนละมุม → <span class="text-success">ถ่ายมุมเดียวกัน วางคู่กัน เน้นจุดที่เปลี่ยนด้วยวงแดง (Same-angle)</span></div></div></div>
+
+   <div class="col-12"><div class="card card-k p-3"><div><span class="tag tag-trouble">Trouble Case</span> — "มอเตอร์ปั๊มไหม้ Line 3"</div>
+    <div class="small mt-2"><b>AI:</b> คะแนน 54/100 🔴 — <b>S2.2 Why-Why = 3/8</b> หยุดที่ "มอเตอร์ร้อน"<br>
+    • <span class="text-success">ถาม Why ต่อ: ร้อน→ระบายความร้อนตัน→ฝุ่นเกาะครีบ→ไม่มีรอบทำความสะอาด → <b>ราก: ขาดมาตรฐาน CIL</b></span><br>
+    • มาตรการเป็นแค่ "เปลี่ยนมอเตอร์" → <span class="text-success">เพิ่มกันซ้ำ: รอบเป่าฝุ่นครีบทุกสัปดาห์ + เพิ่มใน AM Check Sheet</span></div></div></div>
+  </div>
+ </section>
+
+ <!-- ============ PART C ============ -->
+ <section id="c" class="mb-5">
+  <h2 class="sec">C. คลัง Prompt วาดรูป GPT Image 2.0</h2>
+  <p class="text-muted">เมื่อจุดอ่อนคือ "ภาพ" (S3) Agent 3 จะแปลงเนื้อหา OPL เป็น Prompt สั่ง GPT Image 2.0 วาดภาพประกอบที่เข้าใจง่าย — คัดลอกไปใช้ได้ทันที (<span class="ph">[…]</span> = ช่องเติมข้อมูล)</p>
+
+  <h3 id="c1" class="sub">C.1 โครงสร้าง Prompt มาตรฐาน (6 ส่วน)</h3>
+  <div class="prompt-box">[STYLE] technical line illustration, flat 2D, clean white background, no clutter
+[SUBJECT] <span class="ph">[สิ่งที่วาด เช่น mechanical seal ของปั๊มหอยโข่ง]</span>
+[VIEW] <span class="ph">[มุมมอง: cross-section / step-by-step / hand performing task]</span>
+[ANNOTATION] numbered callouts 1-2-3, arrows pointing to <span class="ph">[จุดสำคัญ]</span>, label parts in Thai
+[COLOR] grey = structure, blue = normal flow, <span class="ph">RED = the ONE critical point</span> (70:25:5 rule)
+[CONSTRAINT] minimal text, large readable labels, operator can understand in 5 seconds, IKEA-manual simplicity</div>
+  <div class="note mt-2">เคล็ด: ระบุ "<b>label in Thai</b>" และ "<b>no realistic shading</b>" เพื่อให้ได้เส้นสะอาดแบบคู่มือ ไม่ใช่ภาพ render เหมือนจริงที่อ่านยาก</div>
+
+  <h3 id="c2" class="sub">C.2 Template พร้อมใช้ 3 สไตล์ (ตามประเภท OPL)</h3>
+
+  <div class="mb-2"><span class="tag tag-basic">Basic</span> <b>สไตล์ IKEA Line-art (ขั้นตอนการทำงาน)</b></div>
+  <div class="prompt-box mb-3">Flat 2D line illustration, IKEA assembly-manual style, clean white background.
+Show a worker's hands performing: <span class="ph">[งาน เช่น การใช้ไขควงวัดไฟเช็คไฟรั่ว]</span>.
+Break into <span class="ph">[3]</span> numbered panels (①②③), one action per panel, big numbers.
+Thin black outlines only, no shading. Minimal Thai labels. Lots of white space.
+One small RED arrow on the key safety point. Simple, calm, easy to follow in 5 seconds.</div>
+
+  <div class="mb-2"><span class="tag tag-trouble">Trouble / Basic</span> <b>สไตล์ Cross-Section กลไก</b></div>
+  <div class="prompt-box mb-3">Engineering cross-section diagram, flat 2D cutaway, technical drawing style, white background.
+Subject: <span class="ph">[ชิ้นส่วน เช่น mechanical seal + เพลาปั๊ม]</span> shown in half-section with hatching on metal.
+Blue arrows = <span class="ph">[การไหลปกติ เช่น น้ำหล่อเย็น]</span>. RED zone + red arrow = <span class="ph">[จุดเสีย เช่น รอยรั่ว]</span>.
+Numbered callouts with thin leader lines, part names in Thai. Grey structure, blue normal, red = single failure point.
+No photoreal rendering. Labels large and legible for shop-floor.</div>
+
+  <div class="mb-2"><span class="tag tag-kaizen">Kaizen</span> <b>สไตล์ Before / After มุมเดียวกัน</b></div>
+  <div class="prompt-box mb-3">Two side-by-side flat 2D illustrations, SAME viewing angle, white background, labeled "ก่อน (Before)" and "หลัง (After)".
+Scene: <span class="ph">[จุดงาน เช่น ชุดจับชิ้นงานบนแท่นเครื่อง]</span>.
+Before = <span class="ph">[สภาพเดิม/ปัญหา]</span>; After = <span class="ph">[หลังไคเซ็น]</span>.
+Circle the CHANGED part with a RED ring in the After panel + short Thai callout of the gain.
+Clean lines, minimal text, no shading. Make the improvement obvious at a glance.</div>
+
+  <div class="warn"><b>Quality check ก่อนใช้ภาพ:</b> ① สีเน้นแดงมีจุดเดียว? ② มีลูกศร/เลขชี้จุด? ③ ปิด label แล้วยังเข้าใจ? ④ อักษรใหญ่อ่านจากที่ยืน? — ผ่านครบ = ใส่ใน OPL ได้</div>
+ </section>
+
+ <!-- ============ PART D ============ -->
+ <section id="d" class="mb-4">
+  <h2 class="sec">D. การเชื่อมกับ Rubric &amp; 3 Agents</h2>
+  <table class="table table-bordered tbl">
+   <thead><tr><th>ลำดับ</th><th>Agent</th><th>Input</th><th>Output → ส่งต่อ</th></tr></thead>
+   <tbody>
+    <tr><td><span class="step-dot">1</span></td><td><b>Agent 1 — OPL Reader</b></td><td>ไฟล์ OPL ที่อัปโหลด (รูป/PDF)</td><td>JSON: title, type, ข้อความ, รายการภาพ, ฟอร์ม → Agent 2</td></tr>
+    <tr><td><span class="step-dot">2</span></td><td><b>Agent 2 — Evaluator</b></td><td>JSON จาก Agent 1 + <b>Rubric (Excel)</b></td><td>JSON: คะแนนรายเกณฑ์ + จุด &lt;60% + comment ดิบ → Agent 3</td></tr>
+    <tr><td><span class="step-dot">3</span></td><td><b>Agent 3 — AI Refiner</b></td><td>comment ดิบ + <b>Vector DB (Best Practice)</b> + เลือก Model</td><td>คำแนะนำกระชับแบบ chat + ตัวอย่างเขียนใหม่ + Prompt ภาพ → หน้า UI</td></tr>
+   </tbody>
+  </table>
+  <div class="note">เกณฑ์ทั้งหมดอ้างชีต <b>"6_AI Feedback Map"</b> ใน <span class="mono">OPL_Quality_Rubric_JIPM.xlsx</span> (อาการ → feedback → วิธีแก้) ซึ่งเป็นเนื้อหาที่นำไปสร้าง Vector DB ของ Agent 3</div>
+ </section>
+
+ </div><!-- /col-9 -->
+</div><!-- /row -->
+</div><!-- /container -->
+
+<div class="footer">
+ <div class="container d-flex flex-wrap justify-content-between gap-2">
+  <div>OPL AI Feedback System · UI/UX Design Specification v1.0<br><span class="opacity-50">อ้างอิง: Make OPL Sheet (JIPM) · Example of OPL Japan · IKEA Concept (SCG) · Visual Storytelling 7 Techniques</span></div>
+  <div class="text-end opacity-75">เอกสารออกแบบ (Design Spec) — ไม่ใช่ระบบที่ทำงานจริง<br>ส่งต่อทีม Programmer พัฒนาด้วย HTML5 · Bootstrap 5 · Vanilla JS · PHP · MySQLi</div>
+ </div>
+</div>
+</body>
+</html>
