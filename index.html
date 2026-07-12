@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OPL AI Feedback System — Project Hub</title>
+<meta name="description" content="OPL AI Feedback System — 3-agent architecture, UI/UX design spec, quality rubric, and vibe-coding blueprint.">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--g:#1B5E20;--g2:#2E7D32;--gl:#E8F5E9;--accent:#C62828;--amber:#F9A825;--ink:#263238;--mut:#607D8B;}
+*{font-family:'Sarabun',Tahoma,sans-serif}
+body{color:var(--ink);background:#f4f6f4}
+.hero{background:linear-gradient(135deg,#1B5E20,#2E7D32);color:#fff;padding:56px 0}
+.hero h1{font-weight:700;font-size:2.1rem}
+.hero p{opacity:.92;font-size:1.05rem;max-width:720px}
+.badge-soft{background:rgba(255,255,255,.18);color:#fff;font-weight:600}
+.card-k{border:0;border-radius:16px;box-shadow:0 4px 16px rgba(0,0,0,.07);transition:transform .15s ease,box-shadow .15s ease;height:100%}
+.card-k:hover{transform:translateY(-4px);box-shadow:0 10px 26px rgba(0,0,0,.12)}
+.card-k a.stretched-link::after{border-radius:16px}
+.ic{width:48px;height:48px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;font-size:1.3rem;color:#fff;background:var(--g2)}
+.ic.blue{background:#1565C0}.ic.red{background:var(--accent)}.ic.amber{background:var(--amber)}.ic.slate{background:#546E7A}.ic.teal{background:#00897B}
+.kicker{color:var(--g);font-weight:700;letter-spacing:.5px;text-transform:uppercase;font-size:.78rem}
+.ftype{font-size:.72rem;font-weight:700;padding:.12rem .5rem;border-radius:20px;background:var(--gl);color:var(--g2)}
+h2.sec{color:var(--g);font-weight:700;border-left:6px solid var(--g2);padding-left:12px;margin:0 0 22px}
+footer{color:var(--mut);font-size:.86rem}
+.card-title{font-weight:700;color:var(--ink)}
+.card-text{font-size:.9rem;color:var(--mut)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="container">
+    <span class="badge badge-soft rounded-pill px-3 py-2 mb-3"><i class="fa-solid fa-robot me-1"></i> 3-Agent AI System</span>
+    <h1>OPL AI Feedback System</h1>
+    <p class="mt-2">ระบบให้ฟีดแบ็กเอกสาร One-Point-Lesson (OPL) ด้วย AI — ประกอบด้วยสถาปัตยกรรม 3 เอเจนต์, สเปกดีไซน์ UI/UX,
+    เกณฑ์คุณภาพ JIPM และพิมพ์เขียวสำหรับพัฒนา รวมทุกอย่างไว้ในที่เดียว</p>
+  </div>
+</header>
+
+<main class="container py-5">
+
+  <div class="kicker mb-2">Explore the project</div>
+  <h2 class="sec">เอกสารและทรัพยากรหลัก</h2>
+
+  <div class="row g-4">
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card card-k p-4 position-relative">
+        <div class="ic mb-3"><i class="fa-solid fa-palette"></i></div>
+        <h5 class="card-title">UI/UX Design Spec</h5>
+        <p class="card-text">สเปกดีไซน์หน้าจอ + คลัง Prompt สำหรับสร้างภาพ พร้อม mockup แบบโต้ตอบ</p>
+        <span class="ftype align-self-start mt-1">HTML</span>
+        <a class="stretched-link" href="OPL_AI_Feedback_UIUX_DesignSpec.html"></a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card card-k p-4 position-relative">
+        <div class="ic teal mb-3"><i class="fa-solid fa-diagram-project"></i></div>
+        <h5 class="card-title">System Architecture</h5>
+        <p class="card-text">แผนภาพสถาปัตยกรรม 3 เอเจนต์ (เวกเตอร์ SVG ความคมชัดสูง)</p>
+        <span class="ftype align-self-start mt-1">SVG</span>
+        <a class="stretched-link" href="OPL_3Agent_System_Architecture.svg"></a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card card-k p-4 position-relative">
+        <div class="ic amber mb-3"><i class="fa-solid fa-image"></i></div>
+        <h5 class="card-title">Architecture Concept Art</h5>
+        <p class="card-text">ภาพคอนเซ็ปต์สถาปัตยกรรมระบบเวอร์ชัน 2 (สร้างด้วย GPT Image)</p>
+        <span class="ftype align-self-start mt-1">PNG</span>
+        <a class="stretched-link" href="OPL_AI_Feedback_System_Architecture_V2_GPT_Image.png"></a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card card-k p-4 position-relative">
+        <div class="ic blue mb-3"><i class="fa-solid fa-book-open"></i></div>
+        <h5 class="card-title">Vibe Coding Blueprint</h5>
+        <p class="card-text">พิมพ์เขียวสำหรับพัฒนาระบบแบบ vibe-coding เวอร์ชัน 2</p>
+        <span class="ftype align-self-start mt-1">Markdown</span>
+        <a class="stretched-link" href="https://github.com/Narogkiat-TPM-Consultant/OPL-Analyzer/blob/main/OPL_AI_Feedback_Vibe_Coding_Blueprint_V2.md"></a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card card-k p-4 position-relative">
+        <div class="ic slate mb-3"><i class="fa-solid fa-list-check"></i></div>
+        <h5 class="card-title">Quality Rubric (JIPM)</h5>
+        <p class="card-text">เกณฑ์การประเมินคุณภาพ OPL ตามมาตรฐาน JIPM (สเปรดชีต)</p>
+        <span class="ftype align-self-start mt-1">XLSX</span>
+        <a class="stretched-link" href="OPL_Quality_Rubric_JIPM.xlsx"></a>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card card-k p-4 position-relative">
+        <div class="ic red mb-3"><i class="fa-solid fa-sitemap"></i></div>
+        <h5 class="card-title">Architecture Source</h5>
+        <p class="card-text">ไฟล์ต้นฉบับแผนภาพสถาปัตยกรรม (เปิด/แก้ไขได้ใน draw.io)</p>
+        <span class="ftype align-self-start mt-1">draw.io</span>
+        <a class="stretched-link" href="OPL_3Agent_System_Architecture.drawio"></a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="kicker mb-2 mt-5">Agent skills</div>
+  <h2 class="sec">คู่มือทักษะของแต่ละเอเจนต์</h2>
+
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="card card-k p-4 position-relative">
+        <div class="ic mb-3"><i class="fa-solid fa-1"></i></div>
+        <h5 class="card-title">OPL Reader</h5>
+        <p class="card-text">เอเจนต์อ่านและตีความเอกสาร OPL</p>
+        <a class="stretched-link" href="https://github.com/Narogkiat-TPM-Consultant/OPL-Analyzer/blob/main/agent1_opl_reader_skill.md"></a>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-k p-4 position-relative">
+        <div class="ic blue mb-3"><i class="fa-solid fa-2"></i></div>
+        <h5 class="card-title">Criteria Evaluator</h5>
+        <p class="card-text">เอเจนต์ประเมินตามเกณฑ์คุณภาพ</p>
+        <a class="stretched-link" href="https://github.com/Narogkiat-TPM-Consultant/OPL-Analyzer/blob/main/agent2_criteria_evaluator_skill.md"></a>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-k p-4 position-relative">
+        <div class="ic amber mb-3"><i class="fa-solid fa-3"></i></div>
+        <h5 class="card-title">AI Refiner</h5>
+        <p class="card-text">เอเจนต์ปรับปรุงและให้คำแนะนำ</p>
+        <a class="stretched-link" href="https://github.com/Narogkiat-TPM-Consultant/OPL-Analyzer/blob/main/agent3_ai_refiner_skill.md"></a>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="border-top py-4">
+  <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+    <span>OPL AI Feedback System</span>
+    <a class="text-decoration-none" href="https://github.com/Narogkiat-TPM-Consultant/OPL-Analyzer">
+      <i class="fa-brands fa-github me-1"></i> View on GitHub
+    </a>
+  </div>
+</footer>
+
+</body>
+</html>
