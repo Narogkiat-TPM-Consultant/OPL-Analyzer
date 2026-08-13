@@ -302,6 +302,7 @@ Scaffold จริงอยู่ที่ `oee_digital_platform/` พร้อ�
 - `backend/sql/oee_schema.sql` + `oee_seed_demo.sql`
 - `backend/app/services/oee_engine.py`
 - `backend/app/agents/tools/oee_tools.py` (wired ใน assistant)
-- `backend/app/api/routes/v1/oee.py`
+- `backend/app/oee_layers/` — Harness + Loop + Graph
+- `POST /api/v1/oee/workflows/run`
 - Alembic `0028_create_oee_tables`
 - ดูรายละเอียดใน `oee_digital_platform/OEE_DOMAIN.md`

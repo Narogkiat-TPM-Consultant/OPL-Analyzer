@@ -6,11 +6,14 @@ from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from fastapi import APIRouter, Query
+from pydantic import BaseModel, Field
 
 from app.api.deps import DBSession
+from app.oee_layers.graph import run_workflow
+from app.oee_layers.types import OeeScope, WorkflowName
 from app.services.oee_engine import (
-    estimate_output_for_target_oee,
     calculate_oee,
+    estimate_output_for_target_oee,
     rank_machines_by_breakdown,
     summarize_oee,
     top_downtime,
@@ -129,3 +132,34 @@ async def oee_estimate_target(
     result = estimate_output_for_target_oee(current=components, target_oee=target_oee_pct / 100.0)
     result["scope"] = summary.get("scope")
     return result
+
+
+class WorkflowRunRequest(BaseModel):
+    question: str = Field(..., min_length=1, max_length=2000)
+    plant_code: str | None = None
+    line_code: str | None = None
+    machine_code: str | None = None
+    period_start: str | None = None
+    period_end: str | None = None
+    planned_time_min: float | None = Field(default=None, ge=0)
+    target_oee_pct: float | None = Field(default=None, gt=0, le=100)
+    workflow: WorkflowName | None = None
+    alert_threshold_pct: float = Field(default=60.0, gt=0, le=100)
+
+
+@router.post("/workflows/run")
+async def oee_run_workflow(body: WorkflowRunRequest) -> dict[str, Any]:
+    """Run Harness + Loop + Graph for an OEE question (no LLM required)."""
+    seed = OeeScope(
+        question=body.question,
+        plant_code=body.plant_code,
+        line_code=body.line_code,
+        machine_code=body.machine_code,
+        period_start=body.period_start,
+        period_end=body.period_end,
+        planned_time_min=body.planned_time_min,
+        target_oee_pct=body.target_oee_pct,
+        alert_threshold_pct=body.alert_threshold_pct,
+    )
+    result = await run_workflow(body.question, seed=seed, workflow=body.workflow)
+    return result.as_dict()

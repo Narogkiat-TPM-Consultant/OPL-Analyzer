@@ -149,10 +149,7 @@ async def estimate_output_for_target(
     Example: target_oee_pct=85 asks what throughput is needed to hit 85% OEE
     given the current period's Availability/Quality profile.
     """
-    if target_oee_pct > 1:
-        target = target_oee_pct / 100.0
-    else:
-        target = target_oee_pct
+    target = target_oee_pct / 100.0 if target_oee_pct > 1 else target_oee_pct
 
     start, end = _default_period(period_start, period_end)
     async with get_db_context() as session:
@@ -179,6 +176,46 @@ async def estimate_output_for_target(
     result = estimate_output_for_target_oee(current=components, target_oee=target)
     result["scope"] = summary.get("scope")
     return result
+
+
+async def run_oee_workflow(
+    question: str,
+    plant_code: str | None = None,
+    line_code: str | None = None,
+    machine_code: str | None = None,
+    period_start: str | None = None,
+    period_end: str | None = None,
+    planned_time_min: float | None = None,
+    target_oee_pct: float | None = None,
+    workflow: str | None = None,
+) -> dict[str, Any]:
+    """Run the OEE Graph (status / diagnose / target / alert_or_report).
+
+    Prefer this for multi-step questions: why OEE dropped, which machine to fix
+    first, how to reach a target, or whether to alert vs send a daily report.
+    Returns verified tool data plus a recommendation. Do not invent KPIs.
+    """
+    from app.oee_layers.graph import run_workflow
+    from app.oee_layers.types import OeeScope, WorkflowName
+
+    seed = OeeScope(
+        question=question,
+        plant_code=plant_code,
+        line_code=line_code,
+        machine_code=machine_code,
+        period_start=period_start,
+        period_end=period_end,
+        planned_time_min=planned_time_min,
+        target_oee_pct=target_oee_pct,
+    )
+    selected = None
+    if workflow:
+        try:
+            selected = WorkflowName(workflow)
+        except ValueError:
+            return {"error": f"Unknown workflow: {workflow}. Use status|diagnose|target|alert_or_report"}
+    result = await run_workflow(question, seed=seed, workflow=selected)
+    return result.as_dict()
 
 
 def validate_cited_minutes(cited_minutes: float, tool_total_minutes: float, tolerance: float = 0.5) -> dict[str, Any]:

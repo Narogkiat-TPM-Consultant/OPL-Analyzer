@@ -29,6 +29,7 @@ from app.agents.tools.oee_tools import (
     get_oee_summary,
     get_top_downtime,
     rank_machines,
+    run_oee_workflow,
 )
 from app.agents.tools.rag_tool import search_knowledge_base
 from app.agents.utils import get_current_datetime
@@ -291,6 +292,36 @@ class AssistantAgent:
                 period_start=period_start,
                 period_end=period_end,
                 planned_time_min=planned_time_min,
+            )
+
+        @agent.tool_plain
+        async def run_oee_workflow_tool(
+            question: str,
+            plant_code: str | None = None,
+            line_code: str | None = None,
+            machine_code: str | None = None,
+            period_start: str | None = None,
+            period_end: str | None = None,
+            planned_time_min: float | None = None,
+            target_oee_pct: float | None = None,
+            workflow: str | None = None,
+        ) -> dict:
+            """Run the OEE Graph workflow (status / diagnose / target / alert_or_report).
+
+            Prefer this for multi-step plant questions. It gathers data through
+            verified tools, loops until checks pass, then branches (alert vs report,
+            loss analysis). Do not invent KPIs after it returns.
+            """
+            return await run_oee_workflow(
+                question=question,
+                plant_code=plant_code,
+                line_code=line_code,
+                machine_code=machine_code,
+                period_start=period_start,
+                period_end=period_end,
+                planned_time_min=planned_time_min,
+                target_oee_pct=target_oee_pct,
+                workflow=workflow,
             )
 
     @staticmethod

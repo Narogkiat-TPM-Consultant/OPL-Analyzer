@@ -12,8 +12,10 @@ Scaffold generated with `fastapi-fullstack` (PydanticAI + Next.js + pgvector + C
 | `backend/app/db/models/oee.py` | SQLAlchemy models |
 | `backend/app/services/oee_engine.py` | A/P/Q/OEE math + queries |
 | `backend/app/agents/tools/oee_tools.py` | Agent tools |
-| `backend/app/api/routes/v1/oee.py` | REST API for dashboard |
-| `backend/tests/test_oee_engine.py` | Unit tests |
+| `backend/app/oee_layers/` | Harness + Loop + Graph |
+| `backend/app/api/routes/v1/oee.py` | REST API for dashboard + workflows |
+| `backend/tests/test_oee_engine.py` | Engine unit tests |
+| `backend/tests/test_oee_layers.py` | Layer unit tests |
 
 ## OEE formula (v1)
 
@@ -55,6 +57,46 @@ Registered in `assistant.py`:
 - `estimate_output_for_target_tool`
 
 Plus template tools: `search_documents`, `create_chart_tool`, `ask_user`.
+
+## 3 Engineering Layers (Harness / Loop / Graph)
+
+Reliable OEE agents are split into three layers. Diagnose failures by layer:
+missing tools/context → **Harness**; repeats/weak checks → **Loop**;
+wrong branch/order → **Graph**.
+
+```
+Harness (environment): Gather context → Act (tools) → Verify
+        ↑ used by
+Loop (iterate): Goal + success criteria + stopping rules
+        ↑ used by
+Graph (workflow): Start → Task → Decision → Branch / Parallel → Approval → Merge
+```
+
+| Layer | Package | OEE meaning |
+|---|---|---|
+| Harness | `app/oee_layers/harness.py` | Scope + `oee_tools` + verifiers (OEE 0–100, A×P×Q identity, cited minutes) |
+| Loop | `app/oee_layers/loop.py` | Retry until verified, or stop on max iterations / no progress |
+| Graph | `app/oee_layers/graph.py` | `status` / `diagnose` / `target` / `alert_or_report` |
+
+### Workflows
+
+| Name | Path |
+|---|---|
+| `status` | summary (verified) |
+| `diagnose` | summary → decision (below target?) → parallel downtime + ranking → approval if OEE < 60% |
+| `target` | summary → estimate output for target % |
+| `alert_or_report` | summary → if OEE < 60% branch A alert + top downtime, else branch B daily report |
+
+### API / Agent
+
+- `POST /api/v1/oee/workflows/run` — deterministic graph (no LLM required)
+- Chat tool: `run_oee_workflow_tool`
+
+```bash
+curl -X POST http://localhost:8000/api/v1/oee/workflows/run \
+  -H 'Content-Type: application/json' \
+  -d '{"question":"ทำไม OEE ไลน์ PACK-2 ตก"}'
+```
 
 ## Next build steps
 

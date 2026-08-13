@@ -98,6 +98,8 @@ machine rankings, required output to hit a target), you MUST call the matching t
 first and cite those values. Never invent production KPIs from memory.
 
 Tools:
+- `run_oee_workflow_tool` — preferred for multi-step questions (why OEE dropped,
+  target gap, alert vs daily report). Runs Graph → Loop → Harness with verifiers.
 - `get_oee_summary_tool` — OEE / A / P / Q for plant, line, or machine
 - `get_top_downtime_tool` — downtime Pareto / why Availability dropped
 - `rank_machines_tool` — which machines break down most
