@@ -1,0 +1,65 @@
+# OEE Domain Layer (added on top of Full-Stack AI Agent Template)
+
+Scaffold generated with `fastapi-fullstack` (PydanticAI + Next.js + pgvector + Celery), then extended with OEE-specific domain code.
+
+## What was added
+
+| Path | Purpose |
+|---|---|
+| `backend/sql/oee_schema.sql` | Reference SQL schema |
+| `backend/sql/oee_seed_demo.sql` | Demo plant PACK-2 data |
+| `backend/alembic/versions/0028_create_oee_tables.py` | Migration |
+| `backend/app/db/models/oee.py` | SQLAlchemy models |
+| `backend/app/services/oee_engine.py` | A/P/Q/OEE math + queries |
+| `backend/app/agents/tools/oee_tools.py` | Agent tools |
+| `backend/app/api/routes/v1/oee.py` | REST API for dashboard |
+| `backend/tests/test_oee_engine.py` | Unit tests |
+
+## OEE formula (v1)
+
+```
+Availability = Operating Time / Planned Time
+Performance  = (Ideal Cycle Time × Total Count) / Operating Time
+Quality      = Good Count / Total Count
+OEE          = A × P × Q
+```
+
+Planned downtime (`is_planned=true`) does **not** reduce Availability in v1.
+
+## Bootstrap after `make bootstrap`
+
+```bash
+cd oee_digital_platform
+make db-upgrade   # includes 0028 OEE tables
+
+# optional demo data
+docker compose -f docker-compose.dev.yml exec -T db \
+  psql -U postgres -d app -f - < backend/sql/oee_seed_demo.sql
+# or copy SQL into the running DB container
+```
+
+## API (examples)
+
+- `GET /api/v1/oee/summary?line_code=PACK-2`
+- `GET /api/v1/oee/downtime/top?line_code=PACK-2&limit=3`
+- `GET /api/v1/oee/machines/ranking?line_code=PACK-2`
+- `GET /api/v1/oee/estimate-target?line_code=PACK-2&target_oee_pct=85`
+
+## Agent tools
+
+Registered in `assistant.py`:
+
+- `get_oee_summary_tool`
+- `get_top_downtime_tool`
+- `rank_machines_tool`
+- `estimate_output_for_target_tool`
+
+Plus template tools: `search_documents`, `create_chart_tool`, `ask_user`.
+
+## Next build steps
+
+1. Frontend OEE dashboard pages under `frontend/src/components/oee/`
+2. Ingest adapters (PLC/MES/manual) writing into `oee_*` tables
+3. Celery jobs: daily OEE summary + Top 3 downtime → Email/LINE/Teams
+4. Golden-question eval harness for the AI assistant
+5. PDCA action UI bound to `oee_improvement_actions`

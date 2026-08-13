@@ -297,4 +297,11 @@ Template มี `.claude/skills/` ที่ตรงงาน OEE มาก:
 4. สร้างหน้า Dashboard A/P/Q  
 5. ต่อ Daily report job + LINE/Email  
 
-ถ้าต้องการขั้นถัดไป: สร้าง repo scaffold จริงใน workspace นี้ หรือร่าง `oee_tools.py` + schema SQL เริ่มต้นให้พร้อมลงมือโค้ดได้เลย
+### สถานะใน repo นี้ (อัปเดตแล้ว)
+Scaffold จริงอยู่ที่ `oee_digital_platform/` พร้อม:
+- `backend/sql/oee_schema.sql` + `oee_seed_demo.sql`
+- `backend/app/services/oee_engine.py`
+- `backend/app/agents/tools/oee_tools.py` (wired ใน assistant)
+- `backend/app/api/routes/v1/oee.py`
+- Alembic `0028_create_oee_tables`
+- ดูรายละเอียดใน `oee_digital_platform/OEE_DOMAIN.md`
