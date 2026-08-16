@@ -1,0 +1,59 @@
+"""Database models."""
+
+# ruff: noqa: I001, RUF022 - Imports structured for Jinja2 template conditionals
+from app.db.models.user import User
+from app.db.models.session import Session
+from app.db.models.conversation import Conversation, Message, ToolCall
+from app.db.models.chat_file import ChatFile
+from app.db.models.message_rating import MessageRating
+from app.db.models.rag_document import RAGDocument
+from app.db.models.sync_log import SyncLog
+from app.db.models.sync_source import SyncSource
+from app.db.models.conversation_share import ConversationShare
+from app.db.models.organization import Invitation, Organization, OrganizationMember
+from app.db.models.audit_log import AppAdminAuditLog
+from app.db.models.knowledge_base import KnowledgeBase
+from app.db.models.user_slash_command import UserSlashCommand
+from app.db.models.oee import (
+    OeeDefectRecord,
+    OeeDowntimeEvent,
+    OeeImprovementAction,
+    OeeLine,
+    OeeMachine,
+    OeePlant,
+    OeeProductionRecord,
+    OeeResult,
+    OeeShift,
+)
+from app.db.models.oee_kg import OeeKgEdge, OeeKgNode
+
+__all__ = [
+    "User",
+    "Session",
+    "Conversation",
+    "Message",
+    "ToolCall",
+    "ChatFile",
+    "MessageRating",
+    "RAGDocument",
+    "SyncLog",
+    "SyncSource",
+    "ConversationShare",
+    "Organization",
+    "OrganizationMember",
+    "Invitation",
+    "AppAdminAuditLog",
+    "KnowledgeBase",
+    "UserSlashCommand",
+    "OeePlant",
+    "OeeLine",
+    "OeeMachine",
+    "OeeShift",
+    "OeeProductionRecord",
+    "OeeDowntimeEvent",
+    "OeeDefectRecord",
+    "OeeResult",
+    "OeeImprovementAction",
+    "OeeKgNode",
+    "OeeKgEdge",
+]
