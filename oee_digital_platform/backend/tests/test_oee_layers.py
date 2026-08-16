@@ -110,6 +110,21 @@ async def test_graph_diagnose_fans_out_and_recommends():
         ranking=await _const(
             {"items": [{"machine_code": "Filler-01", "breakdown_minutes": 45, "event_count": 1}]}
         ),
+        knowledge_graph=await _const(
+            {
+                "nodes": [{"key": "reason:BRK-NOZ", "kind": "reason", "code": "BRK-NOZ", "degree": 2}],
+                "edges": [
+                    {
+                        "source": "machine:Filler-01",
+                        "target": "reason:BRK-NOZ",
+                        "source_ref": "evt-1",
+                        "source_type": "event",
+                    }
+                ],
+                "hubs": [{"key": "reason:BRK-NOZ", "degree": 2}],
+                "yokoten_candidates": [{"key": "machine:Labeler-01", "kind": "machine", "code": "Labeler-01"}],
+            }
+        ),
     )
     result = await run_workflow("ทำไม OEE PACK-2 ตก", tools=belt)
     assert result.workflow == WorkflowName.DIAGNOSE
@@ -121,6 +136,8 @@ async def test_graph_diagnose_fans_out_and_recommends():
     assert "approval" in kinds
     assert result.recommendation["machine_focus"] == "Filler-01"
     assert "BRK-NOZ" in result.recommendation["first_action"]
+    assert result.recommendation["yokoten_candidates"][0]["code"] == "Labeler-01"
+    assert "knowledge_graph" in result.response
 
 
 @pytest.mark.anyio

@@ -25,6 +25,7 @@ from app.db.models.oee import (
     OeeResult,
     OeeShift,
 )
+from app.db.models.oee_kg import OeeKgEdge, OeeKgNode
 
 __all__ = [
     "User",
@@ -53,4 +54,6 @@ __all__ = [
     "OeeDefectRecord",
     "OeeResult",
     "OeeImprovementAction",
+    "OeeKgNode",
+    "OeeKgEdge",
 ]

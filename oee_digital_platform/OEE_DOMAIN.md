@@ -13,6 +13,8 @@ Scaffold generated with `fastapi-fullstack` (PydanticAI + Next.js + pgvector + C
 | `backend/app/services/oee_engine.py` | A/P/Q/OEE math + queries |
 | `backend/app/agents/tools/oee_tools.py` | Agent tools |
 | `backend/app/oee_layers/` | Harness + Loop + Graph |
+| `backend/app/services/oee_knowledge_graph.py` | Concept + operational graph, hop search |
+| `backend/app/db/models/oee_kg.py` | `oee_kg_nodes` / `oee_kg_edges` |
 | `backend/app/api/routes/v1/oee.py` | REST API for dashboard + workflows |
 | `backend/tests/test_oee_engine.py` | Engine unit tests |
 | `backend/tests/test_oee_layers.py` | Layer unit tests |
@@ -46,6 +48,9 @@ docker compose -f docker-compose.dev.yml exec -T db \
 - `GET /api/v1/oee/downtime/top?line_code=PACK-2&limit=3`
 - `GET /api/v1/oee/machines/ranking?line_code=PACK-2`
 - `GET /api/v1/oee/estimate-target?line_code=PACK-2&target_oee_pct=85`
+- `GET /api/v1/oee/knowledge-graph/search?q=BRK-NOZ`
+- `POST /api/v1/oee/knowledge-graph/rebuild`
+- `POST /api/v1/oee/knowledge-graph/chunks` — ingest SOP concepts (proximity + relations)
 
 ## Agent tools
 

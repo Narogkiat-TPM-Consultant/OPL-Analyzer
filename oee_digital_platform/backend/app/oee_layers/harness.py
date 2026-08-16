@@ -15,6 +15,7 @@ from app.agents.tools.oee_tools import (
     get_oee_summary,
     get_top_downtime,
     rank_machines,
+    search_knowledge_graph,
     validate_cited_minutes,
 )
 from app.oee_layers.types import HarnessResult, OeeScope, VerificationResult
@@ -32,11 +33,13 @@ class OeeToolBelt:
         downtime: ToolFn | None = None,
         ranking: ToolFn | None = None,
         estimate: ToolFn | None = None,
+        knowledge_graph: ToolFn | None = None,
     ) -> None:
         self.summary = summary or get_oee_summary
         self.downtime = downtime or get_top_downtime
         self.ranking = ranking or rank_machines
         self.estimate = estimate or estimate_output_for_target
+        self.knowledge_graph = knowledge_graph or search_knowledge_graph
 
 
 LINE_RE = re.compile(r"\b([A-Z]{2,}[-_]\d+)\b")
@@ -56,6 +59,7 @@ def gather_scope(question: str, seed: OeeScope | None = None) -> OeeScope:
         scope.period_end = seed.period_end
         scope.planned_time_min = seed.planned_time_min
         scope.target_oee_pct = seed.target_oee_pct
+        scope.concept = seed.concept
         scope.alert_threshold_pct = seed.alert_threshold_pct
         scope.target_threshold_pct = seed.target_threshold_pct
 
@@ -161,6 +165,32 @@ def verify_ranking(payload: dict[str, Any]) -> VerificationResult:
     return VerificationResult(ok=ok, checks=checks, repair_hint=None if ok else "Retry ranking.")
 
 
+def verify_knowledge_graph(payload: dict[str, Any]) -> VerificationResult:
+    if payload.get("error") and "Need a concept" in str(payload.get("error")):
+        return VerificationResult(
+            ok=False,
+            checks=[_check("query_present", False, str(payload["error"]))],
+            repair_hint="Pass a downtime code, machine code, or line code.",
+        )
+    nodes = payload.get("nodes")
+    edges = payload.get("edges")
+    checks = [
+        _check("nodes_list", isinstance(nodes, list), f"type={type(nodes).__name__}"),
+        _check("edges_list", isinstance(edges, list), f"type={type(edges).__name__}"),
+    ]
+    if isinstance(nodes, list) and nodes:
+        checks.append(_check("node_keys", all(isinstance(n, dict) and n.get("key") for n in nodes), "each node needs key"))
+    if isinstance(edges, list) and edges:
+        sourced = all(isinstance(e, dict) and (e.get("source_ref") or e.get("source_type")) for e in edges)
+        checks.append(_check("edge_provenance", sourced, "edges must cite source_ref or source_type"))
+    ok = all(c["ok"] for c in checks)
+    return VerificationResult(
+        ok=ok,
+        checks=checks,
+        repair_hint=None if ok else "Rebuild the operational graph from OEE events, then search again.",
+    )
+
+
 def verify_estimate(payload: dict[str, Any]) -> VerificationResult:
     if payload.get("error"):
         return VerificationResult(
@@ -183,6 +213,7 @@ _VERIFIERS = {
     "downtime": verify_downtime,
     "ranking": verify_ranking,
     "estimate": verify_estimate,
+    "knowledge_graph": verify_knowledge_graph,
 }
 
 
@@ -218,6 +249,15 @@ async def run_harness(
         target = scope.target_oee_pct or scope.target_threshold_pct
         payload = await belt.estimate(target_oee_pct=target, **kwargs)
         tool_name = "estimate_output_for_target"
+    elif action == "knowledge_graph":
+        concept = scope.concept or scope.machine_code or scope.line_code or scope.question
+        payload = await belt.knowledge_graph(
+            concept=concept,
+            plant_code=scope.plant_code,
+            line_code=scope.line_code,
+            machine_code=scope.machine_code,
+        )
+        tool_name = "search_knowledge_graph"
     else:
         payload = {"error": f"Unknown harness action: {action}"}
         tool_name = None

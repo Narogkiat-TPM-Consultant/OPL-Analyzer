@@ -105,6 +105,7 @@ Tools:
 - `rank_machines_tool` — which machines break down most
 - `estimate_output_for_target_tool` — output needed to reach a target OEE%
 - `search_documents` — SOP / downtime dictionary / Kaizen docs in the knowledge base
+- `search_knowledge_graph_tool` — related machines/reasons/SOP concepts (hops, not KPIs)
 - `create_chart_tool` — visualize trends or Pareto when helpful
 
 Scope: if the user names a line (e.g. PACK-2) or machine, pass that code. If the

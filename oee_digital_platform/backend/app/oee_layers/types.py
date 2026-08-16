@@ -35,6 +35,7 @@ class OeeScope:
     period_end: str | None = None
     planned_time_min: float | None = None
     target_oee_pct: float | None = None
+    concept: str | None = None
     alert_threshold_pct: float = 60.0
     target_threshold_pct: float = 85.0
 
@@ -46,6 +47,7 @@ class OeeScope:
             "period_start": self.period_start,
             "period_end": self.period_end,
             "planned_time_min": self.planned_time_min,
+            "concept": self.concept,
         }
         return {k: v for k, v in payload.items() if v is not None}
 

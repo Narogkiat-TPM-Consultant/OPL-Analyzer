@@ -30,6 +30,7 @@ from app.agents.tools.oee_tools import (
     get_top_downtime,
     rank_machines,
     run_oee_workflow,
+    search_knowledge_graph,
 )
 from app.agents.tools.rag_tool import search_knowledge_base
 from app.agents.utils import get_current_datetime
@@ -322,6 +323,27 @@ class AssistantAgent:
                 planned_time_min=planned_time_min,
                 target_oee_pct=target_oee_pct,
                 workflow=workflow,
+            )
+
+        @agent.tool_plain
+        async def search_knowledge_graph_tool(
+            concept: str | None = None,
+            plant_code: str | None = None,
+            line_code: str | None = None,
+            machine_code: str | None = None,
+            hops: int = 2,
+        ) -> dict:
+            """Walk the OEE knowledge graph from a reason, machine, or symptom.
+
+            Use for related machines, SOP concepts, and yokoten candidates.
+            Do not treat graph hops as OEE percentages or proven root cause.
+            """
+            return await search_knowledge_graph(
+                concept=concept,
+                plant_code=plant_code,
+                line_code=line_code,
+                machine_code=machine_code,
+                hops=hops,
             )
 
     @staticmethod

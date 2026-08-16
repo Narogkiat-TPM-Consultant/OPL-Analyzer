@@ -12,6 +12,7 @@ from app.agents.tools.oee_tools import (
     get_top_downtime,
     rank_machines,
     run_oee_workflow,
+    search_knowledge_graph,
     validate_cited_minutes,
 )
 
@@ -24,5 +25,6 @@ __all__ += [
     "rank_machines",
     "estimate_output_for_target",
     "run_oee_workflow",
+    "search_knowledge_graph",
     "validate_cited_minutes",
 ]

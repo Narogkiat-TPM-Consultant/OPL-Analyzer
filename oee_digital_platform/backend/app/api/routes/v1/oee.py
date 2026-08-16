@@ -18,6 +18,11 @@ from app.services.oee_engine import (
     summarize_oee,
     top_downtime,
 )
+from app.services.oee_knowledge_graph import (
+    ingest_chunk_to_db,
+    rebuild_operational_graph,
+    search_graph,
+)
 
 router = APIRouter(prefix="/oee", tags=["oee"])
 
@@ -163,3 +168,37 @@ async def oee_run_workflow(body: WorkflowRunRequest) -> dict[str, Any]:
     )
     result = await run_workflow(body.question, seed=seed, workflow=body.workflow)
     return result.as_dict()
+
+
+@router.get("/knowledge-graph/search")
+async def oee_kg_search(
+    db: DBSession,
+    q: str = Query(..., min_length=1, max_length=128),
+    hops: int = Query(default=2, ge=1, le=4),
+) -> dict[str, Any]:
+    return await search_graph(db, q, hops=hops)
+
+
+@router.post("/knowledge-graph/rebuild")
+async def oee_kg_rebuild(db: DBSession) -> dict[str, Any]:
+    graph = await rebuild_operational_graph(db)
+    return {"ok": True, **graph.as_stats()}
+
+
+class KgChunkIn(BaseModel):
+    chunk_id: str = Field(..., min_length=1, max_length=128)
+    concepts: list[str] = Field(..., min_length=1)
+    relations: list[tuple[str, str, str]] = Field(default_factory=list)
+    source: str = "sop"
+
+
+@router.post("/knowledge-graph/chunks")
+async def oee_kg_ingest_chunk(db: DBSession, body: KgChunkIn) -> dict[str, Any]:
+    stats = await ingest_chunk_to_db(
+        db,
+        body.chunk_id,
+        body.concepts,
+        explicit_relations=body.relations,
+        source=body.source,
+    )
+    return {"ok": True, **stats}

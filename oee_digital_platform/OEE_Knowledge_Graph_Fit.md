@@ -152,7 +152,15 @@ Dispatcher ค่อยเลือก skill `quality_loss` + `search_sop`
 
 ---
 
-## 7) ลำดับลงมือ (ไม่ต้อง fork ทั้ง repo)
+## 7) สิ่งที่ลงใน repo แล้ว
+
+- `app/services/oee_knowledge_graph.py` — ingest chunk (W1/W2), operational build, hop search, degree, community
+- Alembic `0029_create_oee_kg_tables` + `sql/oee_kg_schema.sql`
+- Tool `search_knowledge_graph` + diagnose workflow ดึงเพื่อนบ้านของ top downtime
+- API search / rebuild / ingest chunks
+- เทสใน `tests/test_oee_knowledge_graph.py`
+
+## 8) ลำดับลงมือต่อ (ไม่ต้อง fork ทั้ง repo)
 
 1. **เฟสความรู้:** รันแนว `extract_graph` กับชุด SOP/OPL ของ 1 ไลน์ → เก็บ nodes/edges ใน Postgres  
 2. **Tool:** `search_knowledge_graph` + รวมผลกับ `search_documents` (hybrid)  

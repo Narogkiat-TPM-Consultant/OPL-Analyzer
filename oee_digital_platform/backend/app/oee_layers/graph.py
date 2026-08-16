@@ -207,9 +207,31 @@ async def _graph_diagnose(scope: OeeScope, belt: OeeToolBelt) -> GraphResult:
     summary = summary_loop.memory.get("summary") or {}
     downtime = (downtime_loop.memory.get("downtime") if downtime_loop else None) or {}
     ranking = (ranking_loop.memory.get("ranking") if ranking_loop else None) or {}
+    top_reason = ((downtime.get("items") or [{}])[0] or {}).get("reason_code")
+    kg_scope = OeeScope(
+        question=scope.question,
+        plant_code=scope.plant_code,
+        line_code=scope.line_code,
+        machine_code=scope.machine_code,
+        concept=top_reason or scope.line_code or scope.machine_code,
+    )
+    path.append(GraphNode("knowledge_graph", "task", {"action": "knowledge_graph", "concept": kg_scope.concept}))
+    kg_loop = await run_loop(
+        goal="Related machines, reasons, and SOP concepts",
+        action="knowledge_graph",
+        scope=kg_scope,
+        tools=belt,
+    )
+    loops["knowledge_graph"] = kg_loop
+    kg_payload = kg_loop.memory.get("knowledge_graph") or {}
     recommendation = _recommend_from_diagnose(
         summary, downtime, ranking, alert_threshold=scope.alert_threshold_pct
     )
+    yokoten = kg_payload.get("yokoten_candidates") or []
+    if yokoten:
+        recommendation["yokoten_candidates"] = yokoten[:5]
+    if kg_payload.get("hubs"):
+        recommendation["related_hubs"] = kg_payload["hubs"][:3]
     needs_approval = oee is not None and oee < scope.alert_threshold_pct
     if needs_approval:
         path.append(GraphNode("approval", "approval", {"reason": "OEE below alert threshold"}))
@@ -227,6 +249,7 @@ async def _graph_diagnose(scope: OeeScope, belt: OeeToolBelt) -> GraphResult:
             "summary": summary,
             "downtime": downtime,
             "ranking": ranking,
+            "knowledge_graph": kg_payload,
         },
     )
 

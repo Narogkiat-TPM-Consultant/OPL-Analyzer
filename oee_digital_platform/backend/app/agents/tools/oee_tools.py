@@ -178,6 +178,27 @@ async def estimate_output_for_target(
     return result
 
 
+async def search_knowledge_graph(
+    concept: str | None = None,
+    plant_code: str | None = None,
+    line_code: str | None = None,
+    machine_code: str | None = None,
+    hops: int = 2,
+) -> dict[str, Any]:
+    """Search the OEE knowledge graph (related machines, reasons, SOP concepts).
+
+    Use after you know a downtime code, machine, or symptom. Walks neighboring
+    nodes instead of keyword-only search. Does not return OEE percentages.
+    """
+    from app.services.oee_knowledge_graph import search_graph
+
+    query = concept or machine_code or line_code or plant_code
+    if not query:
+        return {"error": "Need a concept, machine_code, or line_code", "nodes": [], "edges": []}
+    async with get_db_context() as session:
+        return await search_graph(session, query, hops=max(1, min(hops, 4)))
+
+
 async def run_oee_workflow(
     question: str,
     plant_code: str | None = None,
