@@ -450,7 +450,7 @@ from app.core.config import settings
 from app.services.rag.embeddings import EmbeddingService
 from app.services.rag.ingestion import IngestionService
 from app.services.rag.documents import DocumentProcessor
-from app.services.rag.retrieval import RetrievalService
+from app.services.rag.retrieval import RetrievalService, make_retrieval_service
 from app.services.rag.vectorstore import PgVectorStore
 from app.services.rag.vectorstore import BaseVectorStore
 
@@ -476,8 +476,8 @@ VectorStoreSvc = Annotated[BaseVectorStore, Depends(get_vectorstore)]
 
 
 def get_retrieval_service(vector_store: VectorStoreSvc) -> RetrievalService:
-    """Create RetrievalService instance."""
-    return RetrievalService(vector_store=vector_store, settings=settings.rag)
+    """Create RetrievalService instance with Hybrid + lexical reranker."""
+    return make_retrieval_service(vector_store, settings.rag)
 
 
 RetrievalSvc = Annotated[RetrievalService, Depends(get_retrieval_service)]

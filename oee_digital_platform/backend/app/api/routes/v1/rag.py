@@ -54,6 +54,7 @@ from app.schemas.sync_source import (
     SyncSourceUpdate,
 )
 from app.services.rag.config import get_supported_formats
+from app.services.rag.query_rewrite import rewrite_oee_query
 
 router = APIRouter()
 
@@ -155,31 +156,42 @@ async def search_documents(
     request: RAGSearchRequest,
     retrieval_service: RetrievalSvc,
     _: CurrentUser,
-    use_reranker: bool = Query(False, description="Whether to use reranking (if configured)"),
+    use_reranker: bool = Query(True, description="Apply OEE lexical rerank after Hybrid"),
+    use_hybrid: bool = Query(True, description="Fuse vector + BM25 (RRF)"),
+    rewrite_query: bool = Query(True, description="Expand OEE synonyms before retrieval"),
 ) -> Any:
     """Search for relevant document chunks. Supports multi-collection search."""
+    rewritten = rewrite_oee_query(request.query) if rewrite_query else None
+    query = rewritten.rewritten if rewritten else request.query
     if request.collection_names and len(request.collection_names) > 1:
         results = await retrieval_service.retrieve_multi(
-            query=request.query,
+            query=query,
             collection_names=request.collection_names,
             limit=request.limit,
             min_score=request.min_score,
             use_reranker=use_reranker,
+            use_hybrid=use_hybrid,
         )
     else:
         collection = (
             request.collection_names[0] if request.collection_names else request.collection_name
         )
         results = await retrieval_service.retrieve(
-            query=request.query,
+            query=query,
             collection_name=collection,
             limit=request.limit,
             min_score=request.min_score,
             filter=request.filter or "",
             use_reranker=use_reranker,
+            use_hybrid=use_hybrid,
         )
     api_results = [RAGSearchResult(**hit.model_dump()) for hit in results]
-    return RAGSearchResponse(results=api_results)
+    return RAGSearchResponse(
+        results=api_results,
+        rewritten_query=rewritten.rewritten if rewritten else request.query,
+        expansions=list(rewritten.expansions) if rewritten else [],
+        retrieval="hybrid+rerank" if use_hybrid and use_reranker else None,
+    )
 
 
 @router.delete(

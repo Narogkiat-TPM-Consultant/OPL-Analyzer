@@ -156,7 +156,9 @@ class Settings(BaseSettings):
     RAG_DEFAULT_COLLECTION: str = "documents"
     RAG_TOP_K: int = 10
     RAG_CHUNKING_STRATEGY: str = "recursive"  # recursive, markdown, or fixed
-    RAG_HYBRID_SEARCH: bool = False  # Enable BM25 + vector hybrid search
+    RAG_HYBRID_SEARCH: bool = True  # BM25 + vector hybrid search (OEE default)
+    RAG_RERANKER_PROVIDER: str = "oee_lexical"  # oee_lexical | none
+    RAG_RERANKER_MODEL: str = "oee-lexical-v1"
     RAG_ENABLE_OCR: bool = False  # OCR fallback for scanned PDFs (requires tesseract)
 
     EMAIL_PROVIDER: str = "log"
@@ -197,6 +199,10 @@ class Settings(BaseSettings):
             chunking_strategy=self.RAG_CHUNKING_STRATEGY,
             enable_hybrid_search=self.RAG_HYBRID_SEARCH,
             enable_ocr=self.RAG_ENABLE_OCR,
+            reranker_config=RerankerConfig(
+                provider=self.RAG_RERANKER_PROVIDER,
+                model=self.RAG_RERANKER_MODEL,
+            ),
             embeddings_config=EmbeddingsConfig(model=self.EMBEDDING_MODEL),
             document_parser=DocumentParser(),
             pdf_parser=pdf_parser,
@@ -204,7 +210,13 @@ class Settings(BaseSettings):
 
 
 # Rebuild Settings to resolve RAGSettings forward reference
-from app.services.rag.config import DocumentParser, EmbeddingsConfig, PdfParser, RAGSettings
+from app.services.rag.config import (
+    DocumentParser,
+    EmbeddingsConfig,
+    PdfParser,
+    RAGSettings,
+    RerankerConfig,
+)
 
 Settings.model_rebuild()
 

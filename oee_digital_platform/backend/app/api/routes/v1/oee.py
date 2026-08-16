@@ -23,6 +23,7 @@ from app.services.oee_knowledge_graph import (
     rebuild_operational_graph,
     search_graph,
 )
+from app.services.oee_realtime import build_current_shift_snapshot
 
 router = APIRouter(prefix="/oee", tags=["oee"])
 
@@ -35,6 +36,24 @@ def _period(period_start: datetime | None, period_end: datetime | None) -> tuple
     if end.tzinfo is None:
         end = end.replace(tzinfo=UTC)
     return start, end
+
+
+@router.get("/realtime/snapshot")
+async def oee_realtime_snapshot(
+    db: DBSession,
+    plant_code: str | None = None,
+    line_code: str | None = None,
+    machine_code: str | None = None,
+    limit: int = Query(default=5, ge=1, le=20),
+) -> dict[str, Any]:
+    """Current-shift OEE + downtime + ranking. Numbers come from oee_engine."""
+    return await build_current_shift_snapshot(
+        db,
+        plant_code=plant_code,
+        line_code=line_code,
+        machine_code=machine_code,
+        limit=limit,
+    )
 
 
 @router.get("/summary")

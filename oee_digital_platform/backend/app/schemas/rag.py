@@ -35,6 +35,9 @@ class RAGSearchResponse(BaseSchema):
     """List of results found in the vector store."""
 
     results: list[RAGSearchResult]
+    rewritten_query: str | None = None
+    expansions: list[str] = Field(default_factory=list)
+    retrieval: str | None = None
 
 
 class RAGCollectionInfo(BaseSchema):

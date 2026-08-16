@@ -12,6 +12,7 @@ from typing import Any
 
 from app.agents.tools.oee_tools import (
     estimate_output_for_target,
+    get_current_shift_snapshot,
     get_oee_summary,
     get_top_downtime,
     rank_machines,
@@ -34,18 +35,24 @@ class OeeToolBelt:
         ranking: ToolFn | None = None,
         estimate: ToolFn | None = None,
         knowledge_graph: ToolFn | None = None,
+        snapshot: ToolFn | None = None,
     ) -> None:
         self.summary = summary or get_oee_summary
         self.downtime = downtime or get_top_downtime
         self.ranking = ranking or rank_machines
         self.estimate = estimate or estimate_output_for_target
         self.knowledge_graph = knowledge_graph or search_knowledge_graph
+        self.snapshot = snapshot or get_current_shift_snapshot
 
 
 LINE_RE = re.compile(r"\b([A-Z]{2,}[-_]\d+)\b")
 PLANT_RE = re.compile(r"\b(PLT\d+)\b", re.IGNORECASE)
 MACHINE_RE = re.compile(r"\b((?:Filler|Labeler|Packer|Mixer)[-_]?\d+)\b", re.IGNORECASE)
 TARGET_RE = re.compile(r"\b(\d{2,3})\s*%")
+LIVE_RE = re.compile(
+    r"กะนี้|กะปัจจุบัน|ตอนนี้|ขณะนี้|current\s+shift|right\s+now|\bnow\b|วันนี้|today",
+    re.IGNORECASE,
+)
 
 
 def gather_scope(question: str, seed: OeeScope | None = None) -> OeeScope:
@@ -60,6 +67,7 @@ def gather_scope(question: str, seed: OeeScope | None = None) -> OeeScope:
         scope.planned_time_min = seed.planned_time_min
         scope.target_oee_pct = seed.target_oee_pct
         scope.concept = seed.concept
+        scope.use_current_shift = seed.use_current_shift
         scope.alert_threshold_pct = seed.alert_threshold_pct
         scope.target_threshold_pct = seed.target_threshold_pct
 
@@ -81,6 +89,8 @@ def gather_scope(question: str, seed: OeeScope | None = None) -> OeeScope:
             value = float(match.group(1))
             if 1 <= value <= 100:
                 scope.target_oee_pct = value
+    if not scope.use_current_shift and LIVE_RE.search(question or ""):
+        scope.use_current_shift = True
     return scope
 
 
@@ -191,6 +201,31 @@ def verify_knowledge_graph(payload: dict[str, Any]) -> VerificationResult:
     )
 
 
+def verify_snapshot(payload: dict[str, Any]) -> VerificationResult:
+    if payload.get("error"):
+        return VerificationResult(
+            ok=False,
+            checks=[_check("no_error", False, str(payload["error"]))],
+            repair_hint="Retry the current-shift snapshot with a valid plant/line scope.",
+        )
+    checks = [
+        _check("source_engine", payload.get("source") == "oee_engine", "KPIs must come from oee_engine"),
+        _check("shift_present", isinstance(payload.get("shift"), dict), "shift window required"),
+    ]
+    summary_v = verify_oee_summary(payload.get("summary") or {})
+    checks.extend(summary_v.checks)
+    downtime_v = verify_downtime(payload.get("downtime") or {})
+    checks.extend(downtime_v.checks)
+    ranking_v = verify_ranking(payload.get("ranking") or {})
+    checks.extend(ranking_v.checks)
+    ok = all(c["ok"] for c in checks)
+    return VerificationResult(
+        ok=ok,
+        checks=checks,
+        repair_hint=None if ok else "Re-run get_current_shift_snapshot; do not invent live KPIs.",
+    )
+
+
 def verify_estimate(payload: dict[str, Any]) -> VerificationResult:
     if payload.get("error"):
         return VerificationResult(
@@ -214,6 +249,7 @@ _VERIFIERS = {
     "ranking": verify_ranking,
     "estimate": verify_estimate,
     "knowledge_graph": verify_knowledge_graph,
+    "snapshot": verify_snapshot,
 }
 
 
@@ -258,6 +294,13 @@ async def run_harness(
             machine_code=scope.machine_code,
         )
         tool_name = "search_knowledge_graph"
+    elif action == "snapshot":
+        payload = await belt.snapshot(
+            plant_code=scope.plant_code,
+            line_code=scope.line_code,
+            machine_code=scope.machine_code,
+        )
+        tool_name = "get_current_shift_snapshot"
     else:
         payload = {"error": f"Unknown harness action: {action}"}
         tool_name = None

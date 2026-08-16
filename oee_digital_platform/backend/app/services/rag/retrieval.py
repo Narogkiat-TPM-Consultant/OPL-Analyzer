@@ -130,8 +130,10 @@ class RetrievalService(BaseRetrievalService):
         min_score: float = 0.0,
         filter: str = "",
         use_reranker: bool = False,
+        use_hybrid: bool | None = None,
     ) -> list[SearchResult]:
         should_rerank = use_reranker and self._reranker_enabled
+        hybrid_enabled = self._hybrid_enabled if use_hybrid is None else use_hybrid
 
         # Fetch 3x when reranking: gives the reranker room to eliminate weak candidates
         fetch_multiplier = 3 if should_rerank else 2
@@ -161,7 +163,7 @@ class RetrievalService(BaseRetrievalService):
             len(pipeline_results),
         )
 
-        if self._hybrid_enabled:
+        if hybrid_enabled:
             bm25_results = await self._bm25_search(query, collection_name, limit * fetch_multiplier)
             if bm25_results:
                 pipeline_results = self._rrf_fuse(pipeline_results, bm25_results)
@@ -236,6 +238,7 @@ class RetrievalService(BaseRetrievalService):
         limit: int = 5,
         min_score: float = 0.0,
         use_reranker: bool = False,
+        use_hybrid: bool | None = None,
     ) -> list[SearchResult]:
         all_results: list[SearchResult] = []
         for name in collection_names:
@@ -246,6 +249,7 @@ class RetrievalService(BaseRetrievalService):
                     limit=limit,
                     min_score=min_score,
                     use_reranker=use_reranker,
+                    use_hybrid=use_hybrid,
                 )
                 # Tag results with collection name in metadata
                 for r in results:
@@ -292,3 +296,17 @@ class RetrievalService(BaseRetrievalService):
             filter=filter_expr,
             use_reranker=use_reranker,
         )
+
+
+def make_retrieval_service(
+    vector_store: BaseVectorStore,
+    settings: RAGSettings,
+) -> RetrievalService:
+    """Build Hybrid retrieval with the configured reranker attached."""
+    from app.services.rag.reranker import RerankService
+
+    return RetrievalService(
+        vector_store,
+        settings,
+        rerank_service=RerankService(settings),
+    )

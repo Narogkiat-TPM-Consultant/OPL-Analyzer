@@ -36,6 +36,7 @@ class OeeScope:
     planned_time_min: float | None = None
     target_oee_pct: float | None = None
     concept: str | None = None
+    use_current_shift: bool = False
     alert_threshold_pct: float = 60.0
     target_threshold_pct: float = 85.0
 

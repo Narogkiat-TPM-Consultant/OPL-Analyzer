@@ -7,7 +7,8 @@ from typing import TYPE_CHECKING, Any
 from app.core.config import settings
 from app.core.exceptions import ExternalServiceError
 from app.services.rag.embeddings import EmbeddingService
-from app.services.rag.retrieval import RetrievalService
+from app.services.rag.query_rewrite import rewrite_oee_query
+from app.services.rag.retrieval import make_retrieval_service
 from app.services.rag.vectorstore import PgVectorStore
 
 logger = logging.getLogger(__name__)
@@ -27,13 +28,18 @@ def get_retrieval_service() -> "BaseRetrievalService":
     rag_settings = settings.rag
     embedding_service = EmbeddingService(rag_settings)
     vector_store = PgVectorStore(rag_settings, embedding_service)
-    _retrieval_service = RetrievalService(vector_store, rag_settings)
+    _retrieval_service = make_retrieval_service(vector_store, rag_settings)
     return _retrieval_service
 
 
-def _format_results(results: list[Any]) -> str:
+def _format_results(results: list[Any], *, rewritten_query: str, original: str) -> str:
+    header = (
+        "Search results (cite inline using [1], [2], etc. — do NOT list sources at the end):\n"
+        f"Retrieval: hybrid (vector+BM25) + oee-lexical rerank\n"
+        f"Query rewrite: {original} -> {rewritten_query}\n"
+    )
     if not results:
-        return "No relevant documents found in the knowledge base."
+        return header + "\nNo relevant documents found in the knowledge base."
     formatted = []
     for i, result in enumerate(results, start=1):
         source = result.metadata.get("filename", "unknown")
@@ -47,10 +53,7 @@ def _format_results(results: list[Any]) -> str:
             f"[{i}] Source: {source}{page_info}{chunk_info}{col_info} (score: {result.score:.3f})\n"
             f"{result.content}"
         )
-    return (
-        "Search results (cite inline using [1], [2], etc. — do NOT list sources at the end):\n\n"
-        + "\n\n".join(formatted)
-    )
+    return header + "\n" + "\n\n".join(formatted)
 
 
 # ContextVar set by non-PydanticAI frameworks before each agent invocation so that
@@ -81,14 +84,19 @@ async def search_knowledge_base(
     if not resolved:
         return "No active knowledge bases selected for this conversation."
 
+    rewritten = rewrite_oee_query(query)
     service: Any = get_retrieval_service()
     try:
+        retrieve_kwargs = {
+            "query": rewritten.rewritten,
+            "limit": top_k,
+            "use_hybrid": True,
+            "use_reranker": True,
+        }
         if len(resolved) == 1:
-            results = await service.retrieve(query=query, collection_name=resolved[0], limit=top_k)
+            results = await service.retrieve(collection_name=resolved[0], **retrieve_kwargs)
         else:
-            results = await service.retrieve_multi(
-                query=query, collection_names=resolved, limit=top_k
-            )
+            results = await service.retrieve_multi(collection_names=resolved, **retrieve_kwargs)
     except Exception as e:
         logger.error("Knowledge base search failed: %s", e, exc_info=True)
         raise ExternalServiceError(
@@ -96,7 +104,11 @@ async def search_knowledge_base(
             details={"query": query, "error": str(e)},
         ) from e
 
-    return _format_results(results)
+    return _format_results(
+        results,
+        rewritten_query=rewritten.rewritten,
+        original=rewritten.original,
+    )
 
 
 __all__ = ["search_knowledge_base"]

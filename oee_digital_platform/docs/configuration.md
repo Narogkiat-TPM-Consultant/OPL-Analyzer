@@ -139,7 +139,9 @@ is needed.
 | `RAG_CHUNKING_STRATEGY` | `recursive` | Chunking strategy: `recursive`, `markdown`, `fixed` |
 | `RAG_DEFAULT_COLLECTION` | `documents` | Default collection for search (used by agent tool) |
 | `RAG_TOP_K` | `10` | Default number of results to return |
-| `RAG_HYBRID_SEARCH` | `false` | Enable BM25 + vector hybrid search |
+| `RAG_HYBRID_SEARCH` | `true` | Enable BM25 + vector hybrid search |
+| `RAG_RERANKER_PROVIDER` | `oee_lexical` | Reranker: `oee_lexical` (no API key) or `none` |
+| `RAG_RERANKER_MODEL` | `oee-lexical-v1` | Reranker model label |
 | `RAG_ENABLE_OCR` | `false` | OCR fallback for scanned PDFs (requires `tesseract-ocr`) |
 
 ### Document Parsing

@@ -94,22 +94,28 @@ async def run_workflow(
 
 
 async def _graph_status(scope: OeeScope, belt: OeeToolBelt) -> GraphResult:
-    path = [GraphNode("start", "start"), GraphNode("summary", "task", {"action": "summary"})]
-    summary_loop = await run_loop(
-        goal="Produce a verified OEE / A / P / Q snapshot",
-        action="summary",
+    live = scope.use_current_shift or not (scope.period_start and scope.period_end)
+    action = "snapshot" if live else "summary"
+    path = [GraphNode("start", "start"), GraphNode(action, "task", {"action": action})]
+    status_loop = await run_loop(
+        goal="Produce a verified current-shift OEE snapshot"
+        if live
+        else "Produce a verified OEE / A / P / Q snapshot",
+        action=action,
         scope=scope,
         tools=belt,
     )
-    path.append(GraphNode("merge", "merge", {"ok": summary_loop.ok}))
-    payload = summary_loop.memory.get("summary") or {}
+    path.append(GraphNode("merge", "merge", {"ok": status_loop.ok}))
+    raw = status_loop.memory.get(action) or {}
+    summary = raw.get("summary") if action == "snapshot" else raw
+    oee = (summary or {}).get("oee_pct") if isinstance(summary, dict) else None
     return GraphResult(
         workflow=WorkflowName.STATUS,
-        ok=summary_loop.ok,
+        ok=status_loop.ok,
         path=path,
-        loops={"summary": summary_loop},
-        recommendation={"title": "Review current OEE", "oee_pct": payload.get("oee_pct")},
-        response=payload,
+        loops={action: status_loop},
+        recommendation={"title": "Review current-shift OEE" if live else "Review current OEE", "oee_pct": oee},
+        response=raw,
     )
 
 

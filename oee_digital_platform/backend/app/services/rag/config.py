@@ -116,6 +116,13 @@ class PdfParser(BaseModel):
     method: str = "pymupdf"
 
 
+class RerankerConfig(BaseModel):
+    """Reranker provider. Default is local OEE lexical (no API key)."""
+
+    provider: str = "oee_lexical"  # oee_lexical | none
+    model: str = "oee-lexical-v1"
+
+
 class RAGSettings(BaseModel):
     """RAG pipeline configuration."""
 
@@ -128,8 +135,9 @@ class RAGSettings(BaseModel):
     chunk_size: int = 512
     chunk_overlap: int = 50
     chunking_strategy: str = "recursive"
-    enable_hybrid_search: bool = False
+    enable_hybrid_search: bool = True
     enable_ocr: bool = False
+    reranker_config: RerankerConfig = Field(default_factory=RerankerConfig)
 
     embeddings_config: EmbeddingsConfig = Field(default_factory=EmbeddingsConfig)
 

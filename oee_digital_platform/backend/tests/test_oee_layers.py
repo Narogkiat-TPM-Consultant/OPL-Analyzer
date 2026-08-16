@@ -161,3 +161,39 @@ def test_classify_workflow():
     assert classify_workflow("ต้องผลิตเท่าไรถึง 85%") == WorkflowName.TARGET
     assert classify_workflow("ส่งรายงาน daily OEE") == WorkflowName.ALERT_OR_REPORT
     assert classify_workflow("OEE ไลน์ PACK-2 เท่าไหร่") == WorkflowName.STATUS
+
+
+def test_gather_scope_marks_live_shift():
+    scope = gather_scope("OEE กะนี้ของ PACK-2 เท่าไหร่")
+    assert scope.line_code == "PACK-2"
+    assert scope.use_current_shift is True
+
+
+def _ok_snapshot():
+    return {
+        "source": "oee_engine",
+        "shift": {"code": "DAY", "timezone": "Asia/Bangkok", "is_in_progress": True},
+        "cache": {"hit": False, "ttl_sec": 30},
+        "summary": _ok_summary(oee_pct=71.76),
+        "downtime": {"total_minutes_in_top": 12, "items": [{"reason_code": "BRK-NOZ", "minutes": 12}]},
+        "ranking": {"items": [{"machine_code": "Filler-01", "breakdown_minutes": 12}]},
+    }
+
+
+@pytest.mark.anyio
+async def test_harness_snapshot_verifies_engine_payload():
+    belt = OeeToolBelt(snapshot=await _const(_ok_snapshot()))
+    result = await run_harness("snapshot", OeeScope(line_code="PACK-2", use_current_shift=True), tools=belt)
+    assert result.ok is True
+    assert result.tool_name == "get_current_shift_snapshot"
+
+
+@pytest.mark.anyio
+async def test_graph_status_uses_live_snapshot():
+    belt = OeeToolBelt(snapshot=await _const(_ok_snapshot()))
+    result = await run_workflow("OEE กะนี้ PACK-2 เท่าไหร่", tools=belt)
+    assert result.workflow == WorkflowName.STATUS
+    assert result.ok is True
+    assert result.path[1].id == "snapshot"
+    assert result.response["source"] == "oee_engine"
+    assert result.recommendation["oee_pct"] == 71.76

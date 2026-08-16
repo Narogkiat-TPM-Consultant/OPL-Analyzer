@@ -26,6 +26,7 @@ from app.agents.tools.ask_user_tool import MAX_QUESTIONS, QuestionItem, format_a
 from app.agents.tools.chart_tool import ChartType, create_chart
 from app.agents.tools.oee_tools import (
     estimate_output_for_target,
+    get_current_shift_snapshot,
     get_oee_summary,
     get_top_downtime,
     rank_machines,
@@ -222,7 +223,9 @@ class AssistantAgent:
             """Get OEE / Availability / Performance / Quality from plant data.
 
             Always call this (do not invent percentages) when the user asks about OEE,
-            A/P/Q, or why efficiency changed for a plant/line/machine.
+            A/P/Q, or why efficiency changed for a plant/line/machine. Omit period
+            timestamps to use the current plant shift. Prefer get_current_shift_snapshot
+            for now / กะนี้ / today.
             """
             return await get_oee_summary(
                 plant_code=plant_code,
@@ -293,6 +296,24 @@ class AssistantAgent:
                 period_start=period_start,
                 period_end=period_end,
                 planned_time_min=planned_time_min,
+            )
+
+        @agent.tool_plain
+        async def get_current_shift_snapshot_tool(
+            plant_code: str | None = None,
+            line_code: str | None = None,
+            machine_code: str | None = None,
+            limit: int = 5,
+        ) -> dict:
+            """Live current-shift snapshot: OEE + top downtime + machine ranking.
+
+            Use for now, today, กะนี้, ตอนนี้, or current shift. Do not invent KPIs.
+            """
+            return await get_current_shift_snapshot(
+                plant_code=plant_code,
+                line_code=line_code,
+                machine_code=machine_code,
+                limit=limit,
             )
 
         @agent.tool_plain
