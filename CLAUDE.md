@@ -52,4 +52,8 @@ Skills อยู่ที่ `.claude/skills/<name>/SKILL.md` — โหลด�
 ## Environment
 - Claude Code session เป็น container ชั่วคราว → **commit + push ทุกครั้งก่อนจบงาน**
 - Branch พัฒนา: ตามที่ระบุในแต่ละ task, ห้าม push ตรงเข้า `main`
-- `main02.py` เป็น scratch script วิเคราะห์ OEE (pandas) ไม่ใช่ส่วนหนึ่งของ pipeline
+- `main02.py` เป็น CLI วิเคราะห์ OEE จากชีต Loss Analysis (pandas) ไม่ใช่ส่วนหนึ่งของ pipeline
+  - หาแถวจาก **label** ในคอลัมน์แรก ไม่ผูก row index; หาไม่เจอ = หยุด + บอกว่าขาดอะไร (ไม่เดา)
+  - เพิ่ม label ที่ชีตจริงใช้ได้ที่ `METRIC_ALIASES`; override รายครั้งด้วย `--loading/--operating/--net/--quality-loss`
+  - สำรวจ label จริง: `python main02.py --csv <file> --list-rows`
+  - ไฟล์ CSV ต้นทางไม่ได้อยู่ใน repo (ข้อมูลโรงงาน)
