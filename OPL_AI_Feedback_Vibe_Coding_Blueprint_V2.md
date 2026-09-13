@@ -88,9 +88,9 @@ flowchart TB
 ```text
 Build a production-ready AI OPL Feedback web application using PHP 8+, MySQLi, Bootstrap 5, and Vanilla JS.
 Use the three agent contracts in:
-- agent1_opl_reader_skill.md -> output opl.extract.v2
-- agent2_criteria_evaluator_skill.md -> output opl.evaluation.v2
-- agent3_ai_refiner_skill.md -> output opl.feedback.v2
+- .claude/skills/agent1-opl-reader/SKILL.md -> output opl.extract.v2
+- .claude/skills/agent2-criteria-evaluator/SKILL.md -> output opl.evaluation.v2
+- .claude/skills/agent3-ai-refiner/SKILL.md -> output opl.feedback.v2
 
 Main workflow:
 1. User uploads OPL image/PDF.
