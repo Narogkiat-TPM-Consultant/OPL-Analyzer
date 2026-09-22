@@ -1,0 +1,5 @@
+# Runtime artifacts created by scripts/setup_environment.py and browser_session.py
+.venv/
+data/
+__pycache__/
+*.pyc
