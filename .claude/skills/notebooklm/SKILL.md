@@ -108,11 +108,12 @@ python scripts/run.py notebook_manager.py list
 # "What topics should I tag it with?"
 
 # Add notebook to library (ALL parameters are REQUIRED!)
+# --description and --topics are REQUIRED - ASK USER IF UNKNOWN!
 python scripts/run.py notebook_manager.py add \
   --url "https://notebooklm.google.com/notebook/..." \
   --name "Descriptive Name" \
-  --description "What this notebook contains" \  # REQUIRED - ASK USER IF UNKNOWN!
-  --topics "topic1,topic2,topic3"  # REQUIRED - ASK USER IF UNKNOWN!
+  --description "What this notebook contains" \
+  --topics "topic1,topic2,topic3"
 
 # Search notebooks by topic
 python scripts/run.py notebook_manager.py search --query "keyword"
@@ -255,8 +256,8 @@ Synthesize and respond to user
 | ModuleNotFoundError | Use `run.py` wrapper |
 | Authentication fails | Browser must be visible for setup! --show-browser |
 | Rate limit (50/day) | Wait or switch Google account |
-| Browser crashes | `python scripts/run.py cleanup_manager.py --preserve-library` |
-| Notebook not found | Check with `notebook_manager.py list` |
+| Browser crashes | `python scripts/run.py cleanup_manager.py --confirm --preserve-library` |
+| Notebook not found | Check with `python scripts/run.py notebook_manager.py list` |
 
 ## Best Practices
 

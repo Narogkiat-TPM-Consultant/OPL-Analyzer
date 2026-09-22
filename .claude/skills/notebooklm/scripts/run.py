@@ -23,18 +23,44 @@ def get_venv_python():
     return venv_python
 
 
+def venv_is_ready():
+    """Check that the venv can actually run the skill.
+
+    A setup that is interrupted after venv.create() but before pip install
+    leaves a .venv directory behind with no dependencies in it, so directory
+    existence alone would skip setup forever. Verify the interpreter runs and
+    the core dependency imports instead.
+    """
+    venv_python = get_venv_python()
+    if not venv_python.exists():
+        return False
+
+    try:
+        result = subprocess.run(
+            [str(venv_python), "-c", "import patchright"],
+            capture_output=True,
+            timeout=60
+        )
+    except (OSError, subprocess.SubprocessError):
+        return False
+
+    return result.returncode == 0
+
+
 def ensure_venv():
-    """Ensure virtual environment exists"""
+    """Ensure virtual environment exists and has its dependencies"""
     skill_dir = Path(__file__).parent.parent
     venv_dir = skill_dir / ".venv"
     setup_script = skill_dir / "scripts" / "setup_environment.py"
 
-    # Check if venv exists
-    if not venv_dir.exists():
-        print("🔧 First-time setup: Creating virtual environment...")
+    if not venv_is_ready():
+        if venv_dir.exists():
+            print("🔧 Virtual environment is incomplete: re-running setup...")
+        else:
+            print("🔧 First-time setup: Creating virtual environment...")
         print("   This may take a minute...")
 
-        # Run setup with system Python
+        # Run setup with system Python (setup_environment.py is idempotent)
         result = subprocess.run([sys.executable, str(setup_script)])
         if result.returncode != 0:
             print("❌ Failed to set up environment")
