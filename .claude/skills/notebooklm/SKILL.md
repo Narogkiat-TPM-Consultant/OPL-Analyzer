@@ -16,6 +16,25 @@ Trigger when user:
 - Wants to add documentation to NotebookLM library
 - Uses phrases like "ask my NotebookLM", "check my docs", "query my notebook"
 
+## ⚠️ CRITICAL: Working Directory
+
+Every `python scripts/run.py ...` command in this file is relative to **this skill's
+own directory**, not to the project you are working in. Run them from there, or they
+resolve against the project root and fail with "can't open file ... scripts/run.py".
+
+`cd` into the skill directory once, before the first command:
+
+```bash
+# Project-level install (this repo)
+cd .claude/skills/notebooklm
+
+# Global install
+cd ~/.claude/skills/notebooklm
+```
+
+Then run the commands below as written. The scripts locate their own `data/` and
+`.venv/` from `__file__`, so nothing else depends on where you started.
+
 ## ⚠️ CRITICAL: Add Command - Smart Discovery
 
 When user wants to add a notebook without providing details:

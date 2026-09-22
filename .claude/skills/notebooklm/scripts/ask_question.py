@@ -82,6 +82,7 @@ def ask_notebooklm(question: str, notebook_url: str, headless: bool = True) -> s
         # Wait for query input (MCP approach)
         print("  ⏳ Waiting for query input...")
         query_element = None
+        input_selector = None
 
         for selector in QUERY_INPUT_SELECTORS:
             try:
@@ -92,6 +93,7 @@ def ask_notebooklm(question: str, notebook_url: str, headless: bool = True) -> s
                 )
                 if query_element:
                     print(f"  ✓ Found input: {selector}")
+                    input_selector = selector
                     break
             except:
                 continue
@@ -103,8 +105,8 @@ def ask_notebooklm(question: str, notebook_url: str, headless: bool = True) -> s
         # Type question (human-like, fast)
         print("  ⏳ Typing question...")
         
-        # Use primary selector for typing
-        input_selector = QUERY_INPUT_SELECTORS[0]
+        # Type into the selector that actually matched, not the primary one:
+        # a fallback match with the primary absent would make human_type a no-op.
         StealthUtils.human_type(page, input_selector, question)
 
         # Submit
