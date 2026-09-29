@@ -36,8 +36,8 @@ class SkillEnvironment:
             print("✅ Already running in skill virtual environment")
             return True
 
-        # Create venv if it doesn't exist
-        if not self.venv_dir.exists():
+        # Repair an interrupted venv creation as well as a missing venv.
+        if not self.venv_python.is_file() or not self.venv_pip.is_file():
             print(f"🔧 Creating virtual environment in {self.venv_dir.name}/")
             try:
                 venv.create(self.venv_dir, with_pip=True)
