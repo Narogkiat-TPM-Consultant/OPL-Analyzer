@@ -31,10 +31,9 @@ class SkillEnvironment:
     def ensure_venv(self) -> bool:
         """Ensure virtual environment exists and is set up"""
 
-        # Check if we're already in the correct venv
-        if self.is_in_skill_venv():
-            print("✅ Already running in skill virtual environment")
-            return True
+        # An active skill venv does not prove its dependencies are current.
+        # Always complete installation when setup is requested so the runner
+        # can safely record the requirements hash after success.
 
         # Repair an interrupted venv creation as well as a missing venv.
         if not self.venv_python.is_file() or not self.venv_pip.is_file():

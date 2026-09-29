@@ -71,6 +71,72 @@ class RunnerSetupTests(unittest.TestCase):
                 runner.ensure_venv()
         self.assertFalse(self.marker.exists())
 
+    def run_activated_setup(self, marker_state, fail_install=False):
+        self.interpreter.parent.mkdir(parents=True, exist_ok=True)
+        self.interpreter.touch()
+        pip = self.interpreter.with_name("pip")
+        pip.touch()
+        requirements = self.skill / "requirements.txt"
+        requirements.write_text("package==2\n")
+        if marker_state == "changed_requirements":
+            self.marker.write_text(hashlib.sha256(b"package==1\n").hexdigest())
+        else:
+            self.marker.unlink(missing_ok=True)
+
+        setup_script = self.skill / "scripts" / "setup_environment.py"
+        commands = []
+
+        def execute(command, **kwargs):
+            commands.append(command)
+            # Run the actual setup entry point rather than faking its success.
+            # Only dependency/browser installation is mocked.
+            if command == [str(self.interpreter), str(setup_script)]:
+                with patch.object(sys, "argv", [str(setup_script)]):
+                    return subprocess.CompletedProcess(command, setup_module.main() or 0)
+            self.assertFalse(self.marker.exists(), "Marker must wait for installation")
+            if fail_install and command == [str(pip), "install", "-r", str(requirements)]:
+                raise subprocess.CalledProcessError(1, command)
+            return subprocess.CompletedProcess(command, 0)
+
+        with (
+            patch.object(setup_module, "__file__", str(setup_script)),
+            patch.object(sys, "executable", str(self.interpreter)),
+            patch.object(sys, "prefix", str(self.skill / ".venv")),
+            patch.object(sys, "base_prefix", str(self.skill / "base-python")),
+            patch.object(runner.subprocess, "run", side_effect=execute),
+            patch.object(setup_module.venv, "create") as create,
+        ):
+            self.assertTrue(setup_module.SkillEnvironment().is_in_skill_venv())
+            if fail_install:
+                with self.assertRaises(SystemExit) as failure:
+                    runner.ensure_venv()
+                self.assertEqual(failure.exception.code, 1)
+                self.assertFalse(self.marker.exists())
+                fail_install = False
+                commands.clear()
+            self.assertEqual(runner.ensure_venv(), self.interpreter)
+            self.assertEqual(commands, [
+                [str(self.interpreter), str(setup_script)],
+                [str(pip), "install", "--upgrade", "pip"],
+                [str(pip), "install", "-r", str(requirements)],
+                [str(self.interpreter), "-m", "patchright", "install", "chrome"],
+            ])
+            self.assertEqual(self.marker.read_text(), hashlib.sha256(requirements.read_bytes()).hexdigest())
+            commands.clear()
+            self.assertEqual(runner.ensure_venv(), self.interpreter)
+            self.assertEqual(commands, [])
+            create.assert_not_called()
+
+    def test_manual_activation_installs_before_recording_completion(self):
+        for marker_state in ("changed_requirements", "missing_marker"):
+            with self.subTest(marker_state=marker_state):
+                self.run_activated_setup(marker_state)
+
+    def test_manual_activation_failed_install_has_no_marker_and_retries(self):
+        for marker_state in ("changed_requirements", "missing_marker"):
+            with self.subTest(marker_state=marker_state):
+                self.run_activated_setup(marker_state, fail_install=True)
+
 
 class RecoveryDocumentationTests(unittest.TestCase):
     def test_manual_add_shell_continuation_passes_topics(self):
