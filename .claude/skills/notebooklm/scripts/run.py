@@ -7,6 +7,7 @@ Ensures all scripts run with the correct virtual environment
 import os
 import sys
 import subprocess
+import hashlib
 from pathlib import Path
 
 
@@ -24,25 +25,30 @@ def get_venv_python():
 
 
 def ensure_venv():
-    """Ensure virtual environment exists"""
+    """Set up an absent or incomplete virtual environment."""
     skill_dir = Path(__file__).parent.parent
-    venv_dir = skill_dir / ".venv"
     setup_script = skill_dir / "scripts" / "setup_environment.py"
+    venv_python = get_venv_python()
+    marker = skill_dir / ".venv" / ".setup-complete"
+    requirements = skill_dir / "requirements.txt"
+    requirements_hash = hashlib.sha256(requirements.read_bytes()).hexdigest()
 
-    # Check if venv exists
-    if not venv_dir.exists():
-        print("🔧 First-time setup: Creating virtual environment...")
+    if not venv_python.is_file() or not marker.is_file() or marker.read_text() != requirements_hash:
+        print("🔧 Setting up virtual environment...")
         print("   This may take a minute...")
 
-        # Run setup with system Python
+        # Remove any previous success marker before a retry, including when the
+        # interpreter has disappeared but requirements have not changed.
+        marker.unlink(missing_ok=True)
         result = subprocess.run([sys.executable, str(setup_script)])
-        if result.returncode != 0:
+        if result.returncode != 0 or not venv_python.is_file():
             print("❌ Failed to set up environment")
             sys.exit(1)
 
+        marker.write_text(requirements_hash)
         print("✅ Environment ready!")
 
-    return get_venv_python()
+    return venv_python
 
 
 def main():
