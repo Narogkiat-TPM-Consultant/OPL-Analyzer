@@ -97,7 +97,7 @@ for (let i = 0; i < 16; i++) {
 
 // ---- ③ oil viscosity: the oil turns darker (thicker)
 show(B3, TT.g3);
-tl.to([S.oil, S.glass], { attr: { fill: "#d99a14" }, duration: 0.8 }, b + TT.visc);
+tl.to([S.oil, S.glass], { fill: "#d99a14", duration: 0.8 }, b + TT.visc);
 
 // ---- ④ pump + coupling: coupling wobbles, RPM marker spins fast, shaft seal ring
 show(B4, TT.g4);
@@ -105,9 +105,14 @@ H.fnTo(S.cpl, "rotation", (t) => 6 * H.env(t, b + TT.cpl, b + D - 0.2, 0.3) * Ma
 const rpm = H.el("g", { id: "s4-v-rpm", opacity: 0 }, hl);
 const spin = H.el("g", {}, rpm);
 for (const [col, w] of [["#ffffff", 10], [PC.ink, 5]]) {
-  H.el("path", { d: H.arcD(612, 300, 24, -60, 220), fill: "none", stroke: col, "stroke-width": w, "stroke-linecap": "round" }, spin);
+  H.el("path", { d: H.arcD(612, 300, 24, -60, 215), fill: "none", stroke: col, "stroke-width": w, "stroke-linecap": "round" }, spin);
 }
-H.el("path", { d: "M 612 266 L 630 276 L 614 286 Z", fill: PC.ink }, spin);
+{
+  const pt = (a) => [612 + 24 * Math.cos((a * Math.PI) / 180), 300 + 24 * Math.sin((a * Math.PI) / 180)];
+  const [x0, y0] = pt(200), [x1, y1] = pt(222);
+  for (const [col, w] of [["#ffffff", 10], [PC.ink, 5]])
+    H.el("path", { d: H.arrowD(x0, y0, x1, y1, 13), fill: "none", stroke: col, "stroke-width": w, "stroke-linecap": "round", "stroke-linejoin": "round" }, spin);
+}
 H.text(rpm, 652, 309, "RPM", { size: 22, anchor: "start" });
 show(rpm, TT.rpm);
 tl.fromTo(spin, { rotation: 0, svgOrigin: "612 300" }, { rotation: 360 * Math.round((D - TT.rpm) * 2.5), svgOrigin: "612 300", duration: D - TT.rpm, ease: "none" }, b + TT.rpm);
