@@ -19,7 +19,7 @@ H.t17Lab(ug, "s2-v-lfil", 304, 465, "Filter", { size: 22, shown: true });
 
 // seg 1
 const L1 = [
-  H.t17Lab(ug, "s2-v-ltank", 610, 455, "ถังน้ำมัน (Tank body)", { size: 24, anchor: "middle" }),
+  H.t17Lab(ug, "s2-v-ltank", 460, 231, "ถังน้ำมัน (Tank body)", { size: 24, anchor: "middle" }),
   H.t17Lab(ug, "s2-v-lman", 806, 300, ["Manhole", "(ล้างภายใน)"], { size: 23 }),
   H.t17Lab(ug, "s2-v-lfill", 640, 102, "ช่องเติม", { size: 24, leader: [626, 156] }),
 ];
@@ -77,10 +77,3 @@ dots.forEach(([dx, dy], k) => {
   tl.fromTo(p0, { opacity: 0, y: 0 }, { opacity: 1, y: 30, duration: 0.3, ease: "none", immediateRender: false }, t0);
   tl.to(p0, { y: 494 - (dy - 60) - 4, duration: 1.0, ease: "power1.out" }, t0 + 0.3);
 });
-// cooling: heat leaves through the tank wall
-const heat = H.el("g", { opacity: 0 }, fx);
-for (const ly of [470, 490]) {
-  const [hx, hy] = pg(784, ly);
-  H.el("path", { d: `M ${H.f(hx)} ${H.f(hy)} q 10 -8 20 0 t 20 0 t 20 0`, fill: "none", stroke: TC.red, "stroke-width": 3.5, "stroke-linecap": "round", opacity: 0.8 }, heat);
-}
-tl.fromTo(heat, { opacity: 0, x: 0 }, { opacity: 1, x: 14, duration: 0.6, yoyo: true, repeat: 3, immediateRender: false }, b + c[2] + 1.6);

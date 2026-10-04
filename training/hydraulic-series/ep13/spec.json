@@ -27,7 +27,7 @@
       "type": "title",
       "svg": {
         "viewBox": "20 30 800 610",
-        "body": "<g id='s1-v-u'></g><g id='s1-v-fx'></g>"
+        "body": "<g id='s1-v-u' data-layout-allow-overflow></g><g id='s1-v-fx'></g>"
       },
       "narration": "OPL ความรู้พื้นฐาน ตรวจประจำวัน กับตรวจตามรอบ",
       "js_file": "s1.js"

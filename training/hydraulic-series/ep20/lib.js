@@ -94,7 +94,7 @@ H.c20Gleam = (parent, id, x, y, w, h) => {
   const defs = H.el("defs", {}, svg);
   const clip = H.el("clipPath", { id }, defs);
   H.el("rect", { x, y, width: w, height: h }, clip);
-  const g = H.el("g", { "clip-path": `url(#${id})` }, parent);
+  const g = H.el("g", { "clip-path": `url(#${id})`, "data-layout-allow-overflow": "" }, parent);
   const f = H.f, k = h * 0.5;
   const band = H.el("path", { d: `M ${f(x - 30)} ${f(y - 2)} L ${f(x - 6)} ${f(y - 2)} L ${f(x - 6 - k)} ${f(y + h + 2)} L ${f(x - 30 - k)} ${f(y + h + 2)} Z`, fill: "#ffffff", opacity: 0 }, g);
   const band2 = H.el("path", { d: `M ${f(x + 2)} ${f(y - 2)} L ${f(x + 10)} ${f(y - 2)} L ${f(x + 10 - k)} ${f(y + h + 2)} L ${f(x + 2 - k)} ${f(y + h + 2)} Z`, fill: "#ffffff", opacity: 0 }, g);

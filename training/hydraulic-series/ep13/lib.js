@@ -139,7 +139,7 @@ H.dcUnit = (parent, p, o = {}) => {
   S.lock = H.el("g", { id: `${p}-lock` }, rv);
   r2(-16, -60, 32, 14, DC.dark, { rx: 2 }, S.lock);
   H.el("path", { d: "M -6 -59 L -6 -47 M 6 -59 L 6 -47", fill: "none", stroke: DC.ink, "stroke-width": 1.6 }, S.lock);
-  if (has("relief")) T(778, 262, "Relief valve", { size: 22, anchor: "start" });
+  if (has("relief")) T(772, 262, "Relief valve", { size: 20, anchor: "start" });
   if (has("handle")) {
     T(830, 55, "มือหมุนปรับแรงดัน", { size: 22, anchor: "start" });
     T(830, 124, "Lock nut", { size: 22, anchor: "start" });

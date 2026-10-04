@@ -41,7 +41,7 @@ for (let i = 0; i < 6; i++) {
   H.fnTo(bub, "x", xAt, t4, b + D);
   H.fnTo(bub, "opacity", (t) => (t < t4 + 0.08 * i ? 0 : vis(xAt(t))), t4, b + D);
 }
-H.el("line", { x1: 652, y1: 243, x2: 652, y2: 206, stroke: DC.blue, "stroke-width": 3 }, H.chip(fx, "s2-v-air", 652, 262, "ฟองอากาศ (Air)", { size: 22, stroke: DC.blue, color: DC.blue, opacity: 0 }));
+H.el("line", { x1: 652, y1: 243, x2: 652, y2: 206, stroke: DC.blue, "stroke-width": 3 }, H.chip(fx, "s2-v-air", 652, 262, "ฟองอากาศ (Air)", { size: 22, w: 176, anchor: "middle", stroke: DC.blue, color: DC.blue, opacity: 0 }));
 tl.fromTo("#s2-v-air", { opacity: 0 }, { opacity: 1, duration: 0.3 }, t4 + 0.4);
 
 // each red mark steps back when the next cause is named (keeps red to the current spot)

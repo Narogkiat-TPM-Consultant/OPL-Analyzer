@@ -33,7 +33,7 @@ const T3 = tcard("s6-v-c3", 38, b + st[2] + 0.1);
 T3.palm.setAttribute("opacity", 0);
 tl.fromTo(T3.palm, { y: -50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, immediateRender: false }, b + st[2] + 0.4);
 const T4 = tcard("s6-v-c4", 72, b + st[3] + 0.1);
-const heat = H.t17Heat(T4.g, 275, 52, 40, { w: 4 });
+const heat = H.t17Heat(T4.g, 248, 52, 40, { w: 4 });
 tl.fromTo(heat, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: false }, b + st[3] + 0.4);
 // the hand is pulled away at once
-tl.fromTo(T4.palm, { y: 0, opacity: 1 }, { y: -36, opacity: 0.35, duration: 0.35, ease: "power3.out", immediateRender: false }, b + st[3] + 0.8);
+tl.fromTo(T4.palm, { x: 0, y: 0, opacity: 1 }, { x: 46, y: -30, opacity: 0.45, duration: 0.35, ease: "power3.out", immediateRender: false }, b + st[3] + 0.8);
