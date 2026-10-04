@@ -1,9 +1,9 @@
 // Title: OPL 5-C-13 ⑤ — pressure rises on the gauge and the hose bend moves from its pressure-0 position
 // (dashed ghost) to the pressurised position; pressure drops and rises again.
 const art = H.$("s1-v-art");
-const G = H.gauge(art, 150, 112, 82, { id: "s1-v-g", min: 0, max: 10, ticks: 5, minor: 1, labelEvery: 99, labelSize: 30 });
-H.text(art, 150, 228, "เกจแรงดัน", { size: 26, anchor: "middle", fill: Z.muted, weight: 600 });
-const R = H.hzRig(art, "s1-v-rig", { transform: "translate(40 222) scale(1.05)", bg: Z.bg });
+const G = H.gauge(art, 170, 150, 100, { id: "s1-v-g", min: 0, max: 10, ticks: 5, minor: 1, labelEvery: 99, labelSize: 34 });
+H.text(art, 170, 290, "เกจแรงดัน", { size: 28, anchor: "middle", fill: Z.muted, weight: 600 });
+const R = H.hzRig(art, "s1-v-rig", { transform: "translate(10 300)", bg: Z.bg });
 const lab0 = H.hzLabel(R.g, 120, 50, "แรงดัน 0", { size: 27, fill: Z.muted, halo: Z.bg, line: [232, 44, 312, 82], lineColor: Z.muted });
 const lab1 = H.hzLabel(R.g, 316, 222, "ขณะมีแรงดัน", { size: 27, fill: Z.blue, halo: Z.bg, line: [380, 198, 386, 116], lineColor: Z.blue });
 lab0.setAttribute("opacity", 0);

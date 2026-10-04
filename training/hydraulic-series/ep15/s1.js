@@ -12,18 +12,15 @@
   tl.fromTo(fl, { strokeDashoffset: 0 }, { strokeDashoffset: -30 * Math.round((D - 0.3) * 3), duration: D - 0.3, ease: "none", immediateRender: false }, b + 0.3);
 
   // gauge: green band N ± 3, blue mark = normal reading; no numbers (the OPL gives the band only)
-  const G = H.gauge(g, cx, cy, r, {
-    id: "s1-v-g", min: G15.min, max: G15.max, ok: [G15.N - G15.band, G15.N + G15.band], ticks: 6, minor: 4, labelEvery: 99,
-    value: G15.min, marks: [{ v: G15.N, color: C15.blue, id: "s1-v-gn" }],
-  });
-  const lab = (v, s) => {
+  const G = H.gauge15(g, cx, cy, r, { id: "s1-v-g", minor: 4, value: G15.min, marks: [{ v: G15.N, color: C15.blue, id: "s1-v-gn" }] });
+  const lab = (v, s, col) => {
     const a = (G.rot(v) * Math.PI) / 180;
-    H.text(g, cx + Math.cos(a) * r * 1.2, cy + Math.sin(a) * r * 1.2 + 12, s, { size: 36, anchor: "middle", fill: C15.green });
+    H.text(g, cx + Math.cos(a) * r * 1.2, cy + Math.sin(a) * r * 1.2 + 12, s, { size: 36, anchor: "middle", fill: col });
   };
-  lab(G15.N - G15.band, "−3");
-  lab(G15.N + G15.band, "+3");
-  H.legend15(g, cx - 92, cy + 92, C15.blue, "ค่าปกติ", 30, 32);
-  H.legend15(g, cx - 92, cy + 140, C15.green, "±3 kgf/cm²", 30, 32);
+  lab(G15.N - G15.band, "−3", C15.green);
+  lab(G15.N + G15.band, "+3", C15.green);
+  H.text(g, cx, cy - r - 22, "ค่าปกติ", { size: 32, anchor: "middle", fill: C15.blue });
+  H.text(g, cx, cy + r * 0.45, "kgf/cm²", { size: 32, anchor: "middle", fill: C15.muted, weight: 600 });
 
   // needle: up to the normal reading, then a slight swing that stays inside the band (amplitude 1.6 < 3)
   H.needle15(G, (t) => {
@@ -37,7 +34,7 @@
     ["เสียง", (p) => H.ear15(p, "s1-v-i1", x, rows[0], 0.82)],
     ["เกจ", (p) => {
       const q = H.el("g", { id: "s1-v-i2" }, p);
-      H.gauge(q, x, rows[1], 38, { id: "s1-v-gi", min: G15.min, max: G15.max, ok: [G15.N - G15.band, G15.N + G15.band], ticks: 6, labelEvery: 99, value: G15.N + 1 });
+      H.gauge15(q, x, rows[1], 38, { id: "s1-v-gi", value: G15.N + 1 });
       return q;
     }],
     ["สั่น / ร้อน", (p) => {

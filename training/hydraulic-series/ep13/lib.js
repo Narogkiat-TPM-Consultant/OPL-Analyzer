@@ -117,14 +117,14 @@ H.dcUnit = (parent, p, o = {}) => {
   S.nut = H.el("g", { id: `${p}-nut` }, g);
   rect(526, 181, 20, 30, DC.dark, { sw: 3, rx: 2 }, S.nut);
   H.el("path", { d: "M 536 183 L 536 209", fill: "none", stroke: DC.ink, "stroke-width": 2 }, S.nut);
-  if (has("fitting")) T(528, 166, "ข้อต่อท่อ", { size: 22 });
+  if (has("fitting")) T(528, 142, "ข้อต่อท่อ", { size: 22 });
   // leak: drops falling from the fitting onto the lid + puddle
   S.drops = [0, 1, 2].map((i) => H.el("path", { id: `${p}-d${i}`, d: H.dcDropD(538, 226, 7), fill: DC.oil, stroke: DC.ink, "stroke-width": 2, opacity: 0 }, g));
   S.puddle = H.el("ellipse", { id: `${p}-pud`, cx: 538, cy: 386, rx: 30, ry: 5, fill: DC.oil, stroke: DC.ink, "stroke-width": 2, opacity: 0 }, g);
 
   // pressure gauge: blue mark = set pressure (ค่าตั้ง); the deck gives no number, so no scale values
   S.gauge = H.gauge(g, 620, 114, 44, { id: `${p}-g`, min: 0, max: 10, ticks: 5, minor: 1, labelEvery: 99, value: 6, marks: [{ v: 6, color: DC.blue, id: `${p}-set` }] });
-  if (has("gauge")) T(566, 120, "เกจวัดแรงดัน", { size: 22, anchor: "end" });
+  if (has("gauge")) T(566, 106, "เกจวัดแรงดัน", { size: 22, anchor: "end" });
 
   // relief valve, drawn 1.5× around the pipe axis so the handle and lock nut can be seen
   const rv = H.el("g", { id: `${p}-rv`, transform: "translate(760 196) scale(1.5)" }, g);
@@ -141,8 +141,8 @@ H.dcUnit = (parent, p, o = {}) => {
   H.el("path", { d: "M -6 -59 L -6 -47 M 6 -59 L 6 -47", fill: "none", stroke: DC.ink, "stroke-width": 1.6 }, S.lock);
   if (has("relief")) T(712, 256, "Relief valve", { size: 22, anchor: "end" });
   if (has("handle")) {
-    T(818, 55, "มือหมุนปรับแรงดัน", { size: 22, anchor: "start" });
-    T(818, 124, "Lock nut", { size: 22, anchor: "start" });
+    T(830, 55, "มือหมุนปรับแรงดัน", { size: 22, anchor: "start" });
+    T(830, 124, "Lock nut", { size: 22, anchor: "start" });
   }
 
   // line to the circuit
@@ -156,8 +156,8 @@ H.dcUnit = (parent, p, o = {}) => {
   for (const [x, y, r] of [[703, 570, 4], [714, 560, 3], [709, 548, 4.5], [718, 538, 3], [704, 528, 3.5], [713, 516, 4], [706, 505, 3], [717, 498, 3.5]])
     H.el("circle", { cx: x, cy: y, r, fill: "#ffffff", stroke: DC.ink, "stroke-width": 1.5 }, S.bub);
   H.el("path", { d: `M 682 ${DU.H} L 738 ${DU.H} M 682 ${DU.L} L 738 ${DU.L}`, fill: "none", stroke: DC.ink, "stroke-width": 3 }, g);
-  T(744, DU.H + 7, "H", { size: 20, anchor: "start" });
-  T(744, DU.L + 7, "L", { size: 20, anchor: "start" });
+  T(754, DU.H + 7, "H", { size: 20, anchor: "start" });
+  T(754, DU.L + 7, "L", { size: 20, anchor: "start" });
   if (has("level")) T(668, 512, "ระดับน้ำมัน", { size: 21, anchor: "end" });
 
   // effect layers (all start hidden)
@@ -309,4 +309,12 @@ H.dcReg = (parent, kind, cx, cy, o = {}) => {
     S.crack = H.el("path", { d: "M 30 22 L 38 28 L 34 33 L 44 39", fill: "none", stroke: DC.red, "stroke-width": 4, "stroke-linejoin": "round", "stroke-linecap": "round", opacity: o.worn ? 1 : 0 }, g);
   }
   return S;
+};
+
+// pulsing rounded-rect highlight around the level glass (unit coords + offset)
+H.dcGlassBox = (parent, id, t, col, n = 2, dx = 0, dy = 0) => {
+  const r = H.el("rect", { id, x: 680 + dx, y: 408 + dy, width: 60, height: 188, rx: 14, fill: "none", stroke: col, "stroke-width": 6, opacity: 0 }, parent);
+  tl.fromTo(r, { opacity: 0 }, { opacity: 1, duration: 0.25 }, t);
+  if (n > 0) tl.fromTo(r, { scale: 1, svgOrigin: `${710 + dx} ${502 + dy}` }, { scale: 1.06, svgOrigin: `${710 + dx} ${502 + dy}`, duration: 0.3, yoyo: true, repeat: 2 * n - 1, ease: "sine.inOut", immediateRender: false }, t + 0.1);
+  return r;
 };

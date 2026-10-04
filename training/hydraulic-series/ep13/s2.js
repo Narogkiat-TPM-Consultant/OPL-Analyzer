@@ -10,7 +10,7 @@ tl.fromTo(U.flow, { strokeDashoffset: 0 }, { strokeDashoffset: -26 * Math.round(
 
 // ① lock nut of the pressure-adjust handle loosens; handle unscrews; set pressure changes
 const t1 = b + c[1];
-H.ring(fx, "s2-v-r1", 760, 104, 50, t1 + 0.2, 3);
+H.ring(fx, "s2-v-r1", 760, 104, 48, t1 + 0.2, 3);
 tl.fromTo(U.lock, { y: 0 }, { y: -6, duration: 0.5, ease: "power2.inOut" }, t1 + 0.7);
 tl.fromTo(U.lgap, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t1 + 0.9);
 const turn = H.el("path", { id: "s2-v-turn", d: "M 714 74 A 46 13 0 0 0 806 74 M 794 64 L 806 74 L 792 82", fill: "none", stroke: DC.blue, "stroke-width": 5, "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0 }, fx);
@@ -22,8 +22,7 @@ tl.fromTo(turn, { opacity: 1 }, { opacity: 0, duration: 0.3, immediateRender: fa
 // ② oil level drops below L
 const t2 = b + c[2];
 H.dcLevel(U, DU.low, t2 + 0.1, 1.0);
-const box = H.el("rect", { id: "s2-v-lv", x: 676, y: 408, width: 68, height: 188, rx: 14, fill: "none", stroke: DC.red, "stroke-width": 6, opacity: 0 }, fx);
-tl.fromTo(box, { opacity: 0 }, { opacity: 1, duration: 0.25 }, t2 + 0.3);
+H.dcGlassBox(fx, "s2-v-lv", t2 + 0.3, DC.red, 2);
 
 // ③ tube fitting loosens → oil drips onto the lid
 const t3 = b + c[3];
@@ -35,10 +34,10 @@ H.dcLeak(U, t3 + 0.5, b + D - 0.2);
 // ④ air mixed in the oil: bubbles travel along the pressure line
 const t4 = b + c[4];
 for (let i = 0; i < 6; i++) {
-  const bub = H.el("circle", { id: `s2-v-bb${i}`, cx: 0, cy: 196, r: 6.5, fill: "#ffffff", stroke: DC.ink, "stroke-width": 2.2, opacity: 0 }, fx);
-  const xAt = (t) => 432 + ((Math.max(0, t - t4) * 150 + i * 78) % 456);
+  const bub = H.el("circle", { id: `s2-v-bb${i}`, cx: 432, cy: 196, r: 6.5, fill: "#ffffff", stroke: DC.ink, "stroke-width": 2.2, opacity: 0 }, fx);
+  const xAt = (t) => (Math.max(0, t - t4) * 150 + i * 78) % 456;
   // hidden while passing behind the fitting and the relief-valve body
-  const vis = (x) => (x > 500 && x < 556) || (x > 712 && x < 808) ? 0 : 1;
+  const vis = (x) => (x > 68 && x < 124) || (x > 280 && x < 376) ? 0 : 1;
   H.fnTo(bub, "x", xAt, t4, b + D);
   H.fnTo(bub, "opacity", (t) => (t < t4 + 0.08 * i ? 0 : vis(xAt(t))), t4, b + D);
 }
@@ -47,9 +46,10 @@ tl.fromTo("#s2-v-air", { opacity: 0 }, { opacity: 1, duration: 0.3 }, t4 + 0.4);
 
 // ⑤ the daily round finds them: eye badge + blue check rings on the four spots
 const t5 = b + c[5];
-const eye = H.dcBadge(fx, "s2-v-eye", "eye", 196, 120, 46);
-tl.fromTo(eye, { opacity: 0, scale: 0.4, svgOrigin: "196 120" }, { opacity: 1, scale: 1, svgOrigin: "196 120", duration: 0.35, ease: "back.out(2)" }, t5);
-[[760, 104, 58, 58], [710, 502, 40, 96], [536, 196, 40, 40], [650, 196, 40, 40]].forEach(([x, y, rx, ry], i) => {
+const eye = H.dcBadge(fx, "s2-v-eye", "eye", 196, 112, 46);
+H.text(eye, 196, 192, "ตรวจประจำวัน", { size: 24, anchor: "middle", fill: DC.blue });
+tl.fromTo(eye, { opacity: 0, scale: 0.4, svgOrigin: "196 112" }, { opacity: 1, scale: 1, svgOrigin: "196 112", duration: 0.35, ease: "back.out(2)" }, t5);
+[[760, 104, 56, 56], [710, 502, 38, 102], [536, 196, 40, 40], [650, 196, 40, 40]].forEach(([x, y, rx, ry], i) => {
   const ck = H.el("rect", { id: `s2-v-ck${i}`, x: x - rx, y: y - ry, width: 2 * rx, height: 2 * ry, rx: Math.min(rx, ry), fill: "none", stroke: DC.blue, "stroke-width": 5, "stroke-dasharray": "10 7", opacity: 0 }, fx);
   tl.fromTo(ck, { opacity: 0, scale: 1.3, svgOrigin: `${x} ${y}` }, { opacity: 1, scale: 1, svgOrigin: `${x} ${y}`, duration: 0.3 }, t5 + 0.3 + 0.25 * i);
 });

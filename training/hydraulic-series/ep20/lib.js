@@ -233,7 +233,7 @@ H.c20CardNut = (parent, ng) => {
   const out = { nut };
   if (ng) {
     out.ring = H.el("circle", { cx: 196, cy: 95, r: 50, fill: "none", stroke: C20.red, "stroke-width": 5, opacity: 0 }, g);
-    out.gap = H.el("path", { d: H.dimD(172, 148, 194, 148, 8), fill: "none", stroke: C20.red, "stroke-width": 3, opacity: 0 }, g);
+    out.gap = H.el("path", { d: H.dimD(172, 70, 194, 70, 8), fill: "none", stroke: C20.red, "stroke-width": 3, opacity: 0 }, g);
   }
   return out;
 };

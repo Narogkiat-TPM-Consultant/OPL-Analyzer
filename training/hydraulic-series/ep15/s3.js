@@ -28,29 +28,37 @@
   H.el("path", { d: "M 420 66 L 615 16 M 420 190 L 615 184", fill: "none", stroke: C15.blue, "stroke-width": 3, "stroke-dasharray": "9 7" }, inset);
   H.el("circle", { cx: 420, cy: 128, r: 60, fill: "none", stroke: C15.blue, "stroke-width": 4 }, inset);
   H.el("circle", { cx: 615, cy: 100, r: 84, fill: C15.paper }, inset);
-  const GI = H.gauge(inset, 615, 100, 74, { id: "s3-v-gi", min: G15.min, max: G15.max, ok: [G15.N - G15.band, G15.N + G15.band], ticks: 6, minor: 1, labelEvery: 99, value: G15.N, marks: [{ v: G15.N, color: C15.blue, id: "s3-v-gin" }] });
+  const GI = H.gauge15(inset, 615, 100, 74, { id: "s3-v-gi", minor: 1, value: G15.N, marks: [{ v: G15.N, color: C15.blue, id: "s3-v-gin" }] });
   H.el("circle", { cx: 615, cy: 100, r: 84, fill: "none", stroke: C15.blue, "stroke-width": 5 }, inset);
   H.needle15(GI, val, b, b + D, true);
   tl.fromTo(inset, { opacity: 0 }, { opacity: 1, duration: 0.35 }, b + c[2] + 0.1);
 
-  // ③ vibration / heat: the hand visits pump → motor → tube → valve; heat lines at each spot
-  const sp = [S.spot.pump, S.spot.motor, [712, 209], S.spot.valve];
-  const hand = H.hand15(fx, "s3-v-hand", sp[0][0], sp[0][1], 0.6);
-  hand.setAttribute("opacity", 0);
+  // ③ vibration / heat, in the spoken order: a hand visits pump → motor → valve from above, then touches the tube
+  //    from below; short heat lines at each spot
+  const sp = [S.spot.pump, S.spot.motor, S.spot.valve, S.spot.tube];
+  const handT = H.hand15(fx, "s3-v-hand", sp[0][0], sp[0][1], 0.6);
+  const handB = H.hand15(fx, "s3-v-hand2", sp[3][0], sp[3][1], 0.6, 180);
+  handT.setAttribute("opacity", 0);
+  handB.setAttribute("opacity", 0);
   const t3 = b + c[3] + 0.1, step = Math.max(0.6, (c[4] - c[3] - 0.3) / 4);
-  tl.fromTo(hand, { opacity: 0, x: 0, y: -40 }, { opacity: 1, x: 0, y: 0, duration: 0.3, ease: "power2.out" }, t3);
+  tl.fromTo(handT, { opacity: 0, x: 0, y: -40 }, { opacity: 1, x: 0, y: 0, duration: 0.3, ease: "power2.out" }, t3);
   sp.forEach(([x, y], k) => {
     const hg = H.el("g", { id: `s3-v-heat${k}`, opacity: 0 }, fx);
-    for (const dx of [-38, 38]) H.el("path", { d: H.heatD(x + dx, y - 4, 34), fill: "none", stroke: C15.heat, "stroke-width": 5, "stroke-linecap": "round" }, hg);
+    const yb = k === 3 ? y - 10 : y - 4;
+    for (const dx of [-38, 38]) H.el("path", { d: H.heatD(x + dx, yb, 34), fill: "none", stroke: C15.heat, "stroke-width": 5, "stroke-linecap": "round" }, hg);
     const ta = t3 + k * step;
-    if (k > 0) {
+    if (k === 1 || k === 2) {
       const [px, py] = sp[k - 1];
-      tl.fromTo(hand, { x: px - sp[0][0], y: py - sp[0][1] }, { x: x - sp[0][0], y: y - sp[0][1], duration: 0.32, ease: "power2.inOut", immediateRender: false }, ta - 0.32);
+      tl.fromTo(handT, { x: px - sp[0][0], y: py - sp[0][1] }, { x: x - sp[0][0], y: y - sp[0][1], duration: 0.32, ease: "power2.inOut", immediateRender: false }, ta - 0.32);
+    }
+    if (k === 3) {
+      tl.fromTo(handT, { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, ta - 0.3);
+      tl.fromTo(handB, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" }, ta - 0.1);
     }
     tl.fromTo(hg, { opacity: 0, y: 6 }, { opacity: 1, y: 0, duration: 0.25 }, ta);
     tl.fromTo(hg, { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, ta + step - 0.35);
   });
-  tl.fromTo(hand, { opacity: 1 }, { opacity: 0, duration: 0.3, immediateRender: false }, b + c[4] - 0.05);
+  tl.fromTo(handB, { opacity: 1 }, { opacity: 0, duration: 0.3, immediateRender: false }, b + c[4] - 0.05);
 
   // ④ movement: stopwatch times two cylinder cycles; equal bars = same cycle time = smooth
   const wg = H.el("g", { id: "s3-v-wg", opacity: 0 }, fx);

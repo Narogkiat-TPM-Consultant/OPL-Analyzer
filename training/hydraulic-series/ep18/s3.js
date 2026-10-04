@@ -10,7 +10,7 @@
     const lim = 6 * frac;
     H.g18Band(G, 0, lim, K.blueLt);
     // limit mark across the scale ring + fraction label outside
-    const [x1, y1] = G.pt(lim, G.r * 0.62), [x2, y2] = G.pt(lim, G.r * 1.1);
+    const [x1, y1] = G.pt(lim, G.r * 0.7), [x2, y2] = G.pt(lim, G.r * 1.1);
     H.el("line", { x1: H.f(x1), y1: H.f(y1), x2: H.f(x2), y2: H.f(y2), stroke: K.blue, "stroke-width": 9 }, G.g);
     const [lx, ly] = G.pt(lim, G.r * 1.24);
     H.text(G.g, lx, ly + 16, fracTxt, { size: 46, anchor: "middle", fill: K.blue });

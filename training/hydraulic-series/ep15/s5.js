@@ -22,15 +22,15 @@
   const warm = H.el("rect", { id: "s5-v-warm", x: 30, y: 560, width: 410, height: 150, rx: 12, fill: C15.heat, opacity: 0 }, g);
   H.text(g, 235, 652, "ผิวปั๊ม / มอเตอร์ / วาล์ว / ท่อ", { size: 26, anchor: "middle" });
   const heat = H.el("g", { id: "s5-v-heat", opacity: 0 }, g);
-  for (const x of [52, 88, 262, 300, 338, 376]) H.el("path", { d: H.heatD(x, 546, 72), fill: "none", stroke: C15.heat, "stroke-width": 6, "stroke-linecap": "round" }, heat);
-  const hand = H.hand15(g, "s5-v-hand", 175, 558, 1.2);
+  for (const x of [232, 272, 312, 352, 392, 428]) H.el("path", { d: H.heatD(x, 546, 72), fill: "none", stroke: C15.heat, "stroke-width": 6, "stroke-linecap": "round" }, heat);
+  const hand = H.hand15(g, "s5-v-hand", 140, 558, 1.2);
 
   const wg = H.el("g", { id: "s5-v-wg", opacity: 0 }, g);
-  H.text(wg, 300, 104, "เต็มวง = 1 นาที", { size: 22, anchor: "middle", fill: C15.muted });
-  const W = H.stopwatch(wg, 300, 214, 72, { id: "s5-v-w", color: C15.heat });
+  H.text(wg, 330, 82, "เต็มวง = 1 นาที", { size: 22, anchor: "middle", fill: C15.muted });
+  const W = H.stopwatch(wg, 330, 190, 72, { id: "s5-v-w", color: C15.heat });
   const hold = rows.map((r, i) => {
     if (!r[2]) return null;
-    const t = H.text(g, 300, 340, r[2], { size: 30, anchor: "middle", id: `s5-v-hold${i}` });
+    const t = H.text(g, 330, 318, r[2], { size: 30, anchor: "middle", id: `s5-v-hold${i}` });
     t.setAttribute("opacity", 0);
     return t;
   });

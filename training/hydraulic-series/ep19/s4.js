@@ -13,15 +13,15 @@
     RV.flow(id, b + 0.4, b + D, false);
   }
 
-  // OK: a tick beside the gauge
-  const ok = E19.tick(A.g, 440, 30, 16, { opacity: 0 });
-  E19.op(ok, 0, 1, b + st[0] + 0.2);
-
-  // NG leak: drops under the lock nut and at the port joint
-  const d1 = E19.drop(B.g, 234, 100, 0.8);
-  const d2 = E19.drop(B.g, 50, 122, 0.8);
-  E19.drip(d1, b + st[1] + 0.1, b + D, 44, 1.1);
-  E19.drip(d2, b + st[1] + 0.6, b + D, 28, 1.1);
+  // NG leak: wet spots at the lock nut thread and the port joint, a puddle below, drops falling
+  const wet = H.el("g", { opacity: 0 }, B.g);
+  for (const [x, y, rx, ry] of [[234, 83, 9, 6], [38, 104, 9, 6], [234, 162, 30, 5], [46, 162, 18, 4]])
+    H.el("ellipse", { cx: x, cy: y, rx, ry, fill: E19.oil, stroke: E19.ink, "stroke-width": 1.5 }, wet);
+  E19.op(wet, 0, 1, b + st[1] + 0.1);
+  const d1 = E19.drop(B.g, 234, 102, 0.8);
+  const d2 = E19.drop(B.g, 46, 124, 0.8);
+  E19.drip(d1, b + st[1] + 0.1, b + D, 50, 1.1);
+  E19.drip(d2, b + st[1] + 0.6, b + D, 30, 1.1);
 
   // NG pressure: needle swings while the machine works
   const sw = [8.3, 4.1, 7.7, 4.6, 8.1, 3.9, 7.4, 4.8];

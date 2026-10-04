@@ -22,9 +22,11 @@ const f = H.f;
   H.el("circle", { cx, cy, r: r - 2 }, cp);
   H.el("circle", { cx, cy, r, fill: "#2c3036" }, mag);
   const wires = H.el("g", { "clip-path": "url(#s3-v-clip1)" }, mag);
-  for (let o = -112; o <= 112; o += 15) {
-    H.el("line", { x1: cx + o - 80, y1: cy - 80, x2: cx + o + 80, y2: cy + 80, stroke: "#aeb4bc", "stroke-width": 5 }, wires);
-    H.el("line", { x1: cx + o + 80, y1: cy - 80, x2: cx + o - 80, y2: cy + 80, stroke: "#d6dade", "stroke-width": 4 }, wires);
+  // braid: two families of 45° wires, each cut to its chord of the lens circle (no bbox outside the card)
+  for (let o = -80; o <= 80; o += 16) {
+    const d = Math.abs(o) / Math.SQRT2, hc = Math.sqrt((r - 3) ** 2 - d * d) / Math.SQRT2, mx = cx + o / 2, my = cy - o / 2, nx = cx + o / 2, ny = cy + o / 2;
+    H.el("line", { x1: f(mx - hc), y1: f(my - hc), x2: f(mx + hc), y2: f(my + hc), stroke: "#aeb4bc", "stroke-width": 5 }, wires);
+    H.el("line", { x1: f(nx + hc), y1: f(ny - hc), x2: f(nx - hc), y2: f(ny + hc), stroke: "#d6dade", "stroke-width": 4 }, wires);
   }
   // the cut: a jagged gap across the braid with frayed red wire ends
   const cut = H.el("g", { opacity: 0 }, wires);
@@ -80,7 +82,7 @@ const f = H.f;
   H.el("circle", { cx: 230, cy: 132, r: 3.5, fill: Z.ink }, screw);
   // unscrews, then drops out of the picture
   tl.fromTo(screw, { rotation: 0, svgOrigin: "230 132" }, { rotation: -200, svgOrigin: "230 132", duration: 0.5, ease: "power1.in" }, t0 + 0.3);
-  tl.fromTo(screw, { x: 0, y: 0, opacity: 1 }, { x: 46, y: 40, opacity: 0, duration: 0.55, ease: "power2.in", immediateRender: false }, t0 + 0.8);
+  tl.fromTo(screw, { x: 0, y: 0, opacity: 1 }, { x: 40, y: 22, opacity: 0, duration: 0.5, ease: "power2.in", immediateRender: false }, t0 + 0.8);
   const arr = H.el("g", { opacity: 0 }, c);
   H.el("path", { d: "M 252 136 Q 290 136 296 150", fill: "none", stroke: Z.ink, "stroke-width": 4 }, arr);
   H.el("path", { d: "M 288 146 L 298 160 L 303 144 Z", fill: Z.ink }, arr);

@@ -37,6 +37,12 @@ H.cyc15 = (ph) => {
   return 0;
 };
 const clamp01 = (x) => Math.max(0, Math.min(1, x));
+// H.gauge without any printed numbers (H.gauge always labels the first major tick "0"; the OPL gives no scale).
+H.gauge15 = (parent, cx, cy, r, o = {}) => {
+  const G = H.gauge(parent, cx, cy, r, { min: G15.min, max: G15.max, ok: [G15.N - G15.band, G15.N + G15.band], ticks: 6, labelEvery: 99, ...o });
+  G.g.querySelectorAll("text").forEach((n) => n.remove());
+  return G;
+};
 
 H.runUnit = (parent, p, o = {}) => {
   const lab = o.labels ?? ["tank", "pump", "motor", "gauge", "valve", "cyl", "tube"];
@@ -106,7 +112,7 @@ H.runUnit = (parent, p, o = {}) => {
   }
 
   // pressure gauge on the discharge line: green band = normal reading ±3 (no numbers)
-  S.gauge = H.gauge(g, 420, 128, 50, { id: `${p}-g`, min: G15.min, max: G15.max, ok: [G15.N - G15.band, G15.N + G15.band], ticks: 6, minor: 1, labelEvery: 99, value: G15.N });
+  S.gauge = H.gauge15(g, 420, 128, 50, { id: `${p}-g`, minor: 1, value: G15.N });
 
   // solenoid valve (3 boxes + coil); P from the left, A / B up to the cylinder, T down to the tank
   rect(760, 190, 150, 54, C15.paper, { rx: 4 });
@@ -125,11 +131,11 @@ H.runUnit = (parent, p, o = {}) => {
   rect(732, 56, 12, 72, C15.metal, { sw: 3, rx: 2 });
 
   // labels
-  if (has("tank")) T(545, 596, "ถังน้ำมัน (Oil tank)", { size: 24 });
-  if (has("gauge")) T(362, 122, "เกจวัดแรงดัน", { size: 23, anchor: "end" });
-  if (has("valve")) T(850, 284, "วาล์ว (Valve)", { size: 22, anchor: "end" });
+  if (has("tank")) T(560, 596, "ถังน้ำมัน (Oil tank)", { size: 24 });
+  if (has("gauge")) T(348, 122, "เกจวัดแรงดัน", { size: 23, anchor: "end" });
+  if (has("valve")) T(958, 228, "วาล์ว (Valve)", { size: 22, anchor: "start" });
   if (has("cyl")) T(850, 44, "กระบอกสูบ (Cylinder)", { size: 22 });
-  if (has("tube")) T(600, 250, "ท่อ (Tube)", { size: 22 });
+  if (has("tube")) T(705, 258, "ท่อ (Tube)", { size: 22 });
 
   // sound arcs on the upper left of the pump (start hidden)
   S.noise = [80, 102, 124].map((r, i) => {
@@ -139,7 +145,7 @@ H.runUnit = (parent, p, o = {}) => {
     return a;
   });
   // fingertip points for the touch check, and other spots
-  S.spot = { pump: [205, 274], motor: [470, 264], tube: [610, 209], valve: [835, 192], gauge: [420, 128], coupling: [312, 312] };
+  S.spot = { pump: [205, 274], motor: [495, 264], tube: [600, 222], valve: [835, 192], gauge: [420, 128], coupling: [312, 312] };
   return S;
 };
 
@@ -149,8 +155,9 @@ H.spin15 = (S, t0, t1, step = 0.12) => {
   tl.fromTo(S.stripes, { y: 0 }, { y: 10, duration: step, ease: "none", repeat: n - 1 }, t0);
 };
 // Sound arcs flash outward from t for about `dur` seconds (finite repeat)
+// (a top-level repeat repeats the whole staggered sequence: one pass = 0.25 + 0.1·(arcs − 1) seconds)
 H.noise15 = (arcs, t, dur) => {
-  const n = Math.max(1, Math.round(dur / 0.5));
+  const pass = 0.25 + 0.1 * (arcs.length - 1), n = Math.max(1, Math.floor(dur / (2 * pass)));
   tl.fromTo(arcs, { opacity: 0 }, { opacity: 1, duration: 0.25, stagger: 0.1, yoyo: true, repeat: 2 * n - 1, ease: "sine.inOut", immediateRender: false }, t);
 };
 // Gauge needle: value(t) on the gauge scale between t0 and t1

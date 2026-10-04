@@ -25,7 +25,7 @@
 
   // labels
   const lHandle = H.text(O, 821, 42, "Handle", { size: 28, anchor: "middle", id: "s3-v-lh" });
-  const lNut = RV.label(O, "s3-v-ln", 730, 262, "Lock nut", 730, 174, { anchor: "middle", fx: 730, fy: 236 });
+  const lNut = RV.label(O, "s3-v-ln", 690, 36, "Lock nut", 728, 104, { anchor: "middle", fx: 708, fy: 44 });
   [lHandle, lNut].forEach((e) => e.setAttribute("opacity", 0));
 
   // rotation marks beside the handle + words

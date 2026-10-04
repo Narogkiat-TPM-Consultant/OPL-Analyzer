@@ -1,9 +1,9 @@
 // Daily check (p.17): no complicated instrument — eyes, ears, touch. The 8 check items light up in the list on
-// the right as they are spoken; on the unit each item gets its number, its effect and a route line from the
-// previous item (= check sequence). Last segment: "every item, in sequence".
+// the right as they are spoken (a blue track runs down the numbers = check sequence); on the unit each item
+// gets its number and a short effect. Last segment: "every item, in sequence".
 const UX = 0, UY = 60;
-const U = H.dcUnit("s4-v-u", "s4-v-un", { transform: `translate(${UX} ${UY})`, labels: ["tank", "pump", "motor", "relief", "gauge", "fitting", "level", "circuit"] });
-const fx = H.$("s4-v-fx"), route = H.$("s4-v-route"), list = H.$("s4-v-list"), c = T.cues;
+const U = H.dcUnit("s4-v-u", "s4-v-un", { transform: `translate(${UX} ${UY})`, labels: ["tank", "pump", "motor", "gauge", "fitting", "level", "circuit"] });
+const fx = H.$("s4-v-fx"), list = H.$("s4-v-list"), c = T.cues;
 const segLen = (k) => (k < c.length ? c[k] - c[k - 1] - 0.3 : D - 0.8 - c[k - 1]);
 const SEG = [
   "ไม่ต้องใช้เครื่องมือซับซ้อน ใช้ตา หู และมือสัมผัส ทุกคนทำได้ในเวลาสั้น",
@@ -46,6 +46,7 @@ const ITEMS = [
 const RY = (i) => 236 + 62 * i;
 const times = ITEMS.map((it) => at(it.seg, it.w));
 const rowHi = H.el("rect", { id: "s4-v-hi", x: LX + 2, y: RY(0) - 28, width: 610, height: 56, rx: 12, fill: DC.pale, stroke: DC.blue, "stroke-width": 3, opacity: 0 }, list);
+const route = H.el("g", { id: "s4-v-track" }, list);
 ITEMS.forEach((it, i) => {
   const row = H.el("g", { id: `s4-v-row${i}` }, list);
   H.dcNum(row, `s4-v-rn${i}`, LX + 30, RY(i), i + 1, { r: 21 });
@@ -61,20 +62,16 @@ times.forEach((t, i) => {
   else tl.fromTo(rowHi, { y: 62 * (i - 1) }, { y: 62 * i, duration: 0.25, ease: "power2.out", immediateRender: false }, t);
 });
 
-// ---- number badges + route on the unit
+// ---- number badges on the unit; in the list a blue track runs down the numbers (= check sequence)
 const P = ITEMS.map((it) => [it.n[0] + UX, it.n[1] + UY]);
 ITEMS.forEach((it, i) => {
   const [x, y] = P[i];
-  if (i > 0) {
-    const [x0, y0] = P[i - 1], dx = x - x0, dy = y - y0, L = Math.hypot(dx, dy), ux = dx / L, uy = dy / L;
-    const seg = H.el("path", { id: `s4-v-rt${i}`, d: `M ${H.f(x0 + 24 * ux)} ${H.f(y0 + 24 * uy)} L ${H.f(x - 26 * ux)} ${H.f(y - 26 * uy)}`, fill: "none", stroke: DC.blue, "stroke-width": 4, "stroke-linecap": "butt", opacity: 0.85 }, route);
-    const head = H.el("path", { id: `s4-v-rh${i}`, d: H.arrowD(x - 40 * ux, y - 40 * uy, x - 25 * ux, y - 25 * uy, 13).replace(/^M [^M]+/, ""), fill: "none", stroke: DC.blue, "stroke-width": 4, opacity: 0 }, route);
-    const len = L - 50;
-    tl.fromTo(seg, { strokeDasharray: len, strokeDashoffset: len }, { strokeDashoffset: 0, duration: 0.45, ease: "power1.inOut" }, times[i] - 0.1);
-    tl.fromTo(head, { opacity: 0 }, { opacity: 1, duration: 0.1 }, times[i] + 0.3);
-  }
   const g = H.dcNum(fx, `s4-v-n${i}`, x, y, i + 1, { r: 22 });
   tl.fromTo(g, { opacity: 0, scale: 0.4, svgOrigin: `${x} ${y}` }, { opacity: 1, scale: 1, svgOrigin: `${x} ${y}`, duration: 0.3, ease: "back.out(2)" }, times[i]);
+  if (i > 0) {
+    const seg = H.el("line", { id: `s4-v-tr${i}`, x1: LX + 30, y1: RY(i - 1) + 21, x2: LX + 30, y2: RY(i) - 21, stroke: DC.blue, "stroke-width": 6 }, route);
+    tl.fromTo(seg, { scaleY: 0, svgOrigin: `${LX + 30} ${RY(i - 1) + 21}` }, { scaleY: 1, svgOrigin: `${LX + 30} ${RY(i - 1) + 21}`, duration: 0.3, ease: "power1.out" }, times[i] - 0.25);
+  }
 });
 H.chip(fx, "s4-v-oth", 912, 440 + UY, "อื่นๆ (Others)", { size: 24 });
 tl.fromTo("#s4-v-oth", { opacity: 0 }, { opacity: 1, duration: 0.3 }, times[7] + 0.1);
@@ -94,12 +91,12 @@ tl.fromTo(lv, { opacity: 0 }, { opacity: 1, duration: 0.25, yoyo: true, repeat: 
 tl.fromTo(S.flow, { opacity: 0 }, { opacity: 0.95, duration: 0.3 }, b + 0.4);
 tl.fromTo(S.flow, { strokeDashoffset: 0 }, { strokeDashoffset: -26 * Math.round((D - 0.4) * 3), duration: D - 0.4, ease: "none", immediateRender: false }, b + 0.4);
 
-// ---- last segment: every item, in sequence
+// ---- last segment: every item, in sequence — key chip, numbers on the unit pulse 1 → 8
 const tEnd = b + c[3];
-const key = H.chip(fx, "s4-v-key", 948, 560 + UY, "ตรวจครบทุกข้อ · ตามลำดับ", { size: 28, stroke: DC.red, color: DC.red, sw: 4 });
-tl.fromTo(key, { opacity: 0, scale: 0.6, svgOrigin: `948 ${560 + UY}` }, { opacity: 1, scale: 1, svgOrigin: `948 ${560 + UY}`, duration: 0.35, ease: "back.out(2)" }, tEnd + 0.1);
-tl.fromTo(route, { opacity: 1 }, { opacity: 0.35, duration: 0.2, yoyo: true, repeat: 3, immediateRender: false }, tEnd + 0.5);
+const key = H.chip(fx, "s4-v-key", 270, 64, "ตรวจครบทุกข้อ · ตามลำดับ", { size: 32, w: 430, stroke: DC.red, color: DC.red, sw: 4 });
+tl.fromTo(key, { opacity: 0, scale: 0.6, svgOrigin: "270 64" }, { opacity: 1, scale: 1, svgOrigin: "270 64", duration: 0.35, ease: "back.out(2)" }, tEnd + 0.1);
 ITEMS.forEach((_, i) => {
   const [x, y] = P[i];
-  tl.fromTo(`#s4-v-n${i}`, { scale: 1, svgOrigin: `${x} ${y}` }, { scale: 1.3, svgOrigin: `${x} ${y}`, duration: 0.14, yoyo: true, repeat: 1, immediateRender: false }, tEnd + 0.4 + 0.16 * i);
+  tl.fromTo(`#s4-v-n${i}`, { scale: 1, svgOrigin: `${x} ${y}` }, { scale: 1.35, svgOrigin: `${x} ${y}`, duration: 0.15, yoyo: true, repeat: 1, immediateRender: false }, tEnd + 0.4 + 0.18 * i);
+  tl.fromTo(`#s4-v-rn${i}`, { scale: 1, svgOrigin: `${LX + 30} ${RY(i)}` }, { scale: 1.3, svgOrigin: `${LX + 30} ${RY(i)}`, duration: 0.15, yoyo: true, repeat: 1, immediateRender: false }, tEnd + 0.4 + 0.18 * i);
 });

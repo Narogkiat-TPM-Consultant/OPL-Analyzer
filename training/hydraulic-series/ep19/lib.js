@@ -392,7 +392,7 @@ H.v6Symbol = (parent, p, o = {}) => {
 // ============================================================ EP19 additions
 const E19 = {
   ink: "#1a1d21", muted: "#59606a", blue: "#1f5fbf", green: "#178a4e", red: "#d0233a", yel: "#f2a900",
-  oil: "#c8961e", dirt: "#7a6744", rag: "#e4ecf7", cable: "#2b3036", conn: "#3d434b", pipe: "#7ea2df", paper: "#fffdf8",
+  oil: "#c8961e", dirt: "#7a6744", rag: "#e4ecf7", cable: "#2b3036", conn: "#3d434b", pipeC: "#7ea2df", paper: "#fffdf8",
 };
 
 // Oil drop (teardrop) whose round bottom sits at (x, y); absolute coordinates so GSAP can move it with x / y.
@@ -420,9 +420,12 @@ E19.op = (el, from, to, t, dur = 0.3) => tl.fromTo(el, { opacity: from }, { opac
 E19.waves = (parent, x, y, dir, o = {}) => {
   const g = H.el("g", { ...(o.id ? { id: o.id } : {}) }, parent);
   const arcs = (o.r || [26, 44, 62]).map((r) => H.el("path", { d: H.arcD(x, y, r, dir - (o.span ?? 32), dir + (o.span ?? 32)), fill: "none", stroke: o.color || E19.blue, "stroke-width": o.w ?? 6, "stroke-linecap": "round", opacity: 0 }, g));
+  // fade in, pulse between full and faint (so a still frame always shows them), fade out at t1 (if given)
   g.run = (t0, t1) => arcs.forEach((a, i) => {
-    const per = 0.5, n = Math.max(1, Math.floor((t1 - t0 - i * 0.12) / per));
-    tl.fromTo(a, { opacity: 0 }, { opacity: 1, duration: per / 2, yoyo: true, repeat: 2 * Math.ceil(n / 2) - 1, ease: "none", immediateRender: false }, t0 + i * 0.12);
+    const s = t0 + i * 0.12, per = 0.45, m = Math.max(2, 2 * Math.floor((t1 - s - 0.45) / per / 2));
+    tl.fromTo(a, { opacity: 0 }, { opacity: 1, duration: 0.2, immediateRender: false }, s);
+    tl.fromTo(a, { opacity: 1 }, { opacity: 0.35, duration: per, yoyo: true, repeat: m - 1, ease: "sine.inOut", immediateRender: false }, s + 0.2);
+    if (o.fadeOut !== false) tl.fromTo(a, { opacity: 1 }, { opacity: 0, duration: 0.25, immediateRender: false }, t1);
   });
   return g;
 };
@@ -436,7 +439,7 @@ E19.tick = (parent, cx, cy, r, o = {}) => {
 // Pipe (ink outline + light-blue oil) along path d.
 E19.pipe = (parent, d, w = 12) => {
   H.el("path", { d, fill: "none", stroke: E19.ink, "stroke-width": w + 6, "stroke-linejoin": "round" }, parent);
-  return H.el("path", { d, fill: "none", stroke: E19.pipe, "stroke-width": w, "stroke-linejoin": "round" }, parent);
+  return H.el("path", { d, fill: "none", stroke: E19.pipeC, "stroke-width": w, "stroke-linejoin": "round" }, parent);
 };
 
 // Solenoid valve (EP06 drawing) as installed: on a subplate (the mounting of p.30), two mounting bolts, a connector with
