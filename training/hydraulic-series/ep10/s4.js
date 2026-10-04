@@ -85,15 +85,20 @@ H.ring(hl, "s4-v-r1", 210, 373, 26, b + TT.seal, 3);
 show(B2, TT.g2);
 tl.fromTo(S.bclog, { opacity: 0 }, { opacity: 0.8, duration: 0.6 }, b + TT.breather);
 H.psLevel(S, PS.low, b + TT.level, 0.9);
-const jet = H.el("path", { id: "s4-v-jet", d: "M 690 500 L 690 520", fill: "none", stroke: "#d9a21b", "stroke-width": 8, opacity: 0 }, hl);
-show(jet, TT.level + 0.8, 0.2);
+// oil falls from the exposed return outlet into the tank (dashed stream) and splashes bubbles into the oil
+const rnd = (k) => { const x = Math.sin(k * 12.9898 + 78.233) * 43758.5453; return x - Math.floor(x); };
+const jet = H.el("g", { id: "s4-v-jet", opacity: 0 }, hl);
+const stream = H.el("path", { d: "M 690 500 L 690 530", fill: "none", stroke: "#c98f10", "stroke-width": 8, "stroke-dasharray": "7 5" }, jet);
+H.el("path", { d: "M 674 524 L 664 514 M 706 524 L 716 514 M 682 520 L 677 508 M 698 520 L 703 508", fill: "none", stroke: PC.blue, "stroke-width": 3.5, "stroke-linecap": "round" }, jet);
+show(jet, TT.level + 0.7, 0.2);
+tl.fromTo(stream, { strokeDashoffset: 0 }, { strokeDashoffset: -12 * Math.round((D - TT.level) * 4), duration: D - TT.level - 0.7, ease: "none", immediateRender: false }, b + TT.level + 0.7);
 const bub = H.el("g", { id: "s4-v-bub" }, hl);
-for (let i = 0; i < 16; i++) {
-  const t0 = TT.ret + 0.15 + i * 0.28, life = 1.5;
-  if (t0 + 0.3 > D) break;
-  const dx = -40 - 30 * Math.sin(i * 2.1), dy = 30 + 25 * Math.cos(i * 1.7), r = 5 + (i % 3) * 1.5;
-  const el = H.el("circle", { cx: 690, cy: 528, r, fill: "#ffffff", stroke: PC.blue, "stroke-width": 2.5, opacity: 0 }, bub);
-  tl.fromTo(el, { opacity: 1, x: 0, y: 0 }, { opacity: 0, x: dx, y: dy, duration: Math.min(life, D - t0), ease: "power1.out" }, b + t0);
+for (let i = 0; i < 26; i++) {
+  const t0 = TT.ret + 0.1 + i * 0.2;
+  if (t0 + 0.4 > D) break;
+  const dx = -25 - 85 * rnd(i), dy = 14 + 56 * rnd(i + 30), r = 6 + 3.5 * rnd(i + 60);
+  const el = H.el("circle", { cx: 690, cy: 538, r: H.f(r), fill: "#ffffff", stroke: PC.blue, "stroke-width": 3, opacity: 0 }, bub);
+  tl.fromTo(el, { opacity: 1, x: 0, y: 0 }, { opacity: 0, x: dx, y: dy, duration: Math.min(1.6, D - t0), ease: "power1.out", immediateRender: false }, b + t0);
 }
 
 // ---- ③ oil viscosity: the oil turns darker (thicker)

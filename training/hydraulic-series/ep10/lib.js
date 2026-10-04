@@ -8,7 +8,7 @@ const PC = {
   oilBg: "#fbe7a1", paper: "#fffdf8", red: "#d0233a", air: "#fffaf0", dirt: "#4b3d24", warn: "#f2a900", green: "#178a4e",
 };
 // tank geometry shared by the drawing and the level tween
-const PS = { lvl: 445, low: 515, oilBot: 612, glassBot: 596 };
+const PS = { lvl: 445, low: 528, oilBot: 612, glassBot: 596 };
 
 // Tween any numeric property along a pure function of time fn(t) (t = absolute seconds) between tA and tB.
 // Every frame is a function of time only, so the timeline stays seekable. `o.attr` = tween an SVG attribute;

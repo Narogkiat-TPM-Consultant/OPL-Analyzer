@@ -94,10 +94,10 @@ function bubble(ts, xs, rb, k, burstTh, grow) {
     const st = H.el("g", { id: `${id}s`, opacity: 0 }, fx), d = [];
     for (let i = 0; i < 6; i++) {
       const a = (i * Math.PI) / 3 + 0.3;
-      d.push(`M ${f(bx + 6 * Math.cos(a))} ${f(by + 6 * Math.sin(a))} L ${f(bx + 15 * Math.cos(a))} ${f(by + 15 * Math.sin(a))}`);
+      d.push(`M ${f(bx + 7 * Math.cos(a))} ${f(by + 7 * Math.sin(a))} L ${f(bx + 20 * Math.cos(a))} ${f(by + 20 * Math.sin(a))}`);
     }
-    H.el("path", { d: d.join(" "), fill: "none", stroke: PC.red, "stroke-width": 3.5, "stroke-linecap": "round" }, st);
-    tl.fromTo(st, { opacity: 1, scale: 0.5, svgOrigin: `${f(bx)} ${f(by)}` }, { opacity: 0, scale: 1.4, svgOrigin: `${f(bx)} ${f(by)}`, duration: 0.4, ease: "power2.out" }, b + tb);
+    H.el("path", { d: d.join(" "), fill: "none", stroke: PC.red, "stroke-width": 4.5, "stroke-linecap": "round" }, st);
+    tl.fromTo(st, { opacity: 1, scale: 0.6, svgOrigin: `${f(bx)} ${f(by)}` }, { opacity: 0, scale: 1.5, svgOrigin: `${f(bx)} ${f(by)}`, duration: 0.5, ease: "power2.out", immediateRender: false }, b + tb);
   }
 }
 
@@ -133,6 +133,6 @@ for (const [i, r] of [[0, 165], [1, 190], [2, 215]].map(([i, r]) => [i, r])) {
   noise.push(a);
 }
 H.psNoise(noise, b + t3, D - t3 - 0.2);
-const chB = H.chip(fx, "s3-v-cb", 880, 474, "ฟองถูกอัดแตก", { size: 24, anchor: "middle", stroke: PC.red, color: PC.red });
+const chB = H.chip(fx, "s3-v-cb", 880, 474, "ฟองถูกอัดแตก", { size: 24, anchor: "middle" });
 tl.fromTo(chB, { opacity: 0 }, { opacity: 1, duration: 0.3 }, b + t3 + 0.6);
 H.psNeedle(G, (t) => 6.2 - 1.6 * Math.min(1, Math.max(0, (t - b - t3) / 1.0)) + 0.7 * H.env(t, b + t3, b + D, 0.3) * H.wob(t, 1.1), b + t3 - 0.1, b + D);
