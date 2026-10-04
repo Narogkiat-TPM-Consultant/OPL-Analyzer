@@ -7,3 +7,5 @@ index.html
 opl.spec.json
 snapshots/
 *.mp4
+work-*/
+.*.hf-transaction-*/
