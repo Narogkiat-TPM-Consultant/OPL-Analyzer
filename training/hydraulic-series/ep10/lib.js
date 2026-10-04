@@ -207,7 +207,11 @@ H.vanePump = (parent, p, o = {}) => {
   // cam ring: paper band with explicit 45° hatch lines (a <pattern> fill does not render in the video capture)
   H.el("path", { d: ann(R, R + band), fill: PC.paper, "fill-rule": "evenodd" }, g);
   const hg = H.el("g", { "clip-path": `url(#${p}-rclip)` }, g), hl = [], L = R + band + 4;
-  for (let c = -2 * L; c <= 2 * L; c += 13) hl.push(`M ${H.f(c - L)} ${H.f(L)} L ${H.f(c + L)} ${H.f(-L)}`);
+  // lines x + y = k, cut to the square [-L, L]² so their box stays inside the pump
+  for (let k = -2 * L + 6; k < 2 * L; k += 13) {
+    const x0 = Math.max(-L, k - L), x1 = Math.min(L, k + L);
+    hl.push(`M ${H.f(x0)} ${H.f(k - x0)} L ${H.f(x1)} ${H.f(k - x1)}`);
+  }
   H.el("path", { d: hl.join(" "), fill: "none", stroke: PC.ink, "stroke-width": 2.6 }, hg);
   H.el("path", { d: ann(R, R + band), fill: "none", "fill-rule": "evenodd", stroke: PC.ink, "stroke-width": 4 }, g);
   return { g, rot, vanes, alpha, origin: `${-e} 0` };
