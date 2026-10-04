@@ -7,7 +7,7 @@ const rows = [6, 218, 430].map((y0, i) => {
   return { g, y0, ng: H.hzPanel(g, 64, y0, 500, 204, "NG"), ok: H.hzPanel(g, 584, y0, 500, 204, "OK") };
 });
 rows.forEach((r, i) => H.hzOp(r.g, 0.28, 1, b + P[i], 0.35));
-const lab = (parent, x, y, s, col) => H.text(parent, x, y, s, { size: 26, anchor: "middle", fill: col, weight: 800 });
+const lab = (parent, x, y, s, col) => H.text(parent, x, y, s, { size: 28, anchor: "middle", fill: col, weight: 800 });
 
 // ① twisted hose cannot be used — lay line spirals (NG) vs straight (OK) -------------------------------------
 {
@@ -86,7 +86,7 @@ const lab = (parent, x, y, s, col) => H.text(parent, x, y, s, { size: 26, anchor
   for (const dx of [-22, -8, 6, 20]) H.el("line", { x1: f(cx + dx - 5), y1: f(cy - 9), x2: f(cx + dx + 5), y2: f(cy + 9), stroke: "#f2f2f2", "stroke-width": 3.5 }, scuff);
   H.hzOp(scuff, 0, 1, t0 + 0.8, 0.4);
   H.hzRing(r.ng.art, f(cx), f(cy), 58, 40, t0 + 1.1, 3);
-  const l1 = lab(r.ng.art, 250, 192, "เสียดสี → ผิวขาด → ทะลุ", Z.red);
+  const l1 = lab(r.ng.art, 300, 52, "เสียดสี → ผิวขาด → ทะลุ", Z.red);
   l1.setAttribute("opacity", 0);
   H.hzOp(l1, 0, 1, t0 + 1.4);
   // OK: two hoses held apart by a band (clamp block)

@@ -22,7 +22,11 @@
   // NG: four signs
   const N = mini("s6-v-c2", "s6-v-n");
   const G = H.$("s6-v-c2"), t0 = b + st[1] + 0.15;
+  N.V.mid.setAttribute("fill", V6.pr);
+  N.V.ports.P.setAttribute("fill", V6.pr);
   N.V.coil("a", true, t0);
+  N.V.shift(0, 1, t0 + 0.25, 0.5);
+  H.v6Paint(N.V, 0, 1, t0 + 0.6);
   const [wx, wy] = L(88, 252);
   const wv = E19.waves(G, wx, wy, 90, { r: [11, 20, 29], span: 40, w: 3.5, fadeOut: false });
   wv.run(t0 + 0.2, b + D);
