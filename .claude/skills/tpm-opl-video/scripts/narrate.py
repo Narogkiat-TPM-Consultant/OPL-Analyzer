@@ -26,6 +26,7 @@ import ssl
 import subprocess
 import sys
 
+import urllib.error
 import urllib.request
 from xml.sax.saxutils import escape
 
@@ -76,8 +77,22 @@ def synth_azure(text, path, voice, rate):
         f"https://{region}.tts.speech.microsoft.com/cognitiveservices/v1", data=ssml.encode("utf-8"), method="POST",
         headers={"Ocp-Apim-Subscription-Key": key, "Content-Type": "application/ssml+xml",
                  "X-Microsoft-OutputFormat": "audio-24khz-96kbitrate-mono-mp3", "User-Agent": "tpm-opl-video"})
-    with urllib.request.urlopen(req, context=_SSL, timeout=60) as r, open(path, "wb") as f:
-        f.write(r.read())
+    try:
+        with urllib.request.urlopen(req, context=_SSL, timeout=60) as r, open(path, "wb") as f:
+            f.write(r.read())
+    except urllib.error.HTTPError as e:
+        if e.code in (401, 403):
+            sys.exit(f"azure TTS refused the request (HTTP {e.code}): check AZURE_SPEECH_KEY and that "
+                     f"AZURE_SPEECH_REGION ({region}) is the resource's region")
+        if e.code == 429 or e.code >= 500:  # throttled (free tier allows few requests per minute) or busy
+            raise Retry(float(e.headers.get("Retry-After") or 0)) from e
+        raise
+
+
+class Retry(Exception):
+    def __init__(self, after):
+        super().__init__(f"retry after {after:.0f}s")
+        self.after = after
 
 
 async def synth(engine, text, path, voice, rate):
@@ -112,14 +127,14 @@ async def main():
             path = os.path.join(out_dir, f"{sid}-{k + 1}.mp3")
             key = hashlib.sha1(f"{engine}|{voice}|{rate}|{text}".encode()).hexdigest()
             if cache.get(path) != key or not os.path.exists(path):
-                for attempt in range(3):
+                for attempt in range(6):
                     try:
                         await synth(engine, text, path, voice, rate)
                         break
-                    except Exception as e:  # network hiccups: retry, then fail loudly
-                        if attempt == 2:
+                    except Exception as e:  # throttling / network hiccups: back off, then fail loudly
+                        if attempt == 5:
                             sys.exit(f"TTS failed for {sid} segment {k + 1}: {e}")
-                        await asyncio.sleep(2 * (attempt + 1))
+                        await asyncio.sleep(max(getattr(e, "after", 0), min(60, 4 * 2 ** attempt)))
                 cache[path] = key
             lens.append(duration(path))
         if lens:
