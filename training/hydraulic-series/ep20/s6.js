@@ -7,7 +7,10 @@
   const D = H.c20SealFace("s6-v-c4", 170, 95, 1.15);
 
   // OK rod: light sweeps, sparkles
-  A.gleam.band.forEach((bd, i) => tl.fromTo(bd, { x: 0, opacity: 0.95 }, { x: 300, opacity: 0.95, duration: 0.8, ease: "power1.inOut" }, b + S[0] - 0.2 + i * 0.07));
+  A.gleam.band.forEach((bd, i) => {
+    tl.fromTo(bd, { x: 0, opacity: 0.95 }, { x: 300, opacity: 0.95, duration: 0.8, ease: "power1.inOut" }, b + S[0] - 0.2 + i * 0.07);
+    tl.set(bd, { x: 0, opacity: 0 }, b + S[0] + 0.7 + i * 0.07);   // park the band back inside the card
+  });
   A.sparks.forEach((s, i) => {
     const org = i ? "262 92" : "150 80";
     tl.fromTo(s, { opacity: 0, scale: 0.2, svgOrigin: org }, { opacity: 1, scale: 1, svgOrigin: org, duration: 0.25, ease: "back.out(3)" }, b + S[0] + 0.25 + i * 0.2);
