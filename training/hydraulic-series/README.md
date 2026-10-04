@@ -11,7 +11,8 @@ The source PDF is not stored here; attach it again in a session to write episode
 | `ep01/` | EP01 ส่วนประกอบของระบบไฮดรอลิก — spec + scene animation files |
 
 ## Status
-- EP01: visuals done and checked (lint 0 errors, check passed); preview rendered without voice.
+- EP01: rendered with Thai voice — 75.0 s, Azure th-TH-PremwadeeNeural at +8%, narration trimmed to fit
+  (63.6 s of speech). Lint 0 errors, check passed, cues verified on snapshots. Awaiting pilot approval.
 - Voice: Azure AI Speech (`AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION`, host `<region>.tts.speech.microsoft.com`
   allowed in the environment). Edge TTS does not work in the cloud environment (WebSocket blocked).
 
