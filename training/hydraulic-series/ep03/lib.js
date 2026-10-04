@@ -111,13 +111,13 @@ const S3 = {
   // (ball lifts upward = free flow toward the cylinder). Ports (0,±80).
   flow(g, p) {
     L3(g, "M 0 -80 L 0 80");
-    L3(g, "M 0 -50 L 80 -50 L 80 -14 M 80 10 L 80 50 L 0 50");
+    L3(g, "M 0 -50 L 80 -50 L 80 -15 M 80 12 L 80 50 L 0 50");
     const adj = H.el("g", { id: p + "-adj" }, g);
     L3(adj, "M -14 -24 Q -2 0 -14 24 M 14 -24 Q 2 0 14 24", { w: 3.5 });
     L3(adj, H.arrowD(-36, 28, 34, -26, 14), { w: 3.5 });
     const chk = H.el("g", { id: p + "-chk" }, g);
-    L3(chk, "M 68 -6 L 80 10 L 92 -6", { w: 3.5 });
-    C3(chk, 80, -4, 10, K3.paper, { sw: 3.5 });
+    L3(chk, "M 64 -12 L 80 12 L 96 -12", { w: 3.5 });
+    C3(chk, 80, -6, 9, K3.paper, { sw: 3.5 });
     return { adj, chk };
   },
   // double-acting cylinder: barrel, piston, rod. Ports (±128, 44). Returns the moving rod group and the
@@ -382,7 +382,7 @@ H.signCircuit = (parent, p) => {
     a: "M 438 466 L 438 374 L 438 355 L 322 355 L 322 100",
     ret: "M 578 100 L 578 355 L 482 355 L 482 498",
   };
-  const badges = { 1: [[578, 806]], 2: [[452, 660]], 3: [[244, 420]], 4: [[452, 255], [706, 255]], 5: [[238, 70]] };
+  const badges = { 1: [[578, 806]], 2: [[452, 660]], 3: [[250, 398]], 4: [[452, 255], [706, 255]], 5: [[238, 70]] };
   return { g, dv, fa, fb, cy, routes, badges, stroke: 150, cyStroke: 150 };
 };
 

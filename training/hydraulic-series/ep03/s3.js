@@ -21,7 +21,7 @@ const flash3 = (els, t, hold) => els.forEach((e) => H.e3flash(e, t, hold));
   flash3([H.e3ring(a, -90, -38, 180, 76, 1.3), H.e3ring(s, -137, -40, 274, 80, 1.15)], t1, t2 - t1 - 0.5);
   H.e3flash(fillL, t2, t3 - t2 - 0.4);
   H.e3flash(fillR, t3, t4 - t3 - 0.4);
-  flash3([H.e3ring(a, -164, -52, 92, 82, 1.3), H.e3ring(a, 72, -52, 92, 82, 1.3), H.e3ring(s, -183, -32, 60, 68, 1.15), H.e3ring(s, 123, -32, 60, 68, 1.15)], t4, 1.8);
+  flash3([H.e3ring(a, -164, -52, 92, 82, 1.3), H.e3ring(a, 72, -52, 92, 82, 1.3), H.e3ring(s, -183, -32, 60, 68, 1.15), H.e3ring(s, 123, -32, 60, 68, 1.15)], t4, Math.min(1.8, b + T.cues[1] - t4 - 0.6));
 }
 
 // ---- row 2: two flow regulating valves (throttle + check valve)
@@ -41,7 +41,7 @@ const flash3 = (els, t, hold) => els.forEach((e) => H.e3flash(e, t, hold));
     const adjPaths = f.adj.querySelectorAll("path");
     tl.to(adjPaths, { stroke: K3.blue, duration: 0.25 }, t1);
     tl.to(adjPaths, { stroke: K3.ink, duration: 0.3 }, t3);
-    H.e3flash(H.e3ring(G3(s, f.x, 0), 62, -22, 36, 40, 1.12), t3, 1.4);
+    H.e3flash(H.e3ring(G3(s, f.x, 0), 60, -24, 40, 44, 1.12), t3, Math.min(1.4, b + T.cues[2] - t3 - 0.6));
   });
   knobs.forEach((k) => {
     H.e3flash(H.e3ring(k.knob.parentNode, -30, -30, 60, 60, 1.4), t1, t3 - t1 - 0.4);
