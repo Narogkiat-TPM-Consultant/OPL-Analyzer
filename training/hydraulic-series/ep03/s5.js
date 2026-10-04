@@ -14,6 +14,3 @@ H.el("circle", { cx: 0, cy: 0, r: 50, fill: "rgba(242,169,0,0.16)", stroke: "#f2
 H.el("path", { d: "M 36 36 L 80 80", stroke: "#f2a900", "stroke-width": 20, "stroke-linecap": "round" }, mg);
 tl.fromTo(mg, { x: 170, y: 100 }, { x: 96, y: 160, duration: Math.min(1.6, D * 0.3), ease: "sine.inOut" }, b + 0.3);
 tl.to(mg, { x: 150, y: 220, duration: Math.min(1.8, D * 0.35), ease: "sine.inOut" }, b + 0.3 + Math.min(1.6, D * 0.3));
-// the caption (proposal note) would sit on the bottom hazard stripe: lift it and lighten it for the dark scene
-const cap5 = document.querySelector("#s5 .dg-cap");
-if (cap5) { cap5.style.bottom = "96px"; cap5.style.color = "#d8d2c4"; cap5.style.fontSize = "30px"; }

@@ -137,3 +137,5 @@ Line timing up with the text: a diagram point with `"at": 2.8` should be followe
   `text_box_overflow`; mark the cropped group with `data-layout-allow-overflow`.
 - Keep ≥ 12 units of margin inside the viewBox: text descenders and stroke caps near the edge get clipped,
   and `check` reports the overflow.
+- SVG `<pattern>` fills (hatching for cut metal) show only their background colour in rendered frames —
+  draw hatch lines explicitly (a clipped group of `<line>`s) instead.

@@ -7,6 +7,4 @@
   H.el("rect", { x: 90, y: 268, width: 120, height: 14, rx: 3, fill: "#121417" }, g);
   const n = Math.max(2, Math.round((D - 0.6) / 0.4));
   tl.fromTo(fl, { scaleY: 1, scaleX: 1, svgOrigin: "150 262" }, { scaleY: 1.1, scaleX: 0.94, svgOrigin: "150 262", duration: 0.2, ease: "sine.inOut", yoyo: true, repeat: n - (n % 2) }, b + 0.5);
-  const cap = document.querySelector("#s4 .dg-cap");
-  if (cap) cap.style.bottom = "96px";
 }
