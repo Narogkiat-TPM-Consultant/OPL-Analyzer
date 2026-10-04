@@ -63,7 +63,7 @@ const flash2 = (els, t, hold) => els.forEach((e) => H.e3flash(e, t, hold));
   C3(s, 170, 8, 5, K3.ink, { sw: 0 });
   S3.stop(G3(s, 170, -27));
   S3.gauge(G3(s, 170, -76));
-  H.e3rowText(r, [["Relief valve", K3.blue], [" วาล์วคุมแรงดัน", K3.ink]], "Pressure gauge (เกจวัดแรงดัน) + Stop valve", "กล่อง + ลูกศร + สปริง · วงกลม + ลูกศร");
+  H.e3rowText(r, [["Relief valve", K3.blue], [" วาล์วคุมแรงดัน", K3.ink]], "เกจวัดแรงดัน + Stop valve (วาล์วปิด-เปิดเกจ)", "กล่อง + ลูกศร + สปริง · วงกลม + ลูกศร");
   H.e3rowOn(r, b + T.cues[2]);
   const t1 = at(3, 0.02), t2 = at(3, 0.47);
   flash2([H.e3ring(a, -50, -110, 116, 152), H.e3ring(s, -52, -62, 144, 130)], t1, t2 - t1 - 0.5);
