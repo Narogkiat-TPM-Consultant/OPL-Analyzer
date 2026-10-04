@@ -124,7 +124,7 @@ H.dcUnit = (parent, p, o = {}) => {
 
   // pressure gauge: blue mark = set pressure (ค่าตั้ง); the deck gives no number, so no scale values
   S.gauge = H.gauge(g, 620, 114, 44, { id: `${p}-g`, min: 0, max: 10, ticks: 5, minor: 1, labelEvery: 99, value: 6, marks: [{ v: 6, color: DC.blue, id: `${p}-set` }] });
-  if (has("gauge")) T(566, 106, "เกจวัดแรงดัน", { size: 22, anchor: "end" });
+  if (has("gauge")) T(566, 70, "เกจวัดแรงดัน", { size: 22, anchor: "end" });
 
   // relief valve, drawn 1.5× around the pipe axis so the handle and lock nut can be seen
   const rv = H.el("g", { id: `${p}-rv`, transform: "translate(760 196) scale(1.5)" }, g);
@@ -139,7 +139,7 @@ H.dcUnit = (parent, p, o = {}) => {
   S.lock = H.el("g", { id: `${p}-lock` }, rv);
   r2(-16, -60, 32, 14, DC.dark, { rx: 2 }, S.lock);
   H.el("path", { d: "M -6 -59 L -6 -47 M 6 -59 L 6 -47", fill: "none", stroke: DC.ink, "stroke-width": 1.6 }, S.lock);
-  if (has("relief")) T(712, 256, "Relief valve", { size: 22, anchor: "end" });
+  if (has("relief")) T(778, 262, "Relief valve", { size: 22, anchor: "start" });
   if (has("handle")) {
     T(830, 55, "มือหมุนปรับแรงดัน", { size: 22, anchor: "start" });
     T(830, 124, "Lock nut", { size: 22, anchor: "start" });

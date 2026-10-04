@@ -1,34 +1,69 @@
 {
   "opl_type": "basic",
   "target_duration": 75,
-  "voice": { "name": "th-TH-PremwadeeNeural", "rate": "+8%" },
-  "js_lib": ["../lib/hyd_lib.js", "lib.js"],
-  "form": { "no": "HP-13 (อ้างอิง OPL 5-C-1)", "date": "2026-10-04", "author": "", "approver": "", "machine": "Equipment Skills Training · Hydraulic" },
+  "voice": {
+    "name": "th-TH-PremwadeeNeural",
+    "rate": "+8%"
+  },
+  "js_lib": [
+    "../lib/hyd_lib.js",
+    "lib.js"
+  ],
+  "form": {
+    "no": "HP-13 (อ้างอิง OPL 5-C-1)",
+    "date": "2026-10-04",
+    "author": "",
+    "approver": "",
+    "machine": "Equipment Skills Training · Hydraulic"
+  },
   "title": {
     "line1": "ตรวจประจำวัน vs",
     "line2": "ตรวจตามรอบ",
-    "sub": "Daily check · Regular check — ตา · หู · มือ พบผิดปกติได้ทันที",
+    "sub": "Daily check · Regular check — พบผิดปกติทันที",
     "narration": "OPL ความรู้พื้นฐาน ตรวจประจำวัน กับตรวจตามรอบ"
   },
   "scenes": [
     {
       "type": "title",
-      "svg": { "viewBox": "20 30 800 610", "body": "<g id='s1-v-u'></g><g id='s1-v-fx'></g>" },
+      "svg": {
+        "viewBox": "20 30 800 610",
+        "body": "<g id='s1-v-u'></g><g id='s1-v-fx'></g>"
+      },
       "narration": "OPL ความรู้พื้นฐาน ตรวจประจำวัน กับตรวจตามรอบ",
       "js_file": "s1.js"
     },
     {
       "type": "diagram",
       "heading": "ทำไมต้อง**ตรวจประจำวัน**? ผิดปกติส่วนใหญ่มาจากสาเหตุง่ายๆ",
-      "svg": { "viewBox": "0 0 1100 640", "body": "<g id='s2-v-u'></g><g id='s2-v-fx'></g>" },
+      "svg": {
+        "viewBox": "0 0 1100 640",
+        "body": "<g id='s2-v-u'></g><g id='s2-v-fx'></g>"
+      },
       "numbered": false,
       "points": [
-        { "text": "**Lock nut** มือหมุนคลาย → ค่าตั้งแรงดัน Relief valve เปลี่ยน", "cue": 2 },
-        { "text": "น้ำมันในถัง**ไม่พอ** (Oil level)", "cue": 3 },
-        { "text": "ท่อคลาย → **น้ำมันรั่ว** (Oil leak)", "cue": 4 },
-        { "text": "**อากาศปน**ในน้ำมัน (Air mix)", "cue": 5 }
+        {
+          "text": "**Lock nut** มือหมุนคลาย → ค่าตั้งแรงดัน Relief valve เปลี่ยน",
+          "cue": 2
+        },
+        {
+          "text": "น้ำมันในถัง**ไม่พอ** (Oil level)",
+          "cue": 3
+        },
+        {
+          "text": "ท่อคลาย → **น้ำมันรั่ว** (Oil leak)",
+          "cue": 4
+        },
+        {
+          "text": "**อากาศปน**ในน้ำมัน (Air mix)",
+          "cue": 5
+        }
       ],
-      "callout": { "label": "ตรวจประจำวัน (Daily inspection)", "value": "!!พบความผิดปกติได้ทันที!!", "example": "Immediate detection of abnormality", "cue": 6 },
+      "callout": {
+        "label": "ตรวจประจำวัน (Daily inspection)",
+        "value": "!!พบความผิดปกติได้ทันที!!",
+        "example": "Immediate detection of abnormality",
+        "cue": 6
+      },
       "narration": [
         "ความผิดปกติส่วนใหญ่ของไฮดรอลิก มาจากสาเหตุง่ายๆ",
         "ล็อกนัทมือหมุนปรับแรงดันคลาย ค่าตั้งรีลีฟวาล์วเปลี่ยน",
@@ -41,7 +76,8 @@
       "js_file": "s2.js"
     },
     {
-      "type": "alert", "icon": "warning",
+      "type": "alert",
+      "icon": "warning",
       "pre": "ตรวจด้วยมือ ขณะเครื่องเดิน",
       "big": "ห้ามแตะส่วนที่หมุน",
       "note": "ระวังผิวร้อน · ต้องขัน / ปรับ → หยุดปั๊ม ให้เกจเป็น 0 + LOTO ก่อน",
@@ -51,7 +87,10 @@
     {
       "type": "diagram",
       "heading": "Daily check: ใช้ **ตา · หู · มือ** ตรวจ 8 ข้อ ตามลำดับ",
-      "svg": { "viewBox": "0 0 1760 740", "body": "<g id='s4-v-u'></g><g id='s4-v-fx'></g><g id='s4-v-list'></g>" },
+      "svg": {
+        "viewBox": "0 0 1760 740",
+        "body": "<g id='s4-v-u'></g><g id='s4-v-fx'></g><g id='s4-v-list'></g>"
+      },
       "narration": [
         "ไม่ต้องใช้เครื่องมือซับซ้อน ใช้ตา หู และมือสัมผัส ทุกคนทำได้ในเวลาสั้น",
         "หนึ่ง ความสกปรกภายนอก สอง น้ำมันรั่ว สาม การสั่น สี่ เสียงดัง",
@@ -59,16 +98,62 @@
         "ตรวจครบทุกข้อ ตามลำดับทุกครั้ง"
       ],
       "caption": "* ภาพจำลอง · ข้อ 6 ต้นฉบับพิมพ์ \"Oil sound up\" — ตีความเป็น อุณหภูมิน้ำมันสูงขึ้น (油温上昇) · การจับคู่ ตา/หู/มือ กับแต่ละข้อ = ข้อเสนอ",
-      "js_file": "s4.js"
+      "js_file": "s4.js",
+      "sfx": [
+        [
+          "pop",
+          5.72
+        ],
+        [
+          "pop",
+          7.28
+        ],
+        [
+          "pop",
+          8.34
+        ],
+        [
+          "pop",
+          9.19
+        ],
+        [
+          "pop",
+          10.34
+        ],
+        [
+          "pop",
+          11.58
+        ],
+        [
+          "pop",
+          13.39
+        ],
+        [
+          "pop",
+          14.63
+        ],
+        [
+          "squeal",
+          10.49
+        ],
+        [
+          "thud",
+          15.68
+        ]
+      ]
     },
     {
       "type": "compare",
       "heading": "**Daily check** vs **Regular check** ต่างกันอย่างไร?",
       "left": {
-        "tone": "ok", "tag": "ทุกวัน",
+        "tone": "ok",
+        "tag": "ทุกวัน",
         "title": "ตรวจประจำวัน (Daily)",
         "cue": 1,
-        "svg": { "viewBox": "0 0 760 240", "body": "<g id='s5-v-a'></g>" },
+        "svg": {
+          "viewBox": "0 0 760 240",
+          "body": "<g id='s5-v-a'></g>"
+        },
         "bullets": [
           "ตา · หู · มือ — ทุกคนทำได้ ใช้เวลาสั้น",
           "ครบทุกข้อ ตามลำดับ → **พบ**ผิดปกติทันที",
@@ -76,17 +161,24 @@
         ]
       },
       "right": {
-        "tone": "before", "tag": "ตามรอบ",
+        "tone": "before",
+        "tag": "ตามรอบ",
         "title": "ตรวจตามรอบ (Regular)",
         "cue": 2,
-        "svg": { "viewBox": "0 0 760 240", "body": "<g id='s5-v-b'></g>" },
+        "svg": {
+          "viewBox": "0 0 760 240",
+          "body": "<g id='s5-v-b'></g>"
+        },
         "bullets": [
           "ตรวจละเอียดเป็นระยะ 4 ข้อ",
           "หา**สาเหตุ**ของผิดปกติเล็กๆ จาก Daily check",
           "ผู้ตรวจ: ช่างซ่อมบำรุง (PM) *"
         ]
       },
-      "banner": { "text": "Daily check = !!พบเร็ว!! · Regular check = **หาสาเหตุ**", "tone": "ink" },
+      "banner": {
+        "text": "Daily check = !!พบเร็ว!! · Regular check = **หาสาเหตุ**",
+        "tone": "ink"
+      },
       "narration": [
         "ตรวจประจำวัน ทำทุกวัน ด้วยตา หู มือ",
         "ตรวจตามรอบ ตรวจละเอียดเป็นระยะ และหาสาเหตุความผิดปกติเล็กๆ ที่พบจากตรวจประจำวัน",

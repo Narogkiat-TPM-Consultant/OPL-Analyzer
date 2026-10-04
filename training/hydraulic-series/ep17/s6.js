@@ -23,13 +23,14 @@ tl.fromTo([tray, arr], { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRen
 // 4 temperature gauge + palm (shared drawing)
 const tcard = (id, needleTo, t, hot) => {
   const g = H.$(id);
-  const G = H.gauge(g, 96, 100, 74, { id: `${id}-g`, min: 0, max: 100, ticks: 5, minor: 1, labelEvery: 1, labelSize: 17, marks: [{ v: 55 }], value: 20, unit: "°C" });
+  const G = H.gauge(g, 96, 100, 74, { id: `${id}-g`, min: 0, max: 100, ticks: 2, minor: 4, labelEvery: 1, labelSize: 19, marks: [{ v: 55 }], value: 20 });
   tl.to(G.needle, { rotation: G.rot(needleTo), svgOrigin: G.origin, duration: 0.8, ease: "power2.out" }, t);
   H.el("rect", { x: 200, y: 56, width: 150, height: 120, rx: 6, fill: TC.metal, stroke: TC.ink, "stroke-width": 4 }, g);
   const palm = H.t17Palm(g, 275, 122, 0.52);
   return { g, G, palm };
 };
 const T3 = tcard("s6-v-c3", 38, b + st[2] + 0.1);
+T3.palm.setAttribute("opacity", 0);
 tl.fromTo(T3.palm, { y: -50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.4, immediateRender: false }, b + st[2] + 0.4);
 const T4 = tcard("s6-v-c4", 72, b + st[3] + 0.1);
 const heat = H.t17Heat(T4.g, 275, 52, 40, { w: 4 });

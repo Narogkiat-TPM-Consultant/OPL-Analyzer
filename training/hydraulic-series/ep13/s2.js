@@ -10,7 +10,7 @@ tl.fromTo(U.flow, { strokeDashoffset: 0 }, { strokeDashoffset: -26 * Math.round(
 
 // ① lock nut of the pressure-adjust handle loosens; handle unscrews; set pressure changes
 const t1 = b + c[1];
-H.ring(fx, "s2-v-r1", 760, 104, 48, t1 + 0.2, 3);
+const r1 = H.ring(fx, "s2-v-r1", 760, 104, 48, t1 + 0.2, 3);
 tl.fromTo(U.lock, { y: 0 }, { y: -6, duration: 0.5, ease: "power2.inOut" }, t1 + 0.7);
 tl.fromTo(U.lgap, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t1 + 0.9);
 const turn = H.el("path", { id: "s2-v-turn", d: "M 714 74 A 46 13 0 0 0 806 74 M 794 64 L 806 74 L 792 82", fill: "none", stroke: DC.blue, "stroke-width": 5, "stroke-linecap": "round", "stroke-linejoin": "round", opacity: 0 }, fx);
@@ -22,13 +22,13 @@ tl.fromTo(turn, { opacity: 1 }, { opacity: 0, duration: 0.3, immediateRender: fa
 // ② oil level drops below L
 const t2 = b + c[2];
 H.dcLevel(U, DU.low, t2 + 0.1, 1.0);
-H.dcGlassBox(fx, "s2-v-lv", t2 + 0.3, DC.red, 2);
+const r2 = H.dcGlassBox(fx, "s2-v-lv", t2 + 0.3, DC.red, 2);
 
 // ③ tube fitting loosens → oil drips onto the lid
 const t3 = b + c[3];
 tl.fromTo(U.nut, { x: 0 }, { x: 8, duration: 0.45, ease: "power2.out" }, t3 + 0.1);
 tl.fromTo(U.gap, { opacity: 0 }, { opacity: 1, duration: 0.25 }, t3 + 0.3);
-H.ring(fx, "s2-v-r3", 536, 196, 36, t3 + 0.1, 2);
+const r3 = H.ring(fx, "s2-v-r3", 536, 196, 36, t3 + 0.1, 2);
 H.dcLeak(U, t3 + 0.5, b + D - 0.2);
 
 // ④ air mixed in the oil: bubbles travel along the pressure line
@@ -41,8 +41,11 @@ for (let i = 0; i < 6; i++) {
   H.fnTo(bub, "x", xAt, t4, b + D);
   H.fnTo(bub, "opacity", (t) => (t < t4 + 0.08 * i ? 0 : vis(xAt(t))), t4, b + D);
 }
-H.chip(fx, "s2-v-air", 650, 300, "ฟองอากาศ (Air)", { size: 22, stroke: DC.blue, color: DC.blue, opacity: 0 });
+H.el("line", { x1: 652, y1: 243, x2: 652, y2: 206, stroke: DC.blue, "stroke-width": 3 }, H.chip(fx, "s2-v-air", 652, 262, "ฟองอากาศ (Air)", { size: 22, stroke: DC.blue, color: DC.blue, opacity: 0 }));
 tl.fromTo("#s2-v-air", { opacity: 0 }, { opacity: 1, duration: 0.3 }, t4 + 0.4);
+
+// each red mark steps back when the next cause is named (keeps red to the current spot)
+[[r1, b + c[2]], [r2, b + c[3]], [r3, b + c[4]]].forEach(([el, t]) => tl.fromTo(el, { opacity: 1 }, { opacity: 0.3, duration: 0.3, immediateRender: false }, t));
 
 // ⑤ the daily round finds them: eye badge + blue check rings on the four spots
 const t5 = b + c[5];

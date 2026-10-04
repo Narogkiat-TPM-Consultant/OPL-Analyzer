@@ -96,7 +96,7 @@ const lab = (parent, x, y, s, col) => H.text(parent, x, y, s, { size: 28, anchor
   H.el("rect", { x: 226, y: 64, width: 48, height: 120, rx: 10, fill: Z.metal, stroke: Z.ink, "stroke-width": 4 }, band);
   H.el("line", { x1: 226, y1: 124, x2: 274, y2: 124, stroke: Z.ink, "stroke-width": 3 }, band);
   H.el("path", { d: H.hexD(250, 124, 11), fill: Z.dark, stroke: Z.ink, "stroke-width": 3 }, band);
-  H.hzLabel(r.ok.art, 286, 133, "Band", { size: 26, fill: Z.green });
-  const ring = H.el("ellipse", { cx: 250, cy: 124, rx: 52, ry: 78, fill: "none", stroke: Z.green, "stroke-width": 6, opacity: 0 }, r.ok.art);
+  H.hzLabel(r.ok.art, 312, 134, "Band", { size: 28, fill: Z.green });
+  const ring = H.el("ellipse", { cx: 250, cy: 124, rx: 44, ry: 76, fill: "none", stroke: Z.green, "stroke-width": 6, opacity: 0 }, r.ok.art);
   H.hzOp(ring, 0, 1, b + P[2] + 3.0, 0.25);
 }
