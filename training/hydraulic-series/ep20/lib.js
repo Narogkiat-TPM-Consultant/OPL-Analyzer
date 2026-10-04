@@ -106,7 +106,7 @@ H.c20Gleam = (parent, id, x, y, w, h) => {
 // line y = 0; covers ±110, tube ±80, tie rods at ±92, rod Ø36. The rod is one long rigid body whose hidden
 // part sits behind the tube, so stroking = moving the `rod` group in x.
 // o: { id, x, y, s, rod (visible rod length), pipeTop, feet, grime }
-// → { g, rod, gleam, x1 (rod end), nuts, fits, bolts, grime: [{el, x}], at(x, y) → parent coords }
+// → { g, rod, gleam, x1 (rod end), nuts, fits, bolts, nutEls, boltEls (their rects), grime: [{el, x}], at(x, y) → parent coords }
 H.c20Ext = (parent, o = {}) => {
   const id = o.id || "c20x", s = o.s ?? 1, ox = o.x ?? 0, oy = o.y ?? 0;
   const g = H.el("g", { id, transform: `translate(${ox} ${oy}) scale(${s})` }, parent);
@@ -126,12 +126,12 @@ H.c20Ext = (parent, o = {}) => {
   const gleam = H.c20Gleam(rod, id + "-clip", 62, -16, x1 - 64, 32);
 
   // feet + mounting bolts
-  const bolts = [];
+  const bolts = [], boltEls = [], nutEls = [];
   if (o.feet !== false) {
     for (const x0 of [6, 396]) {
       R(g, x0, 108, 58, 16, C20.metal, { "stroke-width": 3.5 });
       R(g, x0 - 22, 122, 102, 16, C20.metal, { "stroke-width": 3.5 });
-      for (const bx of [x0 - 17, x0 + 61]) { H.c20Nut(g, bx, 108, 14, 14, { axis: "v", sw: 2.5, fill: C20.dark }); bolts.push([bx + 7, 115]); }
+      for (const bx of [x0 - 17, x0 + 61]) { boltEls.push(H.c20Nut(g, bx, 108, 14, 14, { axis: "v", sw: 2.5, fill: C20.dark }).firstChild); bolts.push([bx + 7, 115]); }
     }
   }
 
@@ -144,7 +144,7 @@ H.c20Ext = (parent, o = {}) => {
 
   // tie-rod nuts on the outer faces, port fittings, dust seal where the rod leaves the rod cover
   const nuts = [];
-  for (const x of [-20, 460]) for (const y of [-92, 92]) { H.c20Nut(g, x, y - 15, 20, 30); nuts.push([x + 10, y]); }
+  for (const x of [-20, 460]) for (const y of [-92, 92]) { nutEls.push(H.c20Nut(g, x, y - 15, 20, 30).firstChild); nuts.push([x + 10, y]); }
   const fits = [];
   for (const x of [35, 425]) { H.c20Nut(g, x - 18, -134, 36, 24, { axis: "v" }); fits.push([x, -122]); }
   R(g, 458, -25, 12, 50, C20.rubber, { rx: 4, "stroke-width": 3 });
@@ -159,7 +159,7 @@ H.c20Ext = (parent, o = {}) => {
       grime.push({ el, x });
     });
   }
-  return { g, rod, gleam, x1, nuts, fits, bolts, grime, s, at: (x, y) => [ox + s * x, oy + s * y] };
+  return { g, rod, gleam, x1, nuts, fits, bolts, nutEls, boltEls, grime, s, at: (x, y) => [ox + s * x, oy + s * y] };
 };
 
 // ---------------------------------------------------------------- dust seal seen end-on (rod cover face)
@@ -177,15 +177,15 @@ H.c20SealFace = (parent, cx, cy, k = 1, o = {}) => {
   H.el("circle", { cx, cy, r: f(9 * k), fill: C20.dark, stroke: C20.ink, "stroke-width": f(2.5 * k) }, g);
   // NG: a torn-out piece of the lip (cover colour shows through), jagged edges, dust going in
   const tear = H.el("g", { opacity: 0, ...(o.id ? { id: o.id + "-tear" } : {}) }, g);
-  H.el("path", { d: H.arcD(cx, cy, 40 * k, -78, -30), fill: "none", stroke: C20.metal, "stroke-width": f(18 * k) }, tear);
+  H.el("path", { d: H.arcD(cx, cy, 40 * k, -86, -24), fill: "none", stroke: C20.metal, "stroke-width": f(18 * k) }, tear);
   const P = (deg, r) => [cx + r * k * Math.cos((deg * Math.PI) / 180), cy + r * k * Math.sin((deg * Math.PI) / 180)];
-  for (const [d0, s] of [[-78, 1], [-30, -1]]) {
+  for (const [d0, s] of [[-86, 1], [-24, -1]]) {
     const p = [P(d0, 32), P(d0 + 6 * s, 36), P(d0 - 2 * s, 40), P(d0 + 7 * s, 44), P(d0, 48)];
     H.el("path", { d: "M " + p.map(([x, y]) => `${f(x)} ${f(y)}`).join(" L "), fill: "none", stroke: C20.ink, "stroke-width": f(3 * k), "stroke-linejoin": "round" }, tear);
   }
   const crack = [P(-12, 48), P(-6, 44), P(-12, 40), P(-4, 35)];
   H.el("path", { d: "M " + crack.map(([x, y]) => `${f(x)} ${f(y)}`).join(" L "), fill: "none", stroke: C20.paper, "stroke-width": f(2.5 * k) }, tear);
-  for (const [deg, r, rr] of [[-60, 56, 4], [-46, 62, 3.2], [-68, 66, 3], [-52, 46, 3]]) {
+  for (const [deg, r, rr] of [[-62, 58, 4.5], [-44, 64, 3.8], [-72, 68, 3.5], [-52, 47, 3.5], [-36, 52, 3]]) {
     const [x, y] = P(deg, r);
     H.el("circle", { cx: f(x), cy: f(y), r: f(rr * k), fill: C20.grime }, tear);
   }

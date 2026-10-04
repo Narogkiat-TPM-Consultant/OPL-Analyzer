@@ -24,7 +24,8 @@ const L1 = [
   H.t17Lab(ug, "s2-v-lfill", 640, 102, "ช่องเติม", { size: 24, leader: [626, 156] }),
 ];
 L1.forEach((el, i) => H.t17Show(el, b + c[0] + 0.15 + 0.7 * i));
-H.t17Ring(fx, "s2-v-rman", ...pg(778, 376), 48, b + c[0] + 0.85, 2);
+const rMan = H.t17Ring(fx, "s2-v-rman", ...pg(778, 376), 48, b + c[0] + 0.85, 2);
+H.t17Hide(rMan, b + c[1]);
 // replenish: a few oil drops fall into the port
 for (let k = 0; k < 3; k++) {
   const [dx, dy] = pg(622, 112);
@@ -39,7 +40,8 @@ const L2 = [
   H.t17Lab(ug, "s2-v-lmet", 70, 552, "เกจระดับ (Oil level meter)", { size: 24, leader: [56, 474] }),
 ];
 L2.forEach((el, i) => H.t17Show(el, b + c[1] + 0.15 + 1.0 * i));
-H.t17Ring(fx, "s2-v-rbr", ...pg(545, 149), 52, b + c[1] + 0.2, 2);
+const rBr = H.t17Ring(fx, "s2-v-rbr", ...pg(545, 149), 52, b + c[1] + 0.2, 2);
+H.t17Hide(rBr, b + c[2]);
 const mr = H.el("rect", { x: H.f(TX + SC * 24), y: H.f(TY + SC * 212), width: H.f(SC * 64), height: H.f(SC * 272), rx: 14, fill: "none", stroke: TC.blue, "stroke-width": 5, opacity: 0 }, fx);
 tl.fromTo(mr, { opacity: 0 }, { opacity: 1, duration: 0.3, yoyo: true, repeat: 3, immediateRender: false }, b + c[1] + 1.2);
 // the breather breathes: air arrows in / out of the cap
@@ -51,7 +53,7 @@ for (const [x1, y1, x2, y2] of [[455, 108, 505, 136], [635, 108, 585, 136]]) {
 tl.fromTo(air, { opacity: 0 }, { opacity: 1, duration: 0.3, yoyo: true, repeat: 3, immediateRender: false }, b + c[1] + 0.3);
 
 // seg 3 — baffle plate
-const L3 = H.t17Lab(ug, "s2-v-lbaf", 470, 300, "Baffle plate (แผ่นกั้น)", { size: 24, leader: [470, 336] });
+const L3 = H.t17Lab(ug, "s2-v-lbaf", 470, 300, "Baffle plate (แผ่นกั้น)", { size: 24, anchor: "middle", leader: [470, 336] });
 H.t17Show(L3, b + c[2] + 0.15);
 // flow path: return outlet → along the bottom → over the plate → to the suction filter
 const path = "M 728 432 C 650 470 560 440 520 380 C 500 345 480 318 450 330 C 400 350 330 400 300 438";

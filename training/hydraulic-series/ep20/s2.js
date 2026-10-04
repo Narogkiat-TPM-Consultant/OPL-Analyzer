@@ -74,8 +74,8 @@
   H.el("path", { d: H.c20HeadD(...A(258), ...A(282), 16), fill: C20.blue }, adj);
 
   // dust on the rod (outside the seal)
-  const DX = [752, 768, 784, 800, 816];
-  const dust = DX.map((x, i) => H.el("circle", { cx: x, cy: 270 + (i % 2), r: 5, fill: C20.grime, opacity: 0 }, g));
+  const DX = [756, 774, 792, 810, 828];
+  const dust = DX.map((x, i) => H.el("circle", { cx: x, cy: 268 + (i % 2), r: 7, fill: C20.grime, stroke: C20.ink, "stroke-width": 1.5, opacity: 0 }, g));
 
   // oil flows
   const F = (id, d, white) => H.c20Flow(g, id, d, white ? { w: 5 } : { color: C20.blue, w: 5, dash: "9 11", period: 20 });
@@ -99,7 +99,7 @@
   // cue3: U packing flashes; dust seal scrapes the dust as the rod retracts 90
   tl.fromTo(Lu, { opacity: 0 }, { opacity: 1, duration: 0.4 }, b + c[2] + 0.1);
   tl.fromTo(cups, { attr: { stroke: C20.ink } }, { attr: { stroke: C20.blue }, duration: 0.25, yoyo: true, repeat: 5 }, b + c[2] + 0.3);
-  const td = c[2] + 1.6, dd = 90, Td = 1.2, v = dd / Td, lip = 734;
+  const td = c[2] + 1.6, dd = 100, Td = 1.3, v = dd / Td, lip = 736;
   tl.fromTo(Ls, { opacity: 0 }, { opacity: 1, duration: 0.4 }, b + td - 0.5);
   tl.fromTo(seal, { attr: { fill: C20.rubber } }, { attr: { fill: C20.blue }, duration: 0.25, yoyo: true, repeat: 3 }, b + td - 0.4);
   tl.fromTo(dust, { opacity: 0 }, { opacity: 1, duration: 0.3, stagger: 0.05 }, b + td - 0.4);
