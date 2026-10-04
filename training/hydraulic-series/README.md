@@ -2,21 +2,23 @@
 
 Motion-graphics training clips (75 s, Thai voice-over) built with the `tpm-opl-video` skill
 (`.claude/skills/tpm-opl-video`) from the JIPM-Solutions deck *Equipment Skills Training – Hydraulic / Pneumatic*.
-The source PDF is not stored here; attach it again in a session to write episodes 02–31.
+The source PDF is not stored here; attach it again in a session to write episodes 09–31.
 
 | Path | What |
 |---|---|
 | `SERIES_PLAN.md` | 31 episodes mapped to PDF pages + EP01 narration script |
 | `lib/hyd_lib.js` | shared drawings: hydraulic unit, functional-group boxes, component icons, oil-flow animation |
-| `ep01/` | EP01 ส่วนประกอบของระบบไฮดรอลิก — spec + scene animation files |
+| `ep01/` … `ep08/` | Part A (hydraulic basics, OPL 5-A-1 … 5-A-10): spec, scene animation files, episode `lib.js` |
 
 ## Status
-- EP01: rendered with Thai voice — 75.0 s, Azure th-TH-PremwadeeNeural at +8%, narration trimmed to fit
-  (63.6 s of speech). Lint 0 errors, check passed, cues verified on snapshots. Awaiting pilot approval.
+- Part A EP01–EP08 rendered: 75.0 s each, Azure th-TH-PremwadeeNeural at +8%, lint 0 errors, check passed,
+  snapshots reviewed. EP01 approved as pilot. Facts flagged for confirmation are listed per episode in the
+  delivery notes (proposal captions `* ข้อเสนอ — ให้หัวหน้างานยืนยัน` on screen).
+- Next: Part B EP09–EP12 (hydraulic trouble cases, PDF p.13–16).
 - Voice: Azure AI Speech (`AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION`, host `<region>.tts.speech.microsoft.com`
   allowed in the environment). Edge TTS does not work in the cloud environment (WebSocket blocked).
 
-## Build EP01 with voice
+## Build an episode with voice (EP01 shown; same for every `epNN`)
 ```bash
 SK=.claude/skills/tpm-opl-video/scripts
 node $SK/setup_project.mjs training/hydraulic-series/ep01
