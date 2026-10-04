@@ -9,10 +9,13 @@ For every scene with a "narration" (a string or a list of segment strings) this 
 build_opl.mjs reads vo.json to place the audio and to time the scene around it.
 Clips are cached by text+voice+rate, so re-running after an edit only re-synthesizes what changed.
 
-Engine: Microsoft Edge neural voices via the edge-tts package (pip install edge-tts), no API key.
-Thai voices: th-TH-PremwadeeNeural (female), th-TH-NiwatNeural (male), th-TH-AcharaNeural (female).
-Needs outbound access to speech.platform.bing.com. Behind a TLS-intercepting proxy, the CA bundle in
-SSL_CERT_FILE (or /root/.ccr/ca-bundle.crt when present) is used for verification.
+Engines (--engine, or "voice": {"engine": ...} in the spec; default: azure when AZURE_SPEECH_KEY is set):
+- azure: Azure AI Speech REST API (plain HTTPS). Env AZURE_SPEECH_KEY + AZURE_SPEECH_REGION (e.g. southeastasia);
+  needs <region>.tts.speech.microsoft.com reachable. Free tier F0 covers training-video volumes.
+- edge:  Microsoft Edge Read Aloud voices via the edge-tts package (pip install edge-tts), no key; needs a
+  WebSocket to speech.platform.bing.com (some egress proxies allow HTTPS but block WebSockets).
+Thai voices on both: th-TH-PremwadeeNeural (female), th-TH-NiwatNeural (male), th-TH-AcharaNeural (female).
+Behind a TLS-intercepting proxy the CA bundle in SSL_CERT_FILE (or /root/.ccr/ca-bundle.crt) is used.
 """
 import argparse
 import asyncio
@@ -23,16 +26,11 @@ import ssl
 import subprocess
 import sys
 
-try:
-    import edge_tts
-    import edge_tts.communicate as _comm
-except ImportError:
-    sys.exit("edge-tts is not installed: run  pip install edge-tts")
+import urllib.request
+from xml.sax.saxutils import escape
 
-# edge-tts pins certifi's CA list; a proxy that re-terminates TLS needs its own CA instead.
 _CA = os.environ.get("SSL_CERT_FILE") or ("/root/.ccr/ca-bundle.crt" if os.path.exists("/root/.ccr/ca-bundle.crt") else None)
-if _CA:
-    _comm._SSL_CTX = ssl.create_default_context(cafile=_CA)
+_SSL = ssl.create_default_context(cafile=_CA) if _CA else ssl.create_default_context()
 
 
 def scene_ids(spec):
@@ -58,8 +56,35 @@ def duration(path):
     return round(float(out.stdout.strip()), 3)
 
 
-async def synth(text, path, voice, rate):
+async def synth_edge(text, path, voice, rate):
+    try:
+        import edge_tts
+        import edge_tts.communicate as comm
+    except ImportError:
+        sys.exit("edge-tts is not installed: run  pip install edge-tts")
+    comm._SSL_CTX = _SSL  # edge-tts pins certifi's CA list; use the proxy-aware context instead
     await edge_tts.Communicate(text, voice, rate=rate).save(path)
+
+
+def synth_azure(text, path, voice, rate):
+    key, region = os.environ.get("AZURE_SPEECH_KEY"), os.environ.get("AZURE_SPEECH_REGION")
+    if not key or not region:
+        sys.exit("azure engine needs AZURE_SPEECH_KEY and AZURE_SPEECH_REGION in the environment")
+    ssml = (f"<speak version='1.0' xml:lang='th-TH'><voice name='{voice}'>"
+            f"<prosody rate='{rate}'>{escape(text)}</prosody></voice></speak>")
+    req = urllib.request.Request(
+        f"https://{region}.tts.speech.microsoft.com/cognitiveservices/v1", data=ssml.encode("utf-8"), method="POST",
+        headers={"Ocp-Apim-Subscription-Key": key, "Content-Type": "application/ssml+xml",
+                 "X-Microsoft-OutputFormat": "audio-24khz-96kbitrate-mono-mp3", "User-Agent": "tpm-opl-video"})
+    with urllib.request.urlopen(req, context=_SSL, timeout=60) as r, open(path, "wb") as f:
+        f.write(r.read())
+
+
+async def synth(engine, text, path, voice, rate):
+    if engine == "azure":
+        await asyncio.to_thread(synth_azure, text, path, voice, rate)
+    else:
+        await synth_edge(text, path, voice, rate)
 
 
 async def main():
@@ -68,26 +93,28 @@ async def main():
     ap.add_argument("proj")
     ap.add_argument("--voice", default=None)
     ap.add_argument("--rate", default=None)
+    ap.add_argument("--engine", choices=["azure", "edge"], default=None)
     a = ap.parse_args()
     spec = json.load(open(a.spec, encoding="utf8"))
     vo_cfg = spec.get("voice", {})
     voice = a.voice or vo_cfg.get("name", "th-TH-PremwadeeNeural")
     rate = a.rate or vo_cfg.get("rate", "+0%")
+    engine = a.engine or vo_cfg.get("engine") or ("azure" if os.environ.get("AZURE_SPEECH_KEY") else "edge")
     out_dir = os.path.join(a.proj, "assets", "vo")
     os.makedirs(out_dir, exist_ok=True)
     cache_p = os.path.join(out_dir, "cache.json")
     cache = json.load(open(cache_p)) if os.path.exists(cache_p) else {}
-    result = {"voice": voice, "rate": rate, "scenes": {}}
+    result = {"engine": engine, "voice": voice, "rate": rate, "scenes": {}}
     total = 0.0
     for sid, scene in scene_ids(spec):
         lens = []
         for k, text in enumerate(segments(scene)):
             path = os.path.join(out_dir, f"{sid}-{k + 1}.mp3")
-            key = hashlib.sha1(f"{voice}|{rate}|{text}".encode()).hexdigest()
+            key = hashlib.sha1(f"{engine}|{voice}|{rate}|{text}".encode()).hexdigest()
             if cache.get(path) != key or not os.path.exists(path):
                 for attempt in range(3):
                     try:
-                        await synth(text, path, voice, rate)
+                        await synth(engine, text, path, voice, rate)
                         break
                     except Exception as e:  # network hiccups: retry, then fail loudly
                         if attempt == 2:
@@ -101,7 +128,7 @@ async def main():
             print(f"  {sid}: {len(lens)} segment(s), {sum(lens):.1f}s")
     json.dump(cache, open(cache_p, "w"), indent=1)
     json.dump(result, open(os.path.join(out_dir, "vo.json"), "w"), indent=1)
-    print(f"✓ narration: {total:.1f}s of speech, voice {voice} {rate} → {out_dir}/vo.json")
+    print(f"✓ narration: {total:.1f}s of speech, {engine} voice {voice} {rate} → {out_dir}/vo.json")
 
 
 asyncio.run(main())

@@ -105,9 +105,13 @@ node <skill-dir>/scripts/build_opl.mjs <work>/opl/spec.json <work>/opl
 
 **Thai voice-over (optional).** When the user wants narration, give scenes a `narration` (one string, or a
 list of segments) and let elements appear with the voice via `"cue": k` (segment k starts). `narrate.py`
-turns every segment into an MP3 with a Microsoft Edge neural voice (`pip install edge-tts`; default
-`th-TH-PremwadeeNeural`, male `th-TH-NiwatNeural`; needs outbound access to `speech.platform.bing.com`),
-and the build times each scene around the real audio. Without audio yet the build estimates speech length
+turns every segment into an MP3 with a Microsoft neural Thai voice (default `th-TH-PremwadeeNeural`, male
+`th-TH-NiwatNeural`) and the build times each scene around the real audio. Two engines: **azure** — Azure AI
+Speech REST over plain HTTPS, used automatically when `AZURE_SPEECH_KEY` and `AZURE_SPEECH_REGION` are set
+(free tier F0 is enough; host `<region>.tts.speech.microsoft.com`); **edge** — free Edge Read Aloud voices
+(`pip install edge-tts`, no key) over a WebSocket to `speech.platform.bing.com`, which some cloud egress
+proxies block even when the domain is allowed. Never ask the user to paste a key into the chat: they add it
+as an environment variable/secret, which a new session picks up. Without audio yet the build estimates speech length
 and says so — the video can be checked, and the voice dropped in later with narrate + build + render.
 `"target_duration": 75` pads the outro to a fixed clip length (or reports the overrun per scene).
 Write narration in spoken Thai — spell English terms the way they are said (แอคชูเอเตอร์, ล็อกเอาต์),
