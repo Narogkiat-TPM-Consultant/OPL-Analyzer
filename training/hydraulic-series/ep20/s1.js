@@ -2,10 +2,10 @@
 {
   const g = H.$("s1-v-art");
   // machine bed under the feet
-  H.el("line", { x1: 16, y1: 432, x2: 744, y2: 432, stroke: C20.ink, "stroke-width": 6 }, g);
-  for (let x = 38; x <= 744; x += 28) H.el("line", { x1: x, y1: 435, x2: x - 14, y2: 452, stroke: C20.muted, "stroke-width": 3 }, g);
+  H.el("line", { x1: 16, y1: 456, x2: 744, y2: 456, stroke: C20.ink, "stroke-width": 6 }, g);
+  for (let x = 38; x <= 744; x += 28) H.el("line", { x1: x, y1: 459, x2: x - 14, y2: 476, stroke: C20.muted, "stroke-width": 3 }, g);
 
-  const E = H.c20Ext(g, { id: "s1-v-x", x: 52, y: 320, s: 0.8, rod: 96, pipeTop: -250 });
+  const E = H.c20Ext(g, { id: "s1-v-x", x: 38, y: 330, s: 0.9, rod: 96, pipeTop: -250 });
   const sp = [H.c20Spark(E.rod, 400, -9, 20), H.c20Spark(E.rod, 498, 7, 15)];
 
   // oil in / out of the ports (white dashes on the blue pipes)

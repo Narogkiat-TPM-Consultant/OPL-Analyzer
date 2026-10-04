@@ -18,7 +18,7 @@ H.c20Label = (parent, x, y, str, o = {}) => {
     H.el("line", { x1, y1, x2, y2, stroke: o.lineColor || C20.ink, "stroke-width": 3 }, g);
     H.el("circle", { cx: x2, cy: y2, r: 5.5, fill: o.lineColor || C20.ink }, g);
   }
-  const t = H.text(g, x, y, str, { size: o.size || 26, anchor: o.anchor || "start", fill: o.fill || C20.ink });
+  const t = H.text(g, x, y, str, { size: o.size || 28, anchor: o.anchor || "start", fill: o.fill || C20.ink });
   t.setAttribute("stroke", C20.paper);
   t.setAttribute("stroke-width", 7);
   t.setAttribute("stroke-linejoin", "round");
