@@ -109,12 +109,12 @@
 
   // ---------------- ③ air bubbles → needle swings, piston chatters, squeal
   const bub = H.el("g", { id: "s3-v-bub", opacity: 0 }, O);
-  const pos = [[60, 404, 7], [118, 428, 9], [176, 408, 6], [238, 430, 8], [318, 452, 9], [330, 392, 6], [520, 446, 8], [550, 398, 6], [505, 466, 6], [392, 214, 7], [470, 236, 8], [404, 250, 5]];
+  const pos = [[60, 404, 7], [118, 428, 9], [176, 408, 6], [238, 430, 8], [318, 452, 9], [330, 392, 6], [496, 440, 6], [520, 462, 8], [548, 466, 6], [392, 214, 7], [470, 236, 8], [404, 250, 5]];
   const bs = pos.map(([x, y, r]) => RV.bubble(bub, x, y, r));
   fade(bub, 0, 1, t2 + 0.5, true, 0.4);
   const run = tE - (t2 + 0.5);
   tl.fromTo(bs, { x: 0, y: 0 }, { x: 14, y: -6, duration: 0.5, ease: "sine.inOut", yoyo: true, repeat: Math.max(1, 2 * Math.floor(run / 1.0) - 1), stagger: 0.07 }, t2 + 0.5);
-  RV.label(O, "s3-v-air", 22, 552, "ฟองอากาศ (Air)", 118, 440, { fx: 90, fy: 528, size: 24 });
+  RV.label(O, "s3-v-air", 22, 556, "ฟองอากาศ (Air)", 176, 434, { fx: 168, fy: 532, size: 24 });
   fade("#s3-v-air", 0, 1, t2 + 0.8, true);
   RV.swing(G, t2 + 1.2, tE, 6, 4.4, 7.0);
   const nj = Math.max(1, 2 * Math.floor((tE - t2 - 1.4) / 0.26) - 1);
@@ -124,7 +124,7 @@
   const pii = H.text(O, 792, 344, "ปี๊~", { size: 40, id: "s3-v-pii" });
   pii.setAttribute("opacity", 0);
   // the squeal comes with the words "มีเสียงแหลม" at the end of segment 3 (spec sfx at the same time)
-  const tw = Math.max(t2 + 1.4, tE - 2.4);
+  const tw = Math.max(t2 + 1.4, tE - 2.0);
   tl.fromTo(pii, { opacity: 0, scale: 0.6, transformOrigin: "0% 50%" }, { opacity: 1, scale: 1, transformOrigin: "0% 50%", duration: 0.3, ease: "back.out(2)" }, tw);
   RV.wavePulse(W, tw, tE, 0.5);
 }

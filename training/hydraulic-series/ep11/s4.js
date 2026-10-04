@@ -38,10 +38,10 @@
   H.el("rect", { x: 188, y: 340, width: 24, height: 250, fill: RV.tank }, P);
   H.el("rect", { x: 130, y: 340, width: 58, height: 250, fill: RV.metal, stroke: RV.ink, "stroke-width": 4 }, P);
   H.el("rect", { x: 212, y: 340, width: 58, height: 250, fill: RV.metal, stroke: RV.ink, "stroke-width": 4 }, P);
-  const chk = H.el("path", { id: "s4-v-chk", d: "M 133 548 H 163 V 343", fill: "none", stroke: RV.pLo, "stroke-width": 12, "stroke-linejoin": "miter" }, P);
+  const chk = H.el("path", { id: "s4-v-chk", d: "M 133 548 H 163 V 343", fill: "none", stroke: RV.pLo, "stroke-width": 14, "stroke-linejoin": "miter" }, P);
   const fch = RV.dash(P, "s4-v-fch", "M 135 548 H 163 V 345", 4);
   const cd = H.el("g", { id: "s4-v-cd" }, P);
-  RV.dirt(cd, "s4-v-cd1", 142, 548, 6); RV.dirt(cd, "s4-v-cd2", 154, 545, 5.5); RV.dirt(cd, "s4-v-cd3", 163, 552, 5);
+  RV.dirt(cd, "s4-v-cd1", 142, 548, 8); RV.dirt(cd, "s4-v-cd2", 156, 544, 7); RV.dirt(cd, "s4-v-cd3", 164, 556, 6.5); RV.dirt(cd, "s4-v-cd4", 163, 532, 6);
   const sl = H.el("g", { id: "s4-v-sl", opacity: 0 }, P);
   H.el("rect", { x: 122, y: 350, width: 10, height: 230, fill: RV.yellow }, sl);
   H.el("rect", { x: 268, y: 350, width: 10, height: 230, fill: RV.yellow }, sl);
@@ -52,7 +52,7 @@
   const p4 = pill("s4-v-p4", 312, 506, 290, "Lapping / เปลี่ยน");
   // lapping: a small rotating arrow beside the sliding face
   const lap = H.el("g", { id: "s4-v-lap", opacity: 0 }, g);
-  H.el("path", { d: H.arcD(318, 570, 26, 200, 480) + " M 300 548 L 318 544 L 312 562", fill: "none", stroke: RV.blue, "stroke-width": 5, "stroke-linecap": "round", "stroke-linejoin": "round" }, lap);
+  H.el("path", { d: H.arcD(306, 602, 22, 200, 480) + " M 290 584 L 305 580 L 300 595", fill: "none", stroke: RV.blue, "stroke-width": 5, "stroke-linecap": "round", "stroke-linejoin": "round" }, lap);
 
   // ---- ③ air in the oil (top right): bubbles leave through a vent
   H.el("rect", { x: 690, y: 108, width: 370, height: 64, fill: RV.pHi }, g);
@@ -72,8 +72,7 @@
   H.el("line", { x1: 812, y1: 512, x2: 902, y2: 422, stroke: RV.ink, "stroke-width": 30, "stroke-linecap": "round" }, wr);
   H.el("line", { x1: 812, y1: 512, x2: 902, y2: 422, stroke: RV.dark, "stroke-width": 20, "stroke-linecap": "round" }, wr);
   H.el("circle", { cx: 920, cy: 404, r: 40, fill: RV.dark, stroke: RV.ink, "stroke-width": 5 }, wr);
-  H.el("path", { d: "M 920 404 L 946 360 L 974 388 Z", fill: "#eef3fb", stroke: "none" }, wr);
-  H.el("circle", { cx: 920, cy: 404, r: 12, fill: RV.paper, stroke: RV.ink, "stroke-width": 4 }, wr);
+  H.el("path", { d: H.hexD(920, 404, 19), fill: "#eef3fb", stroke: RV.ink, "stroke-width": 4, "stroke-linejoin": "round" }, wr);
   H.text(M, 876, 572, "ถอดวาล์ว = งานช่าง", { size: 30, anchor: "middle" });
   H.text(M, 876, 606, "(Maintenance)", { size: 22, anchor: "middle", fill: RV.muted });
 
@@ -93,7 +92,7 @@
   tl.fromTo(sl, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t1 + 1.4);
   show(p4, t1 + 1.6);
   tl.fromTo(lap, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t1 + 1.6);
-  tl.fromTo(lap, { rotation: 0, svgOrigin: "318 570" }, { rotation: 720, svgOrigin: "318 570", duration: 2.4, ease: "none" }, t1 + 1.6);
+  tl.fromTo(lap, { rotation: 0, svgOrigin: "306 602" }, { rotation: 720, svgOrigin: "306 602", duration: 2.4, ease: "none" }, t1 + 1.6);
   tl.fromTo(lap, { opacity: 1 }, { opacity: 0, duration: 0.3, immediateRender: false }, t1 + 4.0);
 
   // ③ bubbles rise out of the vent
