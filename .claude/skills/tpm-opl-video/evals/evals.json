@@ -1,0 +1,54 @@
+{
+  "skill_name": "tpm-opl-video",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "ทำ VDO OPL ประเภท Trouble case ให้หน่อย เรื่อง น็อตยึดฐานมอเตอร์ปั๊มน้ำหล่อเย็น (CT Pump P-02) คลายตัว จน Coupling แตก เครื่องหยุด 2 ชม. Why-Why ที่ทีมทำไว้: น็อตคลาย ← สั่นสะเทือนผิดปกติ ← แนวเพลามอเตอร์-ปั๊มเยื้อง (Misalignment) หลังซ่อมครั้งก่อน ← ไม่มี Match mark ให้ Operator เห็นว่าน็อตขยับ ← มาตรฐาน AM ไม่มีหัวข้อตรวจน็อตฐานมอเตอร์. มาตรการ: ทำ Match mark สีเหลืองที่น็อตฐานทุกตัว + เพิ่มหัวข้อตรวจใน AM Check Sheet ทุกกะ + ช่าง PM ตั้งศูนย์เพลาใหม่ OPL No. TR-PU-007 ผู้จัดทำ สุนทร ผู้อนุมัติ ประเสริฐ",
+      "expected_output": "MP4 (trouble type) with phenomenon diagram, Why-Why chain to the AM-standard root cause, before/after countermeasure with match marks, operator OK/NG of match mark, outro with form fields filled.",
+      "files": [],
+      "assertions": [
+        "MP4 rendered with H.264 video and AAC audio",
+        "Video length is 25–75 s",
+        "HyperFrames lint reports 0 errors",
+        "Report lists facts/assumptions to confirm for the user",
+        "Spec type is trouble (トラブル事例)",
+        "Form fields from the request are used (TR-PU-007 / สุนทร / ประเสริฐ)",
+        "Why-Why scene has ≥ 3 whys and a root cause",
+        "Root cause points at the missing AM standard (not the operator)",
+        "Countermeasure shows the match mark"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "ช่วยทำวิดีโอ OPL Kaizen case: ทำความสะอาดแผ่นกรองฝุ่นที่พัดลมตู้คอนโทรล (Control panel filter) เดิมต้องไขน็อต 8 ตัวเพื่อถอดฝาครอบ ใช้เวลา 15 นาที/ครั้ง operator เลยไม่ค่อยทำ ฝุ่นอุดตัน ตู้ร้อนเกิน alarm 6 ครั้ง/เดือน — ไคเซ็นเปลี่ยนเป็นฝาแบบ Quick-release clip ถอดได้ด้วยมือ เหลือ 3 นาที/ครั้ง และ alarm ตู้ร้อนเหลือ 0 ครั้ง/เดือน (วัด 3 เดือน)",
+      "expected_output": "MP4 (kaizen type) with before (problem + loss), kaizen mechanism (clip), before/after same angle, result scene with 15→3 min and 6→0 alarms/month, outro.",
+      "files": [],
+      "assertions": [
+        "MP4 rendered with H.264 video and AAC audio",
+        "Video length is 25–75 s",
+        "HyperFrames lint reports 0 errors",
+        "Report lists facts/assumptions to confirm for the user",
+        "Spec type is kaizen (改善事例)",
+        "Result uses the real numbers 15→3 min and 6→0 alarms",
+        "Before/After comparison present"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "อยากได้คลิป OPL ความรู้พื้นฐานสำหรับ operator: วิธีอ่าน Pressure gauge ของระบบลมอัด (Air regulator) ที่เครื่องบรรจุ ค่าปกติ 5–6 bar ถ้าต่ำกว่า 4.5 bar ให้แจ้งช่าง ห้ามปรับ regulator เอง",
+      "expected_output": "MP4 (basic type) using an animated dial gauge with the 5–6 bar green band, how to read it, OK/NG judgment incl. <4.5 bar → notify technician and do-not-adjust rule, outro.",
+      "files": [],
+      "assertions": [
+        "MP4 rendered with H.264 video and AAC audio",
+        "Video length is 25–75 s",
+        "HyperFrames lint reports 0 errors",
+        "Report lists facts/assumptions to confirm for the user",
+        "Spec type is basic (基礎知識)",
+        "Uses the dial gauge helper",
+        "Gauge OK band is 5–6 bar",
+        "4.5 bar → notify technician rule is shown",
+        "Do-not-adjust-regulator rule is shown"
+      ]
+    }
+  ]
+}
