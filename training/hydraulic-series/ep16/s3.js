@@ -12,12 +12,8 @@
   tl.fromTo(stop, { opacity: 0, scale: 1.3, svgOrigin: "332 262" }, { opacity: 1, scale: 1, svgOrigin: "332 262", duration: 0.3, ease: "back.out(2)" }, tStop - 0.1);
 
   // magnified gauge (inset), linked to the gauge on the P line
-  const inset = H.el("g", { id: "s3-v-inset", opacity: 0 }, fx);
-  H.el("circle", { cx: 300, cy: 104, r: 54, fill: "none", stroke: K6.blue, "stroke-width": 4 }, inset);
-  H.el("path", { d: "M 354 110 L 860 150", fill: "none", stroke: K6.blue, "stroke-width": 3, "stroke-dasharray": "9 7" }, inset);
-  H.el("circle", { cx: 960, cy: 150, r: 104, fill: K6.paper, stroke: K6.blue, "stroke-width": 5 }, inset);
-  const GI = H.gauge(inset, 960, 150, 94, { id: "s3-v-gi", min: 0, max: 10, ticks: 5, minor: 1, labelEvery: 99, labelSize: 30, value: 6, unit: "kgf/cm²" });
-  const zero = H.el("path", { d: H.arcD(960, 150, 94 * 0.8, GI.rot(0) - 7, GI.rot(0) + 7), fill: "none", stroke: K6.green, "stroke-width": 14, opacity: 0 }, inset);
+  const I = H.k16Inset(fx, "s3-v-inset", 960, 150, 94, 6);
+  const inset = I.g, GI = I.G, zero = I.zero;
   tl.fromTo(inset, { opacity: 0 }, { opacity: 1, duration: 0.35 }, tStop - 0.2);
   const fall = { duration: 1.2, ease: "power2.inOut" };
   tl.fromTo(S.gauge.needle, { rotation: S.gauge.rot(6), svgOrigin: S.gauge.origin }, { rotation: S.gauge.rot(0), svgOrigin: S.gauge.origin, ...fall }, tStop + 0.3);

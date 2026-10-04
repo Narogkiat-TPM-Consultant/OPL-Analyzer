@@ -388,3 +388,110 @@ H.v6Symbol = (parent, p, o = {}) => {
   const slide = (from, to, t, dur = 0.6) => tl.fromTo(mv, { x: from * bw }, { x: to * bw, duration: dur, ease: "power2.inOut", immediateRender: false }, t);
   return { g, mv, win, sol, stubs, arrows: { PB: aPB_L, AT: aAT_L, PA: aPA_R, BT: aBT_R }, x1, x2, y0, yB, bw, bh, slide };
 };
+
+// ============================================================ EP19 additions
+const E19 = {
+  ink: "#1a1d21", muted: "#59606a", blue: "#1f5fbf", green: "#178a4e", red: "#d0233a", yel: "#f2a900",
+  oil: "#c8961e", dirt: "#7a6744", rag: "#e4ecf7", cable: "#2b3036", conn: "#3d434b", pipe: "#7ea2df", paper: "#fffdf8",
+};
+
+// Oil drop (teardrop) whose round bottom sits at (x, y); absolute coordinates so GSAP can move it with x / y.
+E19.drop = (parent, x, y, s = 1, o = {}) => {
+  const f = H.f, q = (dx, dy) => `${f(x + dx * s)} ${f(y + dy * s)}`;
+  return H.el("path", {
+    ...(o.id ? { id: o.id } : {}),
+    d: `M ${q(0, -24)} C ${q(5, -15)} ${q(10, -9)} ${q(10, -4)} A ${f(10 * s)} ${f(10 * s)} 0 0 1 ${q(-10, -4)} C ${q(-10, -9)} ${q(-5, -15)} ${q(0, -24)} Z`,
+    fill: E19.oil, stroke: E19.ink, "stroke-width": o.sw ?? 2, opacity: o.opacity ?? 0,
+  }, parent);
+};
+// A drop that forms at its spot and falls `fall` units, again and again from t0 until t1 (absolute seconds).
+E19.drip = (drop, t0, t1, fall = 60, cycle = 1.1) => {
+  const n = Math.max(1, Math.floor((t1 - t0) / cycle));
+  for (let i = 0; i < n; i++) {
+    const t = t0 + i * cycle;
+    tl.fromTo(drop, { opacity: 0, y: 0 }, { opacity: 1, duration: 0.3, immediateRender: false }, t);
+    tl.fromTo(drop, { y: 0 }, { y: fall, duration: 0.45, ease: "power2.in", immediateRender: false }, t + 0.5);
+    tl.fromTo(drop, { opacity: 1 }, { opacity: 0, duration: 0.12, immediateRender: false }, t + 0.85);
+  }
+};
+// Opacity change, seek-safe (from must equal the element's state before t).
+E19.op = (el, from, to, t, dur = 0.3) => tl.fromTo(el, { opacity: from }, { opacity: to, duration: dur, immediateRender: false }, t);
+// Sound waves: arcs around (x, y) facing direction `dir` (degrees, clockwise from 3 o'clock); they blink from t0 to t1.
+E19.waves = (parent, x, y, dir, o = {}) => {
+  const g = H.el("g", { ...(o.id ? { id: o.id } : {}) }, parent);
+  const arcs = (o.r || [26, 44, 62]).map((r) => H.el("path", { d: H.arcD(x, y, r, dir - (o.span ?? 32), dir + (o.span ?? 32)), fill: "none", stroke: o.color || E19.blue, "stroke-width": o.w ?? 6, "stroke-linecap": "round", opacity: 0 }, g));
+  g.run = (t0, t1) => arcs.forEach((a, i) => {
+    const per = 0.5, n = Math.max(1, Math.floor((t1 - t0 - i * 0.12) / per));
+    tl.fromTo(a, { opacity: 0 }, { opacity: 1, duration: per / 2, yoyo: true, repeat: 2 * Math.ceil(n / 2) - 1, ease: "none", immediateRender: false }, t0 + i * 0.12);
+  });
+  return g;
+};
+// Green tick in a circle (drawn as paths: the fonts may lack ✓).
+E19.tick = (parent, cx, cy, r, o = {}) => {
+  const g = H.el("g", { ...(o.id ? { id: o.id } : {}), opacity: o.opacity ?? 1 }, parent), f = H.f;
+  H.el("circle", { cx, cy, r, fill: o.fill || E19.green }, g);
+  H.el("path", { d: `M ${f(cx - r * 0.45)} ${f(cy + r * 0.02)} L ${f(cx - r * 0.12)} ${f(cy + r * 0.34)} L ${f(cx + r * 0.48)} ${f(cy - r * 0.32)}`, fill: "none", stroke: "#ffffff", "stroke-width": f(r * 0.22), "stroke-linecap": "round", "stroke-linejoin": "round" }, g);
+  return g;
+};
+// Pipe (ink outline + light-blue oil) along path d.
+E19.pipe = (parent, d, w = 12) => {
+  H.el("path", { d, fill: "none", stroke: E19.ink, "stroke-width": w + 6, "stroke-linejoin": "round" }, parent);
+  return H.el("path", { d, fill: "none", stroke: E19.pipe, "stroke-width": w, "stroke-linejoin": "round" }, parent);
+};
+
+// Solenoid valve (EP06 drawing) as installed: on a subplate (the mounting of p.30), two mounting bolts, a connector with
+// a fixing screw on each solenoid and the cables to the control panel. Local units as H.v6Valve:
+//   subplate x 130–760, y 268–330 (the ports run through it; body/subplate joint = y 270)
+//   bolts at x 180 / 710 (heads y −8…14, washer 14–20) · connectors x 50–126 (a) / 764–840 (b), y 24–72, screw on top
+//   cables up to y −40 → control panel box x 372–518, y −64…−16.  o.pipes: port pipes below the subplate (y 330–366).
+// Returns { w, V, sub, bolts[2], conns[2], screws[2], cables[2], box }.
+H.e19Sol = (parent, p, o = {}) => {
+  const C = V6, f = H.f;
+  const w = H.el("g", { id: `${p}-w` }, parent);
+  const sub = H.el("g", { id: `${p}-sub` }, w);
+  H.el("rect", { x: 130, y: 268, width: 630, height: 62, fill: C.metal }, sub);
+  H.el("path", { d: RV.hatchD([[132, 270, 626, 58]]), fill: "none", stroke: C.hatch, "stroke-width": 3 }, sub);
+  H.el("rect", { x: 130, y: 268, width: 630, height: 62, fill: "none", stroke: C.ink, "stroke-width": 5 }, sub);
+  if (o.pipes) for (const k of ["T", "A", "P", "B"]) H.el("rect", { x: C.port[k] - 15, y: 330, width: 30, height: 36, fill: C.oil, stroke: C.ink, "stroke-width": 4 }, sub);
+  const V = H.v6Valve(w, p, { pills: false, letters: false, stub: 60 });
+  // mounting bolts (side view: hex head on a washer)
+  const bolts = [180, 710].map((x, i) => {
+    const bg = H.el("g", { id: `${p}-bolt${i + 1}` }, w);
+    H.el("rect", { x: x - 22, y: 13, width: 44, height: 8, rx: 2, fill: C.dark, stroke: C.ink, "stroke-width": 2.5 }, bg);
+    H.el("rect", { x: x - 17, y: -9, width: 34, height: 23, rx: 2, fill: "#9aa1aa", stroke: C.ink, "stroke-width": 3 }, bg);
+    H.el("path", { d: `M ${x - 6} -9 V 14 M ${x + 6} -9 V 14`, stroke: C.ink, "stroke-width": 2 }, bg);
+    return bg;
+  });
+  // cables (behind the connectors) + control panel box
+  const cabD = {
+    a: "M 36 48 H 24 Q 6 48 6 30 V -22 Q 6 -40 24 -40 H 372",
+    b: "M 854 48 H 866 Q 884 48 884 30 V -22 Q 884 -40 866 -40 H 518",
+  };
+  const cables = ["a", "b"].map((s) => H.el("path", { id: `${p}-cab${s}`, d: cabD[s], fill: "none", stroke: E19.cable, "stroke-width": 8, "stroke-linecap": "round", "stroke-linejoin": "round" }, w));
+  const box = H.el("g", { id: `${p}-box` }, w);
+  H.el("rect", { x: 372, y: -64, width: 146, height: 48, rx: 8, fill: E19.paper, stroke: C.ink, "stroke-width": 3 }, box);
+  H.text(box, 445, -31, o.boxLabel ?? "ตู้ควบคุม", { size: 25, anchor: "middle" });
+  const conns = [], screws = [];
+  for (const side of ["a", "b"]) {
+    const x0 = side === "a" ? 50 : 764;
+    const cg = H.el("g", { id: `${p}-con${side}` }, w);
+    const gx = side === "a" ? x0 - 14 : x0 + 76;
+    H.el("rect", { x: gx, y: 36, width: 14, height: 24, rx: 3, fill: C.muted, stroke: C.ink, "stroke-width": 2.5 }, cg);
+    H.el("rect", { x: x0, y: 24, width: 76, height: 48, rx: 8, fill: E19.conn, stroke: C.ink, "stroke-width": 3 }, cg);
+    H.el("path", { d: `M ${x0 + 14} 38 H ${x0 + 62} M ${x0 + 14} 50 H ${x0 + 62}`, stroke: "#59606a", "stroke-width": 3 }, cg);
+    screws.push(H.el("rect", { x: x0 + 27, y: 13, width: 22, height: 12, rx: 2, fill: "#c9ced4", stroke: C.ink, "stroke-width": 2.5 }, cg));
+    conns.push(cg);
+  }
+  return { w, V, sub, bolts, conns, screws, cables, box };
+};
+
+// Relief valve pilot head (EP05 drawing) + the circuit pressure gauge on its line, for a 460 × 170 card slot.
+// The blue mark on the gauge is the setting pressure (no numbers: the deck gives none). Returns { g, P, G }.
+H.e19RvMini = (parent, p) => {
+  const g = H.el("g", { id: p }, parent);
+  E19.pipe(g, "M 31 100 V 142 H 322", 8);
+  const z = H.el("g", { transform: "translate(-99 15) scale(0.42)" }, g);
+  const P = RV.pilot(z, `${p}-x`, { standalone: true });
+  const G = H.gauge(g, 372, 90, 70, { id: `${p}-g`, min: 0, max: 10, ticks: 5, minor: 1, labelEvery: 99, marks: [{ v: 6, color: RV.blue }], value: 6 });
+  return { g, P, G };
+};

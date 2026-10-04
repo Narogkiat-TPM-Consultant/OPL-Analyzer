@@ -15,8 +15,9 @@
   nut(386); nut(474);
   // spanner on the left nut (rotates = loosening)
   const sp = H.el("g", { id: "s2-v-sp" }, L);
-  H.el("path", { d: "M 406 186 L 396 166 L 330 40 L 350 30 L 418 156 L 432 176 Z", fill: K6.dark, stroke: K6.ink, "stroke-width": 3.5, "stroke-linejoin": "round" }, sp);
-  H.el("path", { d: "M 384 170 Q 382 196 406 204 Q 430 196 428 170", fill: "none", stroke: K6.ink, "stroke-width": 4 }, sp);
+  // open-end spanner: handle up-left, C-shaped head gripping the top of the left nut
+  H.el("path", { d: "M 392 170 L 322 52 Q 318 40 330 36 L 340 32 Q 352 30 356 42 L 420 162 Z", fill: K6.dark, stroke: K6.ink, "stroke-width": 3.5, "stroke-linejoin": "round" }, sp);
+  H.el("path", { d: "M 374 196 A 34 34 0 1 1 438 196 L 426 196 L 426 182 L 386 182 L 386 196 Z", fill: K6.dark, stroke: K6.ink, "stroke-width": 3.5, "stroke-linejoin": "round" }, sp);
   // oil jet from the joint
   const jet = H.el("g", { id: "s2-v-jet", opacity: 0 }, L);
   for (const [x2, y2] of [[520, 40], [560, 70], [590, 110], [600, 150]])
@@ -24,7 +25,7 @@
   for (const [x, y] of [[620, 60], [640, 104], [608, 30]]) H.el("path", { d: H.k16DropD(x, y, 8), fill: K6.oil, stroke: K6.oilDk, "stroke-width": 2 }, jet);
   const tL = b + T.left, tDanger = b + c[0] + Math.min(4.0, Math.max(1.4, (c[1] - c[0]) * 0.55));
   tl.fromTo(G.needle, { rotation: G.rot(5), svgOrigin: G.origin }, { rotation: G.rot(5.3), svgOrigin: G.origin, duration: 0.25, yoyo: true, repeat: 3, ease: "sine.inOut" }, tL + 0.8);
-  tl.fromTo(sp, { rotation: 0, svgOrigin: "406 210" }, { rotation: -14, svgOrigin: "406 210", duration: 0.5, ease: "power2.inOut" }, tDanger);
+  tl.fromTo(sp, { rotation: 0, svgOrigin: "406 212" }, { rotation: -16, svgOrigin: "406 212", duration: 0.5, ease: "power2.inOut" }, tDanger);
   tl.fromTo(jet, { opacity: 0, scale: 0.3, svgOrigin: "474 194" }, { opacity: 1, scale: 1, svgOrigin: "474 194", duration: 0.35, ease: "power2.out" }, tDanger + 0.45);
   tl.to(jet, { scale: 1.06, svgOrigin: "474 194", duration: 0.2, yoyo: true, repeat: 5, ease: "sine.inOut" }, tDanger + 0.85);
 

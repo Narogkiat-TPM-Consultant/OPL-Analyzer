@@ -48,6 +48,29 @@ H.k16Specks = (parent, x0, x1, y0, y1, n, o = {}) => {
   return g;
 };
 
+// Dial gauge without the helper's labels: "0" sits beside the 0 tick (a needle resting on 0 would hide a label
+// on the tick line) and the unit sits low, clear of the needle. o: H.gauge options + zeroColor, unitText.
+H.k16Gauge = (parent, cx, cy, r, o = {}) => {
+  const G = H.gauge(parent, cx, cy, r, { ...o, unit: undefined });
+  G.g.querySelectorAll("text").forEach((n) => n.remove());
+  const ls = o.labelSize ?? Math.round(r * 0.22), a = (158 * Math.PI) / 180;
+  G.zero = H.text(G.g, cx + Math.cos(a) * r * 0.55, cy + Math.sin(a) * r * 0.55 + ls * 0.36, "0", { size: ls, anchor: "middle", fill: o.zeroColor || K6.ink });
+  if (o.unitText) H.text(G.g, cx + r * 0.1, cy + r * 0.52, o.unitText, { size: Math.round(r * 0.15), anchor: "middle", fill: K6.muted });
+  return G;
+};
+// Magnified gauge (inset) at (cx, cy) linked by a dashed line to the small gauge of the unit at (300, 104).
+// Returns { g, G, zero } — zero = green mark on the 0 tick (hidden).
+H.k16Inset = (parent, id, cx, cy, r, value) => {
+  const g = H.el("g", { id, opacity: 0 }, parent);
+  H.el("circle", { cx: 300, cy: 104, r: 54, fill: "none", stroke: K6.blue, "stroke-width": 4 }, g);
+  H.el("path", { d: `M 354 110 L ${cx - r - 8} ${cy}`, fill: "none", stroke: K6.blue, "stroke-width": 3, "stroke-dasharray": "9 7" }, g);
+  H.el("circle", { cx, cy, r: r + 10, fill: K6.paper, stroke: K6.blue, "stroke-width": 5 }, g);
+  const G = H.k16Gauge(g, cx, cy, r, { id: `${id}-g`, min: 0, max: 10, ticks: 5, minor: 1, labelEvery: 99, labelSize: Math.round(r * 0.3), value, unitText: "kgf/cm²" });
+  const zero = H.el("path", { d: H.arcD(cx, cy, r * 0.8, G.rot(0) - 8, G.rot(0) + 8), fill: "none", stroke: K6.green, "stroke-width": r * 0.17, opacity: 0 }, G.g);
+  G.g.insertBefore(zero, G.needle);
+  return { g, G, zero };
+};
+
 // Small label chip (white box + text), hidden at start. o: { size, anchor, num (blue number disc), color, w }
 H.k16Chip = (parent, id, x, y, str, o = {}) => {
   const g = H.el("g", { id, opacity: o.show ? 1 : 0 }, parent);
@@ -149,7 +172,7 @@ H.k16Unit = (parent, p, o = {}) => {
   R(572, 150, 36, 26, K6.dark, { sw: 3, rx: 4 });
 
   // pressure gauge on the P line
-  S.gauge = H.gauge(g, 300, 104, 46, { id: `${p}-g`, min: 0, max: 10, ticks: 5, minor: 1, labelEvery: 99, labelSize: 15, value: o.value ?? 0 });
+  S.gauge = H.k16Gauge(g, 300, 104, 46, { id: `${p}-g`, min: 0, max: 10, ticks: 5, minor: 1, labelEvery: 99, labelSize: 15, value: o.value ?? 0 });
   if (has("gauge")) T(238, 96, "เกจวัดแรงดัน", { size: 23, anchor: "end" });
 
   // machine frame + cylinder; the rod group carries the dirt specks of the sliding area

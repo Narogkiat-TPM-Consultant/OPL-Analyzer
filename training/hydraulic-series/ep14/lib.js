@@ -103,7 +103,7 @@ SU.waves = (parent, id, cx, cy, dir = 0, o = {}) => {
 };
 // Continuous sound: arcs pulse outward steadily from t0 to t1 (finite repeats); peak = max opacity.
 SU.steady = (W, t0, t1, period = 0.6, peak = 1) => {
-  const n = Math.max(1, Math.floor((t1 - t0) / period) - 1);
+  const n = Math.max(1, Math.floor((t1 - t0) / period - 0.67));
   W.arcs.forEach((a, i) =>
     tl.fromTo(a, { opacity: 0 }, { opacity: peak, duration: period / 2, yoyo: true, repeat: 2 * n - 1, ease: "sine.inOut", immediateRender: false }, t0 + (i * period) / 3));
 };
@@ -119,7 +119,8 @@ SU.bursts = (W, t0, t1, every = 1.1) => {
 // Small label chip (white box + text), starts hidden. o: { size, anchor, fill, stroke, color, w }
 SU.chip = (parent, id, x, y, str, o = {}) => {
   const g = H.el("g", { id, opacity: 0 }, parent);
-  const size = o.size || 23, w = o.w || str.length * size * 0.56 + 26, h = size + 16;
+  const base = str.replace(/[\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]/g, "");
+  const size = o.size || 23, w = o.w || base.length * size * 0.56 + 26, h = size + 16;
   const x0 = o.anchor === "end" ? x - w : o.anchor === "middle" ? x - w / 2 : x;
   H.el("rect", { x: H.f(x0), y: H.f(y - h / 2), width: H.f(w), height: h, rx: 8, fill: o.fill || SC.paper, stroke: o.stroke || SC.ink, "stroke-width": 2.5 }, g);
   H.text(g, x0 + w / 2, y + size * 0.36, str, { size, anchor: "middle", fill: o.color || SC.ink });
@@ -143,6 +144,7 @@ SU.ring = (parent, id, cx, cy, r, t, n = 3, col = SC.blue) => {
 // ---- the hydraulic power unit -----------------------------------------------------------------------------
 // o.labels: subset of ["tank","gauge","breather","strainer","suction","return","level","circuit","filter","pump","motor"]
 // o.lpos: { key: [x, y, anchor, text] } overrides; o.transform: placement of the whole drawing.
+// o.compact: no return filter and no circuit box — discharge / return pipes run off the right edge (title crop).
 H.suStation = (parent, p, o = {}) => {
   const lab = o.labels ?? ["tank", "gauge", "filter", "level", "circuit", "pump", "motor"];
   const has = (k) => lab.includes(k);
@@ -173,25 +175,25 @@ H.suStation = (parent, p, o = {}) => {
   // lid, then the pipes (drawn over the lid where they pass through it)
   rect(28, 392, 764, 12, SC.metal, { rx: 3 });
   S.suc = pipe("M 210 540 L 210 352", 12, SC.blue, `${p}-suc`);
-  S.ret = pipe("M 1010 250 L 1010 342 L 690 342 L 690 500", 8, SC.muted, `${p}-ret`);
-  S.dis = pipe("M 235 272 L 235 215 L 880 215", 11, SC.blue, `${p}-dis`);
+  const retD = o.compact ? "M 880 342 L 690 342 L 690 500" : "M 1010 250 L 1010 342 L 690 342 L 690 500";
+  const disD = "M 235 272 L 235 215 L 880 215";
+  S.ret = pipe(retD, 8, SC.muted, `${p}-ret`);
+  S.dis = pipe(disD, 11, SC.blue, `${p}-dis`);
   pipe("M 420 215 L 420 176", 7, SC.blue);
-  S.flowEls = [
-    flow(`${p}-f1`, "M 210 540 L 210 352"),
-    flow(`${p}-f2`, "M 235 272 L 235 215 L 880 215"),
-    flow(`${p}-f3`, "M 1010 250 L 1010 342 L 690 342 L 690 500"),
-  ];
+  S.flowEls = [flow(`${p}-f1`, "M 210 540 L 210 352"), flow(`${p}-f2`, disD), flow(`${p}-f3`, retD)];
   // suction-tube joint (screwed flange with packing)
   rect(192, 366, 36, 6, SC.metal, { sw: 2, rx: 1 });
   rect(192, 374, 36, 6, SC.metal, { sw: 2, rx: 1 });
 
   // inline return filter + clogging indicator on its head
-  rect(818, 324, 104, 36, SC.dark, { rx: 12 });
-  rect(808, 330, 12, 24, SC.metal, { sw: 3, rx: 2 });
-  rect(920, 330, 12, 24, SC.metal, { sw: 3, rx: 2 });
-  rect(858, 306, 24, 18, SC.metal, { sw: 3, rx: 2 });
-  S.ind = SU.indicator(g, `${p}-ind`, 870, 300, 22, { value: 1.5 });
-  if (has("filter")) lp("filter", 870, 394, "ฟิลเตอร์ (Filter)", "middle");
+  if (!o.compact) {
+    rect(818, 324, 104, 36, SC.dark, { rx: 12 });
+    rect(808, 330, 12, 24, SC.metal, { sw: 3, rx: 2 });
+    rect(920, 330, 12, 24, SC.metal, { sw: 3, rx: 2 });
+    rect(858, 306, 24, 18, SC.metal, { sw: 3, rx: 2 });
+    S.ind = SU.indicator(g, `${p}-ind`, 870, 300, 22, { value: 1.5 });
+    if (has("filter")) lp("filter", 870, 394, "ฟิลเตอร์ (Filter)", "middle");
+  }
 
   // pump (group, may shake) + foot, shaft + shaft seal, coupling, motor
   rect(250, 352, 30, 40, SC.metal, { sw: 3, rx: 2 });
@@ -220,8 +222,8 @@ H.suStation = (parent, p, o = {}) => {
 
   // pressure gauge on the discharge line + circuit box
   S.gauge = SU.dial(g, `${p}-g`, 420, 128, 50, { set: 6, value: 0 });
-  rect(880, 110, 200, 140, SC.paper, { rx: 14 });
-  if (has("circuit")) { T(980, 172, "ไปวงจร", { size: 28 }); T(980, 208, "(วาล์ว · กระบอกสูบ)", { size: 21 }); }
+  if (!o.compact) rect(880, 110, 200, 140, SC.paper, { rx: 14 });
+  if (has("circuit") && !o.compact) { T(980, 172, "ไปวงจร", { size: 28 }); T(980, 208, "(วาล์ว · กระบอกสูบ)", { size: 21 }); }
 
   // oil-level glass on the tank wall (H / L marks), air breather on the lid
   rect(780, 428, 10, 6, SC.metal, { sw: 2, rx: 1 });
@@ -273,6 +275,7 @@ SU.mini = (parent, p, o = {}) => {
   const suc = "M 160 186 L 160 104", dis = "M 160 40 L 160 22 L 560 22";
   H.el("path", { d: suc, fill: "none", stroke: SC.blue, "stroke-width": 11 }, g);
   H.el("path", { d: dis, fill: "none", stroke: SC.blue, "stroke-width": 10, "stroke-linejoin": "round" }, g);
+  H.el("path", { d: "M 556 8 L 580 22 L 556 36 Z", fill: SC.blue }, g);
   S.flowEls = [suc, dis].map((d, i) => H.el("path", { id: `${p}-f${i}`, d, fill: "none", stroke: "#ffffff", "stroke-width": 4, "stroke-dasharray": "8 18", opacity: 0 }, g));
   S.pump = H.el("g", { id: `${p}-pump` }, g);
   H.el("circle", { cx: 160, cy: 72, r: 36, fill: SC.dark, stroke: SC.ink, "stroke-width": 4 }, S.pump);
