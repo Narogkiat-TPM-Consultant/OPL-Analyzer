@@ -40,7 +40,7 @@ H.v12Head(gr, GX, GY - GH - 22, "up", { fill: C.ink, len: 16, w: 8, sw: 1 });
 H.v12Head(gr, GX + GW + 22, GY, "right", { fill: C.ink, len: 16, w: 8, sw: 1 });
 H.text(gr, GX - 14, GY - GH + 4, "กระแส", { size: 26, anchor: "end" });
 H.text(gr, GX + GW + 34, GY + 9, "เวลา", { size: 24, anchor: "start", fill: C.muted });
-H.text(gr, GX + 30, GY - GH - 4, "Inrush", { size: 24, anchor: "start", fill: C.muted });
+H.text(gr, GX + 44, GY - GH + 14, "Inrush (กระแสตอนเริ่มดูด)", { size: 24, anchor: "start", fill: C.muted });
 const yHi = GY - GH + 30, yLo = GY - 50;
 const ok = H.el("path", { d: `M ${GX + 4} ${GY - 4} L ${GX + 16} ${yHi} C ${GX + 50} ${yHi} ${GX + 70} ${yLo} ${GX + 130} ${yLo} L ${GX + GW} ${yLo}`, fill: "none", stroke: C.green, "stroke-width": 7, "stroke-linejoin": "round" }, gr);
 const ng = H.el("path", { d: `M ${GX + 4} ${GY - 4} L ${GX + 16} ${yHi} L ${GX + GW} ${yHi + 6}`, fill: "none", stroke: C.red, "stroke-width": 7, "stroke-linejoin": "round" }, gr);
