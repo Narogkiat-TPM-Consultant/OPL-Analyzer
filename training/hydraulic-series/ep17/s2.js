@@ -60,11 +60,11 @@ const ah = H.el("path", { d: "M 312 418 L 296 442 L 324 440", fill: "none", stro
 tl.fromTo([fp, ah], { opacity: 0 }, { opacity: 1, duration: 0.4, immediateRender: false }, b + c[2] + 0.4);
 tl.fromTo(fp, { strokeDashoffset: 0 }, { strokeDashoffset: -24 * 8, duration: D - c[2] - 0.4, ease: "none", immediateRender: false }, b + c[2] + 0.4);
 // bubbles leave the return oil and rise to the surface (return side)
-const tB = c[2] + 0.3, nB = 9;
+const tB = c[2] + 0.3, nB = 12;
 for (let k = 0; k < nB; k++) {
-  const bx = 690 + ((k * 23) % 56), r = 6 + (k % 3) * 2;
+  const bx = 688 + ((k * 23) % 58), r = 8 + (k % 3) * 2;
   const bub = H.el("circle", { cx: bx, cy: 418, r, fill: "#ffffff", stroke: TC.blue, "stroke-width": 2.5, opacity: 0 }, ug);
-  const t0 = b + tB + 0.28 * k;
+  const t0 = b + tB + 0.22 * k;
   tl.fromTo(bub, { opacity: 0, y: 0 }, { opacity: 1, y: -40, duration: 0.25, ease: "none", immediateRender: false }, t0);
   tl.to(bub, { y: -(418 - TK.up - 4), duration: 1.0, ease: "power1.in" }, t0 + 0.25);
   tl.to(bub, { opacity: 0, duration: 0.15 }, t0 + 1.2);
