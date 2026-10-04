@@ -1,0 +1,9 @@
+# build output of the tpm-opl-video skill (recreated by setup/narrate/build/render)
+node_modules/
+assets/
+package.json
+package-lock.json
+index.html
+opl.spec.json
+snapshots/
+*.mp4
