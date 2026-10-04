@@ -68,7 +68,7 @@
   H.c7Label(L3, 870, 600, "Check valve", { line: [864, 592, 822, 489] });
   const box = H.el("g", { opacity: 0 }, g);
   H.el("rect", { x: 698, y: 280, width: 162, height: 222, rx: 16, fill: "rgba(31,95,191,0.07)", stroke: C7.blue, "stroke-width": 5, "stroke-dasharray": "14 10" }, box);
-  H.c7Label(box, 870, 300, "ชุด Cushion", { size: 28, fill: C7.blue });
+  H.c7Label(box, 868, 274, "ชุด Cushion", { size: 28, fill: C7.blue });
 
   // cue1: labels, then the stroke (oil in → piston to the head cover)
   const ts = c[0] + 0.6, Ts = 2.8, dx = 316;
@@ -82,7 +82,7 @@
 
   // cue2: packings
   tl.fromTo(L2, { opacity: 0 }, { opacity: 1, duration: 0.4 }, b + c[1] + 0.1);
-  tl.fromTo([...packs, ...ppacks], { attr: { fill: C7.ink } }, { attr: { fill: C7.blue }, duration: 0.25, yoyo: true, repeat: 4 }, b + c[1] + 0.3);
+  tl.fromTo([...packs, ...ppacks], { attr: { fill: C7.ink } }, { attr: { fill: C7.blue }, duration: 0.25, yoyo: true, repeat: 5 }, b + c[1] + 0.3);
 
   // cue3: air vent + cushion set
   tl.fromTo(L3, { opacity: 0 }, { opacity: 1, duration: 0.4 }, b + c[2] + 0.1);

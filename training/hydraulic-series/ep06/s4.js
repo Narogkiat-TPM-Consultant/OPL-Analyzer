@@ -49,18 +49,18 @@ const piston = (from, to, t, dur) => {
 tl.fromTo(S.win, { attr: { fill: "#fff1c2" } }, { attr: { fill: C.glow }, duration: 0.35, yoyo: true, repeat: 3, immediateRender: false }, b + c[0] + 2.0);
 // ② a on → boxes slide right, left box (crossed) at the ports
 const ta = c[1];
-H.v6Col(S.sol.a, "fill", C.paper, C.glow, b + ta + 0.1, 0.3);
-S.slide(0, 1, b + ta + 0.3, 0.6);
-H.v6Col(S.arrows.PB, "stroke", C.ink, C.pr, b + ta + 0.9);
-H.v6Col(S.arrows.AT, "stroke", C.ink, C.rt, b + ta + 0.9);
-paint(0, 1, b + ta + 0.9);
-piston(P0, 420, b + ta + 1.0, 1.4);
+H.v6Col(S.sol.a, "fill", C.paper, C.glow, b + ta + 0.4, 0.3);
+S.slide(0, 1, b + ta + 0.9, 0.6);
+H.v6Col(S.arrows.PB, "stroke", C.ink, C.pr, b + ta + 1.7);
+H.v6Col(S.arrows.AT, "stroke", C.ink, C.rt, b + ta + 1.7);
+paint(0, 1, b + ta + 1.7);
+piston(P0, 420, b + ta + 1.8, 1.3);
 // ③ b on → boxes slide left, right box (parallel) at the ports
 const tb = c[2];
-H.v6Col(S.sol.a, "fill", C.glow, C.paper, b + tb, 0.3);
-H.v6Col(S.sol.b, "fill", C.paper, C.glow, b + tb + 0.1, 0.3);
-S.slide(1, -1, b + tb + 0.3, 0.8);
-H.v6Col(S.arrows.PA, "stroke", C.ink, C.pr, b + tb + 1.1);
-H.v6Col(S.arrows.BT, "stroke", C.ink, C.rt, b + tb + 1.1);
-paint(1, -1, b + tb + 1.1);
-piston(420, 548, b + tb + 1.2, 1.6);
+H.v6Col(S.sol.a, "fill", C.glow, C.paper, b + tb + 0.2, 0.3);
+H.v6Col(S.sol.b, "fill", C.paper, C.glow, b + tb + 0.4, 0.3);
+S.slide(1, -1, b + tb + 0.9, 0.8);
+H.v6Col(S.arrows.PA, "stroke", C.ink, C.pr, b + tb + 1.8);
+H.v6Col(S.arrows.BT, "stroke", C.ink, C.rt, b + tb + 1.8);
+paint(1, -1, b + tb + 1.8);
+piston(420, 548, b + tb + 1.9, 1.5);

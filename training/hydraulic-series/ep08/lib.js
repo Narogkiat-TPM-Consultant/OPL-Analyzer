@@ -35,7 +35,7 @@ H.orTorus = (parent, cx, cy, R, k, t, o = {}) => {
 // Identification dots on a torus (front-right, like the deck's figure). Returns the dot elements.
 H.orDots = (T, parent, color, n, r = 10, idp = "") => {
   const out = [];
-  const angs = n === 2 ? [60, 78] : [70];
+  const angs = n === 2 ? [56, 80] : [70];
   angs.slice(0, n).forEach((a, i) => {
     const [x, y] = T.pt(a);
     out.push(H.el("ellipse", { ...(idp ? { id: `${idp}-${i + 1}` } : {}), cx: H.f(x), cy: H.f(y), rx: r, ry: H.f(r * 0.72), fill: color, stroke: "#ffffff", "stroke-width": 3 }, parent));

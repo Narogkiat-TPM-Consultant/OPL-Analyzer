@@ -65,20 +65,20 @@ const piston = (from, to, t, dur) => {
 tl.fromTo(blk, { opacity: 0 }, { opacity: 1, duration: 0.3, yoyo: true, repeat: 3, immediateRender: false }, b + c[0] + 2.2);
 // ② solenoid a
 const ta = c[1];
-V.coil("a", true, b + ta + 0.3);
-V.shift(0, 1, b + ta + 0.6, 0.6);
-H.v6Paint(V, 0, 1, b + ta + 1.2, extra);
-H.v6Run(fA, flA, b + ta + 1.3, b + c[2]);
-piston(P0, 360, b + ta + 1.5, 2.6);
-tl.fromTo(mvL, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: false }, b + ta + 1.5);
-tl.fromTo(mvL, { opacity: 1 }, { opacity: 0, duration: 0.3, immediateRender: false }, b + ta + 4.1);
+V.coil("a", true, b + ta + 0.8);
+V.shift(0, 1, b + ta + 1.5, 0.7);
+H.v6Paint(V, 0, 1, b + ta + 2.6, extra);
+H.v6Run(fA, flA, b + ta + 2.7, b + c[2]);
+piston(P0, 360, b + ta + 2.9, 2.7);
+tl.fromTo(mvL, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: false }, b + ta + 2.9);
+tl.fromTo(mvL, { opacity: 1 }, { opacity: 0, duration: 0.3, immediateRender: false }, b + ta + 5.6);
 // ③ solenoid b
 const tb = c[2];
-V.coil("a", false, b + tb);
-V.coil("b", true, b + tb + 0.3);
-V.shift(1, -1, b + tb + 0.6, 0.8);
-H.v6Paint(V, 1, -1, b + tb + 1.4, extra);
-H.v6Run(fB, flB, b + tb + 1.5, b + D - 0.1);
-piston(360, 520, b + tb + 1.7, 3.0);
-tl.fromTo(mvR, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: false }, b + tb + 1.7);
-tl.fromTo(mvR, { opacity: 1 }, { opacity: 0, duration: 0.3, immediateRender: false }, b + tb + 4.7);
+V.coil("a", false, b + tb + 0.3);
+V.coil("b", true, b + tb + 0.7);
+V.shift(1, -1, b + tb + 1.3, 0.8);
+H.v6Paint(V, 1, -1, b + tb + 2.4, extra);
+H.v6Run(fB, flB, b + tb + 2.5, b + D - 0.1);
+piston(360, 520, b + tb + 2.7, 2.6);
+tl.fromTo(mvR, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: false }, b + tb + 2.7);
+tl.fromTo(mvR, { opacity: 1 }, { opacity: 0, duration: 0.3, immediateRender: false }, b + tb + 5.3);

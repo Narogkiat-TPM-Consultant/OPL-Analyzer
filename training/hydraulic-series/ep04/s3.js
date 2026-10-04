@@ -4,7 +4,7 @@
 //  seg 3 — rotor is eccentric: one chamber (deep oil colour) grows at the bottom → suction from the intake port
 //  seg 4 — the chamber shrinks at the top → oil pushed out of the discharge port
 const OX = 400, OY = 320;
-const P = H.vanePump("s3-v-pump", "s3-v-p", { x: OX, y: OY, s: 1 });
+const P = H.vanePump("s3-v-pump", "s3-v-p", { x: OX, y: OY, s: 1, chambers: [0, 4] });
 const c = T.cues;
 const L = [c[1] - c[0] - 0.3, c[2] - c[1] - 0.3, c[3] - c[2] - 0.3, D - 0.8 - c[3]];
 const RX = OX - VP.e; // rotor centre (viewBox units)
@@ -84,7 +84,9 @@ show(cf, c[1] + 0.3 * L[1]);
 hide(cf, c[2] - 0.1);
 const lCh = label("s3-v-lch", ["ห้องปั๊ม (Pump chamber)"], 672, 322, { to: [664, 312, OX + 150, OY + 6] });
 show(lCh, c[1] + 0.74 * L[1]);
-show(P.chamber, c[2] - 0.6);
+show(P.chambers[0], c[2] - 0.6);
+// the opposite chamber joins once the first has passed the wide side: one sucks while the other pushes
+show(P.chambers[1], c[3] + 0.4);
 
 // seg 3: eccentric marks (ring centre O vs rotor centre O'), suction at the bottom
 const ecc = H.el("g", { id: "s3-v-ecc", opacity: 0 }, lab);

@@ -50,7 +50,7 @@
   H.c7Badge(mov, 182, 330, "E");
   H.text(mov, 85, 230, "ลูกสูบ", { size: 24, anchor: "middle" });
   const push = H.el("g", { opacity: 0 }, mov);
-  for (const y of [210, 450]) H.el("path", { d: H.arrowD(214, y, 146, y, 18), fill: "none", stroke: C7.blue, "stroke-width": 7 }, push);
+  for (const y of [178, 482]) H.el("path", { d: H.arrowD(214, y, 146, y, 18), fill: "none", stroke: C7.blue, "stroke-width": 7 }, push);
 
   // ---- cushion valve (needle + lock nut) and check valve (ball + spring + blank)
   const needle = H.el("g", { id: "s4-v-needle" }, g);
@@ -67,6 +67,7 @@
 
   // ---- names
   const A = H.c7Badge(g, 345, 228, "A", { color: C7.blue });
+  H.el("line", { x1: 624, y1: 256, x2: 624, y2: 286, stroke: C7.blue, "stroke-width": 3 }, g);
   H.c7Badge(g, 624, 236, "B", { color: C7.blue });
   const Cb = H.c7Badge(g, 604, 140, "C");
   H.c7Badge(g, 612, 530, "D");
@@ -129,6 +130,6 @@
   tl.to(mov, { x: dx1 + dx2 - back, duration: Tr, ease: "power2.inOut" }, b + t4 + 0.4);
   tl.to(rod, { attr: { width: 20 + dx1 + dx2 - back }, duration: Tr, ease: "power2.inOut" }, b + t4 + 0.4);
   tl.fromTo(A, { x: (dx1 + dx2) / 2 }, { x: (dx1 + dx2 - back) / 2, duration: Tr, ease: "power2.inOut", immediateRender: false }, b + t4 + 0.4);
-  tl.to(A, { opacity: 1, duration: 0.4 }, b + t4 + 1.4);
-  tl.fromTo(push, { opacity: 0 }, { opacity: 1, duration: 0.3 }, b + t4 + 1.4);
+  tl.to(A, { opacity: 1, duration: 0.4 }, b + t4 + 0.4 + Tr * 0.5);
+  tl.fromTo(push, { opacity: 0 }, { opacity: 1, duration: 0.3 }, b + t4 + 0.4 + Tr * 0.5);
 }

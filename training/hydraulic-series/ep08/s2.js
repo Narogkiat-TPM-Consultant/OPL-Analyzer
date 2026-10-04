@@ -30,7 +30,7 @@ const cardG = CL.map(([code, hs, th, en, col, n, ctext], i) => {
   const g = H.el("g", { id: `s2-v-c${i + 1}` }, outer);
   H.el("rect", { x: 0, y: 0, width: 864, height: 196, rx: 22, fill: "#fffdf8", stroke: "#d6cdb9", "stroke-width": 4 }, g);
   const Tr = H.orTorus(g, 140, 100, 92, 0.42, 24, { sw: 4 });
-  const dots = n ? H.orDots(Tr, g, OR_DOT[col], n, 12) : [];
+  const dots = n ? H.orDots(Tr, g, OR_DOT[col], n, 15) : [];
   H.text(g, 290, 96, code, { size: 78, fill: HC.ink });
   if (hs) H.text(g, 292, 152, hs, { size: 30, fill: "#59606a" });
   H.text(g, 470, 78, th, { size: 42, fill: HC.ink });
@@ -47,8 +47,8 @@ const cardG = CL.map(([code, hs, th, en, col, n, ctext], i) => {
 [0, 1, 2].forEach((i) => tl.fromTo(`#s2-v-chip${i + 1}`, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, at2(0, 0.12 + i * 0.2)));
 const when = [at2(1, 0.12), at2(1, 0.62), at2(2, 0.0), at2(2, 0.42), at2(3, 0.22), at2(3, 0.48)];
 cardG.forEach((C, i) => {
-  tl.fromTo(C.g, { opacity: 0, y: 26 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, when[i]);
+  tl.fromTo(C.g, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }, when[i]);
   if (C.dots.length) tl.fromTo(C.dots, { scale: 0, transformOrigin: "50% 50%" }, { scale: 1, transformOrigin: "50% 50%", duration: 0.35, ease: "back.out(3)", stagger: 0.15 }, when[i] + 0.35);
   tl.fromTo(C.lg, { opacity: 0, x: -14 }, { opacity: 1, x: 0, duration: 0.3 }, when[i] + 0.45);
 });
-tl.fromTo("#s2-v-other", { opacity: 0, x: 20 }, { opacity: 1, x: 0, duration: 0.35 }, at2(3, 0.72));
+tl.fromTo("#s2-v-other", { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.35 }, at2(3, 0.72));

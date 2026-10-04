@@ -10,7 +10,8 @@ VP.tip = (deg) => {
 };
 
 // Draw the pump into `parent`; o = { x, y, s } places and scales it.
-// Returns { g, rot, vanes, alpha, chamber, origin, flowIn, flowOut, headIn, headOut, pt(r, deg) }.
+// o.chambers = vane indices k whose chamber (vane k → k+1) is highlighted (default [0]).
+// Returns { g, rot, vanes, alpha, chamber, chambers, origin, flowIn, flowOut, headIn, headOut, pt(r, deg) }.
 H.vanePump = (parent, p, o = {}) => {
   const { R, band, Rc, e, rr, N, vw, vl, slot0, shaft, port, wall, out } = VP;
   const f = H.f;
@@ -47,8 +48,12 @@ H.vanePump = (parent, p, o = {}) => {
   const rot = H.el("g", { id: `${p}-rot` }, inner);
   const pt = (r, a) => `${f(-e + r * Math.cos((a * Math.PI) / 180))} ${f(r * Math.sin((a * Math.PI) / 180))}`;
   const Rw = R + e + 12, a1 = 360 / N;
-  // one pump chamber (between vane 0 and vane 1), highlighted in deep oil colour; starts hidden
-  const chamber = H.el("path", { id: `${p}-ch`, d: `M ${pt(0, 0)} L ${pt(Rw, 0)} A ${Rw} ${Rw} 0 0 1 ${pt(Rw, a1)} Z`, fill: "#eda512", opacity: 0 }, rot);
+  // highlighted pump chambers (deep oil colour), each between vane k and vane k+1; they start hidden
+  const chambers = (o.chambers || [0]).map((k, i) => {
+    const q0 = k * a1, q1 = q0 + a1;
+    return H.el("path", { id: `${p}-ch${i}`, d: `M ${pt(0, 0)} L ${pt(Rw, q0)} A ${Rw} ${Rw} 0 0 1 ${pt(Rw, q1)} Z`, fill: "#eda512", opacity: 0 }, rot);
+  });
+  const chamber = chambers[0];
   H.el("circle", { cx: -e, cy: 0, r: rr, fill: "#e4dfd2", stroke: HC.ink, "stroke-width": 4 }, rot);
   const vanes = [], alpha = [];
   for (let k = 0; k < N; k++) {
@@ -67,7 +72,7 @@ H.vanePump = (parent, p, o = {}) => {
   const ann = (r1, r2) => `M ${r2} 0 A ${r2} ${r2} 0 1 1 ${-r2} 0 A ${r2} ${r2} 0 1 1 ${r2} 0 Z M ${r1} 0 A ${r1} ${r1} 0 1 0 ${-r1} 0 A ${r1} ${r1} 0 1 0 ${r1} 0 Z`;
   H.el("path", { d: ann(R, R + band), fill: `url(#${p}-hatch)`, "fill-rule": "evenodd", stroke: HC.ink, "stroke-width": 4 }, g);
 
-  return { g, rot, vanes, alpha, chamber, origin: `${-e} 0`, flowIn, flowOut, headIn, headOut, pt };
+  return { g, rot, vanes, alpha, chamber, chambers, origin: `${-e} 0`, flowIn, flowOut, headIn, headOut, pt };
 };
 
 // Turn the rotor from absolute time tA to tB. rotFn(t) = rotor angle in degrees at absolute time t

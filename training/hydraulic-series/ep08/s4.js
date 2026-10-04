@@ -6,8 +6,8 @@ const at4 = (k, fr) => b + c4[k] + 0.1 + fr * seg4(k);
 const ft = (tg, from, to, t, first) => tl.fromTo(tg, from, { ...to, ...(first ? {} : { immediateRender: false }) }, t);
 
 const hatch4 = H.orHatch("s4-v-sec", "s4-v-hatch", 16);
-const G4 = { x0: 20, x1: 790, yc: 150, yf: 300, gap: 16, yb: 625, gx: 290, gw: 240, gd: 480, r: 100, hatch: hatch4, sw: 4 };
-const S4 = H.orSection("s4-v-sec", "s4-v-m", G4, { bolt: 660 });
+const G4 = { x0: 20, x1: 790, yc: 150, yf: 300, gap: 16, yb: 625, gx: 290, gw: 240, gd: 460, r: 100, hatch: hatch4, sw: 4 };
+const S4 = H.orSection("s4-v-sec", "s4-v-m", G4, { bolt: 660, ring: { rx: 114 } });
 const fx = H.$("s4-v-fx");
 
 // pressure scale with the deck's Fig.1 steps (kgf/cm²)
@@ -23,7 +23,7 @@ const tick4 = PV.map((v, i) => {
 // labels on the section
 const oilPill = H.orPill(fx, 40, 236, 230, 44, "น้ำมันแรงดัน →", { id: "s4-v-oilp", fill: HC.oil, color: HC.ink, size: 27 });
 const n1 = H.orNum(fx, 548, 344, 232, 1, "ช่องว่าง (Gap)", { id: "s4-v-n1" });
-const n2 = H.orNum(fx, 30, 336, 240, 2, "ผิวร่อง (Surface)", { id: "s4-v-n2" });
+const n2 = H.orNum(fx, 40, 336, 170, 2, "ผิวร่อง", { id: "s4-v-n2" });
 const n3 = H.orNum(fx, 440, 542, 220, 3, "ระยะบีบอัด", { id: "s4-v-n3" });
 
 // NG: extrusion into the gap
@@ -49,22 +49,22 @@ H.text(tq, 660, 78, "Torque ตามผู้ผลิต", { size: 28, anchor:
 
 // ② magnifier on the groove surface: scratch
 const mg = H.el("g", { id: "s4-v-mag" }, fx);
-H.el("path", { d: "M 206 452 L 296 470", fill: "none", stroke: HC.ink, "stroke-width": 3, "stroke-dasharray": "8 6" }, mg);
+H.el("path", { d: "M 206 452 L 296 448", fill: "none", stroke: HC.ink, "stroke-width": 3, "stroke-dasharray": "8 6" }, mg);
 H.el("line", { x1: 196, y1: 536, x2: 228, y2: 570, stroke: HC.ink, "stroke-width": 14, "stroke-linecap": "round" }, mg);
 H.el("circle", { cx: 150, cy: 490, r: 68, fill: "#ece6d7", stroke: HC.ink, "stroke-width": 6 }, mg);
 const scr = [
   H.el("path", { d: "M 104 472 L 132 488 L 150 480 L 194 504", fill: "none", stroke: HC.red, "stroke-width": 5, "stroke-linecap": "butt" }, mg),
   H.el("path", { d: "M 108 510 L 146 520 L 188 534", fill: "none", stroke: HC.red, "stroke-width": 4, "stroke-linecap": "butt" }, mg),
 ];
-H.text(mg, 104, 606, "รอยขีดข่วน", { size: 28, fill: HC.red });
+H.orPill(mg, 70, 576, 180, 40, "รอยขีดข่วน", { fill: "#fffdf8", color: HC.red, size: 26, stroke: HC.red });
 
 // ③ squeeze: free size (dashed) vs squeezed between cover face and groove bottom
 const sq4 = H.el("g", { id: "s4-v-sq" }, fx);
-H.el("circle", { cx: 410, cy: 390, r: 100, fill: "none", stroke: HC.blue, "stroke-width": 4, "stroke-dasharray": "12 8" }, sq4);
+H.el("circle", { cx: 410, cy: 380, r: 100, fill: "none", stroke: HC.blue, "stroke-width": 4, "stroke-dasharray": "12 8" }, sq4);
 const sqA = H.el("g", { id: "s4-v-sqa" }, sq4);
-H.el("path", { d: H.arrowD(410, 232, 410, 294, 18), fill: "none", stroke: HC.blue, "stroke-width": 7 }, sqA);
-H.el("path", { d: H.arrowD(410, 560, 410, 488, 18), fill: "none", stroke: HC.blue, "stroke-width": 7 }, sqA);
-H.orPill(sq4, 60, 240, 220, 42, "ขนาดก่อนบีบ", { fill: "#ffffff", color: HC.blue, size: 26, stroke: HC.blue });
+H.el("path", { d: H.arrowD(410, 226, 410, 296, 18), fill: "none", stroke: HC.blue, "stroke-width": 7 }, sqA);
+H.el("path", { d: H.arrowD(410, 548, 410, 464, 18), fill: "none", stroke: HC.blue, "stroke-width": 7 }, sqA);
+H.orPill(sq4, 116, 256, 220, 42, "ขนาดก่อนบีบ", { fill: "#ffffff", color: HC.blue, size: 26, stroke: HC.blue });
 
 // ---------------- timeline
 // segment 1: the three spots
@@ -73,8 +73,8 @@ const pulse = (n, t) => tl.fromTo(n, { scale: 1, transformOrigin: "50% 50%" }, {
 
 // segment 2: pressure rises 0 → 201, cover lifts (gap opens), ring is pushed and extrudes
 const ST = [
-  { sh: 0, rx: 104, lift: 0, len: 0 }, { sh: 22, rx: 108, lift: 0, len: 0 }, { sh: 38, rx: 112, lift: 3, len: 0 },
-  { sh: 52, rx: 116, lift: 7, len: 24 }, { sh: 62, rx: 120, lift: 12, len: 50 },
+  { sh: 0, rx: 114, lift: 0, len: 0 }, { sh: 20, rx: 116, lift: 0, len: 0 }, { sh: 36, rx: 118, lift: 3, len: 0 },
+  { sh: 50, rx: 121, lift: 7, len: 24 }, { sh: 60, rx: 124, lift: 12, len: 50 },
 ];
 const ringD = (s) => H.orRingD(G4, { sh: s.sh, rx: s.rx, lift: s.lift });
 const t2 = at4(1, 0);
@@ -92,7 +92,7 @@ tl.fromTo(S4.tongue, { opacity: 0 }, { opacity: 1, duration: 0.15 }, t2 + 0.4 + 
 const tNg = t2 + 0.4 + 3 * 0.6 + 0.5;
 tl.fromTo([ngC, ngP], { opacity: 0 }, { opacity: 1, duration: 0.3 }, tNg);
 tl.fromTo(ngC, { scale: 1, transformOrigin: "50% 50%" }, { scale: 1.25, transformOrigin: "50% 50%", duration: 0.3, yoyo: true, repeat: 3, immediateRender: false }, tNg + 0.3);
-tl.fromTo(inset, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.45, ease: "power3.out" }, at4(1, 0.72));
+tl.fromTo(inset, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.45, ease: "power3.out" }, at4(1, 0.72));
 
 // segment 3: pressure released, then the bolt torque
 const t3 = at4(2, 0);

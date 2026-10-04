@@ -28,7 +28,7 @@
   const tA = T.left + 0.8, dxA = 422, TA = dxA / v1;
   tl.fromTo(A.mov, { x: 0 }, { x: dxA, duration: TA, ease: "none" }, b + tA);
   tl.fromTo(A.rod, { attr: { width: 60 } }, { attr: { width: 60 + dxA }, duration: TA, ease: "none" }, b + tA);
-  tl.fromTo(A.spd, { scaleX: 1, svgOrigin: spdOrigin }, { scaleX: 0.01, svgOrigin: spdOrigin, duration: 0.06 }, b + tA + TA);
+  tl.to(A.spd, { opacity: 0, duration: 0.06 }, b + tA + TA);
   const hit = tA + TA;
   const burst = H.el("path", { d: "M 520 66 L 532 94 L 562 84 L 546 108 L 572 124 L 542 128 L 548 158 L 526 136 L 506 156 L 508 126 L 482 118 L 506 104 L 496 76 L 516 92 Z", fill: C7.red, opacity: 0 }, A.g);
   tl.fromTo(burst, { opacity: 1, scale: 0.4, svgOrigin: "524 112" }, { opacity: 0, scale: 1.4, svgOrigin: "524 112", duration: 0.7, ease: "power2.out" }, b + hit);
@@ -39,7 +39,7 @@
   }
   tl.fromTo(A.valve, { rotation: 0, svgOrigin: "684 110" }, { rotation: 5, svgOrigin: "684 110", duration: 0.07, yoyo: true, repeat: 7, ease: "none" }, b + hit + 0.4);
   const bang = H.el("g", { opacity: 0 }, A.g);
-  H.c7Label(bang, 400, 214, "กระแทก!", { size: 30, fill: C7.red, anchor: "middle" });
+  H.c7Label(bang, 430, 34, "กระแทก!", { size: 30, fill: C7.red, anchor: "middle" });
   tl.to(bang, { opacity: 1, duration: 0.2 }, b + hit + 0.05);
 
   // ---- right: cushion zone → speed drops, then fades to a soft stop
@@ -48,15 +48,16 @@
   const tB = T.right + 0.8;
   const zone = H.el("g", { opacity: 0 }, B.g);
   H.el("path", { d: `M ${84 + dx1} 172 L ${84 + dx1} 184 L 520 184 L 520 172`, fill: "none", stroke: C7.green, "stroke-width": 4 }, zone);
-  H.c7Label(zone, 84 + dx1 + 50, 216, "ช่วง Cushion", { size: 26, fill: C7.green, anchor: "middle" });
+  H.c7Label(zone, 84 + dx1 + 50, 214, "ช่วง Cushion", { size: 26, fill: C7.green, anchor: "middle" });
   tl.to(zone, { opacity: 1, duration: 0.3 }, b + T.right + 0.4);
   tl.fromTo(B.mov, { x: 0 }, { x: dx1, duration: T1, ease: "none" }, b + tB);
   tl.to(B.mov, { x: dx1 + dx2, duration: T2, ease: "power2.out" }, b + tB + T1);
   tl.fromTo(B.rod, { attr: { width: 60 } }, { attr: { width: 60 + dx1 } , duration: T1, ease: "none" }, b + tB);
   tl.to(B.rod, { attr: { width: 60 + dx1 + dx2 }, duration: T2, ease: "power2.out" }, b + tB + T1);
   tl.fromTo(B.spd, { scaleX: 1, svgOrigin: spdOrigin }, { scaleX: 0.3, svgOrigin: spdOrigin, duration: 0.12, ease: "power1.out" }, b + tB + T1);
-  tl.to(B.spd, { scaleX: 0.01, svgOrigin: spdOrigin, duration: T2 - 0.12, ease: "none" }, b + tB + T1 + 0.12);
+  tl.to(B.spd, { scaleX: 0.05, svgOrigin: spdOrigin, duration: T2 - 0.12, ease: "none" }, b + tB + T1 + 0.12);
+  tl.to(B.spd, { opacity: 0, duration: 0.2 }, b + tB + T1 + T2 - 0.25);
   const soft = H.el("g", { opacity: 0 }, B.g);
-  H.c7Label(soft, 300, 216, "หยุดนุ่มนวล", { size: 30, fill: C7.green, anchor: "middle" });
+  H.c7Label(soft, 430, 34, "หยุดนุ่มนวล", { size: 30, fill: C7.green, anchor: "middle" });
   tl.to(soft, { opacity: 1, duration: 0.3 }, b + tB + T1 + T2 - 0.2);
 }

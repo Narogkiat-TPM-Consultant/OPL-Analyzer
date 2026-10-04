@@ -24,12 +24,24 @@ RV.springV = (x, y0, y1, amp, n) => {
   return d + ` L ${f(x)} ${f(y1)}`;
 };
 
-RV.hatch = (parent, id) => {
-  const defs = H.el("defs", {}, parent);
-  const pat = H.el("pattern", { id, patternUnits: "userSpaceOnUse", width: 16, height: 16, patternTransform: "rotate(45)" }, defs);
-  H.el("rect", { x: 0, y: 0, width: 16, height: 16, fill: RV.body }, pat);
-  H.el("line", { x1: 8, y1: 0, x2: 8, y2: 16, stroke: RV.hatch, "stroke-width": 2.5 }, pat);
-  return `url(#${id})`;
+// Cut-face hatch as explicit 45° lines (an SVG <pattern> fill did not render its lines in the video capture).
+// Lines sit on one global grid (x + y = k·gap), so overlapping rectangles share the same lines.
+RV.hatchD = (rects, gap = 16) => {
+  const f = H.f;
+  let d = "";
+  for (const [x0, y0, w, h] of rects) {
+    const x1 = x0 + w, y1 = y0 + h;
+    for (let c = Math.ceil((x0 + y0) / gap) * gap; c <= x1 + y1; c += gap) {
+      const ax = Math.max(x0, c - y1), bx = Math.min(x1, c - y0);
+      if (bx - ax > 0.5) d += `M ${f(ax)} ${f(c - ax)} L ${f(bx)} ${f(c - bx)} `;
+    }
+  }
+  return d.trim();
+};
+RV.bodyCut = (g, outline, rects) => {
+  H.el("path", { d: outline, fill: RV.body }, g);
+  H.el("path", { d: RV.hatchD(rects), fill: "none", stroke: RV.hatch, "stroke-width": 2.5 }, g);
+  H.el("path", { d: outline, fill: "none", stroke: RV.ink, "stroke-width": 5, "stroke-linejoin": "round" }, g);
 };
 
 // Cavities: outline pass (wide ink stroke) then fill pass per pressure zone, so joints stay clean.
@@ -66,8 +78,7 @@ RV.pulse = (id, t, n = 2) => {
 // Returns { pop, psp, adj, nut, pspD(dxPoppet, dxScrew) }.
 RV.pilot = (g, p, o = {}) => {
   if (o.standalone) {
-    const hatch = RV.hatch(g, `${p}-hatch`);
-    H.el("path", { d: "M 260 60 H 780 V 200 H 260 Z", fill: hatch, stroke: RV.ink, "stroke-width": 5 }, g);
+    RV.bodyCut(g, "M 260 60 H 780 V 200 H 260 Z", [[260, 60, 520, 140]]);
     RV.cavities(g, p, {
       B: { fill: RV.pHi, r: [[300, 98, 20, 102], [300, 98, 32, 64], [330, 121, 16, 18]] },
       T: { fill: RV.tank, r: [[344, 98, 296, 64], [422, 160, 16, 40]] },
@@ -94,8 +105,7 @@ RV.pilot = (g, p, o = {}) => {
 // Full cross-section with pressure gauge on the inlet. Returns handles for animation.
 RV.section = (parent, p) => {
   const g = H.el("g", { id: p }, parent);
-  const hatch = RV.hatch(g, `${p}-hatch`);
-  H.el("path", { d: "M 200 190 H 260 V 60 H 780 V 200 H 700 V 570 H 200 Z", fill: hatch, stroke: RV.ink, "stroke-width": 5, "stroke-linejoin": "round" }, g);
+  RV.bodyCut(g, "M 200 190 H 260 V 60 H 780 V 200 H 700 V 570 H 200 Z", [[200, 190, 500, 380], [260, 60, 520, 140]]);
   const z = RV.cavities(g, p, {
     A: { fill: RV.pLo, r: [[18, 385, 184, 60], [200, 385, 92, 60], [290, 370, 280, 110], [98, 330, 14, 56]] },
     B: { fill: RV.pLo, r: [[370, 185, 120, 186], [300, 188, 72, 18], [300, 98, 20, 108], [300, 98, 32, 64], [330, 121, 16, 18]] },

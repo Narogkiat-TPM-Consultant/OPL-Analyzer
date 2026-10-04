@@ -309,8 +309,8 @@ const len3 = (el) => {
 // Draw a group on stroke by stroke: solid strokes draw on, dashed strokes / fills / text fade in.
 H.e3draw = (root, t0, span, each = 0.5) => {
   const els = [...root.querySelectorAll("path, line, rect, circle, text")];
-  els.forEach((el, i) => {
-    const t = t0 + (span * i) / Math.max(1, els.length - 1);
+  els.filter((el) => el.getAttribute("opacity") !== "0").forEach((el, i, arr) => {
+    const t = t0 + (span * i) / Math.max(1, arr.length - 1);
     const stroke = el.getAttribute("stroke"), fill = el.getAttribute("fill");
     if (el.tagName !== "text" && stroke && stroke !== "none" && !el.getAttribute("stroke-dasharray") && +el.getAttribute("stroke-width") > 0) {
       const L = len3(el);
@@ -389,6 +389,7 @@ H.signCircuit = (parent, p) => {
 // Actual circuit (simplified pictorial), local box ≈ 30..850 × 40..866.
 H.actualCircuit = (parent, p) => {
   const g = H.el("g", { id: p }, parent);
+  P3.tank(G3(g, 440, 740), 820, 126); // tank first: pipes inside it stay visible (cut-away view)
   const pipes = H.el("g", {}, g);
   const flow = H.el("g", { id: p + "-flow" }, g);
   const parts = H.el("g", {}, g);
@@ -401,7 +402,6 @@ H.actualCircuit = (parent, p) => {
   L3(pipes, "M 462 490 L 462 512", { w: 5 });
   L3(pipes, head3(462, 514, Math.PI / 2, 15), { w: 5 });
   H.text(pipes, 478, 512, "ไปถัง", { size: 30, fill: K3.muted });
-  P3.tank(at(440, 740), 820, 126);
   P3.breather(at(80, 740));
   P3.filter(at(510, 822));
   const pu = P3.pumpSet(at(510, 672), p + "-pu");
@@ -420,4 +420,38 @@ H.actualCircuit = (parent, p) => {
   };
   const badges = { 1: [[566, 808]], 2: [[452, 660]], 3: [[244, 400]], 4: [[342, 260], [672, 260]], 5: [[214, 90]] };
   return { g, flow, pu, gs, dv, fa, fb, cy, routes, badges };
+};
+
+// ------------------------------------------------------------------ "actual → symbol" table (scenes 2 and 3)
+// viewBox 1760 × 740, three rows: [badge] actual part (centre x 319) → symbol on a white sheet (centre x 858) | name + how to read
+H.e3table = (parent, p) => {
+  const g = H.$(parent);
+  H.text(g, 319, 34, "ของจริง (Actual)", { size: 30, anchor: "middle", fill: K3.muted });
+  H.text(g, 858, 34, "สัญลักษณ์ (Sign)", { size: 30, anchor: "middle", fill: K3.blue });
+  H.text(g, 1116, 34, "ชื่อ · วิธีอ่านสัญลักษณ์", { size: 30, fill: K3.muted });
+  return [0, 1, 2].map((i) => {
+    const y = 52 + i * 228, cy = y + 109;
+    const rg = H.el("g", { id: `${p}-r${i + 1}` }, g);
+    R3(rg, 8, y, 1744, 218, K3.paper, { rx: 22, sw: 3, stroke: K3.line });
+    R3(rg, 628, y + 12, 460, 194, K3.sheet, { rx: 14, sw: 3, stroke: K3.sheetLine });
+    C3(rg, 44, cy, 26, K3.blue, { sw: 0 });
+    H.text(rg, 44, cy + 11, String(i + 1), { size: 32, anchor: "middle", fill: "#ffffff" });
+    const arrow = L3(rg, `M 566 ${cy} L 612 ${cy} ` + head3(614, cy, 0, 16), { c: K3.blue, w: 6, id: `${p}-ar${i + 1}` });
+    const act = H.el("g", { id: `${p}-a${i + 1}` }, rg);
+    const sym = H.el("g", { id: `${p}-s${i + 1}` }, rg);
+    const txt = H.el("g", { id: `${p}-t${i + 1}` }, rg);
+    return { g: rg, y, cy, act, sym, txt, arrow };
+  });
+};
+// name (parts), second line, "how to read" line
+H.e3rowText = (row, l1, l2, l3) => {
+  T3(row.txt, 1116, row.y + 70, l1, { size: 38 });
+  H.text(row.txt, 1116, row.y + 122, l2, { size: 30, fill: K3.muted, weight: 700 });
+  T3(row.txt, 1116, row.y + 176, [["อ่าน: ", K3.muted], [l3, K3.blue]], { size: 31 });
+};
+// row k lights up at t: row from dim to full, symbol draws itself, arrow grows
+H.e3rowOn = (row, t, drawSpan = 1.0) => {
+  tl.fromTo(row.g, { opacity: 0.28 }, { opacity: 1, duration: 0.35 }, t);
+  H.e3draw(row.sym, t + 0.15, drawSpan, 0.35);
+  tl.fromTo(row.arrow, { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.35, ease: "power2.out" }, t + 0.1);
 };
