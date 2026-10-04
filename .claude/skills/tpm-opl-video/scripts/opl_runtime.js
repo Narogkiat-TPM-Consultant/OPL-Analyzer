@@ -77,7 +77,7 @@
         },
         // Dial gauge (pressure / temperature / level) with a green OK band — the classic AM visual control.
         // o: { id, min=0, max=10, ok:[lo,hi], value, ticks=5 (major intervals), minor=0 (minor ticks between
-        //      majors), labelEvery=1, labelSize, unit, needleColor="#1a1d21",
+        //      majors), labelEvery=1 (counts from the first major), labels=false hides all numbers, labelSize, unit, needleColor="#1a1d21",
         //      marks:[{ v, color="#d0233a", id }] (limit lines, e.g. "notify technician below 4.5") }
         // → { g, needle, rot(v), origin, band }   (band id = `${id}-ok`)
         // Animate: tl.to(G.needle, { rotation: G.rot(7.5), svgOrigin: G.origin, duration: 0.8 }, b + 1)
@@ -93,7 +93,7 @@
             const v = min + ((max - min) * k) / steps, a = (ang(v) * Math.PI) / 180, isMajor = k % per === 0;
             const r0 = isMajor ? 0.7 : 0.8;
             H.el("line", { x1: f(cx + Math.cos(a) * r * 0.9), y1: f(cy + Math.sin(a) * r * 0.9), x2: f(cx + Math.cos(a) * r * r0), y2: f(cy + Math.sin(a) * r * r0), stroke: "#1a1d21", "stroke-width": isMajor ? sw(0.022) : sw(0.012) }, g);
-            if (isMajor && (k / per) % every === 0) {
+            if (isMajor && o.labels !== false && (k / per) % every === 0) {
               const ls = o.labelSize ?? Math.round(r * 0.16);
               H.text(g, cx + Math.cos(a) * r * 0.54, cy + Math.sin(a) * r * 0.54 + ls * 0.36, String(+v.toFixed(2)), { size: ls, anchor: "middle" });
             }

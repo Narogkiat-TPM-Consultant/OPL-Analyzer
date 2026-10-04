@@ -185,7 +185,8 @@ Plain JavaScript run inside the timeline build, before the scene's generated twe
 - `tl` — the paused GSAP master timeline; add tweens at `b + t`
 - `b` — this scene's start time in seconds
 - `D` — this scene's duration in seconds
-- `T.cues` — start time of each narration segment (seconds from scene start)
+- `T.cues` — start time of each narration segment (seconds from scene start). It is a 0-based array while
+  spec `cue` is 1-based: `"cue": 2` in the spec ↔ `T.cues[1]` in js
 - `T` — when this scene's generated elements appear, seconds from scene start (don't redeclare it):
   compare `{left, right, banner}`, diagram `{points: [...], callout}`, judgment `{stamps: [...], banner}`,
   checklist `{items: [...]}`, whywhy `{phenomenon, whys: [...], root}`, result `{rows: [...]}`.
