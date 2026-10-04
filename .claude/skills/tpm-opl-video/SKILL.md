@@ -99,8 +99,20 @@ goes in a top-level `js_lib` file, not in one scene's file. Guidance that keeps 
 
 ```bash
 node <skill-dir>/scripts/setup_project.mjs <work>/opl          # once per project folder
+python3 <skill-dir>/scripts/narrate.py <work>/opl/spec.json <work>/opl   # only if the spec has narration
 node <skill-dir>/scripts/build_opl.mjs <work>/opl/spec.json <work>/opl
 ```
+
+**Thai voice-over (optional).** When the user wants narration, give scenes a `narration` (one string, or a
+list of segments) and let elements appear with the voice via `"cue": k` (segment k starts). `narrate.py`
+turns every segment into an MP3 with a Microsoft Edge neural voice (`pip install edge-tts`; default
+`th-TH-PremwadeeNeural`, male `th-TH-NiwatNeural`; needs outbound access to `speech.platform.bing.com`),
+and the build times each scene around the real audio. Without audio yet the build estimates speech length
+and says so — the video can be checked, and the voice dropped in later with narrate + build + render.
+`"target_duration": 75` pads the outro to a fixed clip length (or reports the overrun per scene).
+Write narration in spoken Thai — spell English terms the way they are said (แอคชูเอเตอร์, ล็อกเอาต์),
+numbers as words where the TTS might misread them — and keep on-screen text to the key words; the voice
+carries the explanation.
 
 The build prints the scene timeline, warnings, and the snapshot commands to run next. Act on warnings:
 a "too dense" scene means cut words first (operators read ~17 characters/s), and only then add `duration`.
@@ -148,8 +160,9 @@ Keep the project folder (`spec.json`, `sN.js`, `assets/`) — edits later are a 
 
 ## Notes and limits
 
-- Sound: generated SFX only (whoosh/pop/tick/thud/ok/ng/alarm/squeal). No voiceover — good Thai TTS needs an
-  external service and API key; if the user wants narration, ask which service and add an `<audio>` track.
+- Sound: generated SFX (whoosh/pop/tick/thud/ok/ng/alarm/squeal), ducked under narration when there is a
+  voice-over. Voice-over uses free Edge neural voices (no key); for commercial distribution suggest the
+  official Azure Speech service, which has the same voices.
 - Rendering is local and takes about 2–2.5 s of wall time per second of video on 4 CPU cores.
 - HyperFrames telemetry is disabled by setup.
 - For anything the scene types cannot express, the composition is plain HTML/CSS/GSAP: edit `index.html`

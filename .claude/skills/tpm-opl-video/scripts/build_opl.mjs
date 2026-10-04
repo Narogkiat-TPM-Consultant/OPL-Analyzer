@@ -29,7 +29,14 @@ const md = (s) => esc(s).replace(/\*\*(.+?)\*\*/g, '<span class="em">$1</span>')
 const plain = (s) => String(s ?? "").replace(/\*\*|!!/g, "");
 const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
 // `at` of an item that may be a plain string (careful: "text".at is String.prototype.at, a function)
-const atOf = (x) => (x && typeof x === "object" && typeof x.at === "number" ? x.at : undefined);
+// An element may also say {"cue": k}: appear when narration segment k of its scene starts.
+let CUES = [];
+const atOf = (x) => {
+  if (!x || typeof x !== "object") return undefined;
+  if (typeof x.at === "number") return x.at;
+  if (typeof x.cue === "number" && CUES[x.cue - 1] != null) return r3(CUES[x.cue - 1] + 0.1);
+  return undefined;
+};
 
 const TYPES = {
   basic: { th: "ความรู้พื้นฐาน", jp: "基礎知識", en: "Basic Knowledge" },
@@ -259,9 +266,9 @@ R.checklist = (s, sid, dur) => {
       </div>
       ${s.note ? `<span class="note" id="${c.id("note")}">${md(s.note)}</span>` : ""}`;
   c.rise(`#${c.id("h")}`, 0.05);
-  c.T.items = items.map((_, i) => r3(0.5 + i * 0.4));
-  items.forEach((_, i) => { c.slide(`#${c.id("r" + (i + 1))}`, 0.5 + i * 0.4, -70, { d: 0.4 }); c.s("pop", 0.5 + i * 0.4); });
-  if (s.note) c.fade(`#${c.id("note")}`, 0.5 + items.length * 0.4 + 0.3);
+  c.T.items = items.map((it, i) => r3(atOf(it) ?? 0.5 + i * 0.4));
+  c.T.items.forEach((t, i) => { c.slide(`#${c.id("r" + (i + 1))}`, t, -70, { d: 0.4 }); c.s("pop", t); });
+  if (s.note) c.fade(`#${c.id("note")}`, atOf({ at: s.note_at, cue: s.note_cue }) ?? Math.max(...c.T.items, 0) + 0.7);
   return { html, ...c };
 };
 
@@ -283,7 +290,7 @@ R.whywhy = (s, sid, dur) => {
   c.T.phenomenon = 0.4; c.T.whys = whys.map((w, i) => r3(atOf(w) ?? 1.1 + i * gap));
   c.slide(`#${c.id("ph")}`, 0.4, -40, { d: 0.4 }); c.s("pop", 0.4);
   whys.forEach((w, i) => { const t = atOf(w) ?? 1.1 + i * gap; c.slide(`#${c.id("w" + (i + 1))}`, t, -40, { d: 0.35 }); c.s("tick", t); });
-  if (s.root) { const t = 1.1 + whys.length * gap + 0.2; c.T.root = r3(t); c.pop(`#${c.id("root")}`, t, { from: 1.15, d: 0.35 }); c.s("thud", t); }
+  if (s.root) { const t = atOf({ at: s.root_at, cue: s.root_cue }) ?? 1.1 + whys.length * gap + 0.2; c.T.root = r3(t); c.pop(`#${c.id("root")}`, t, { from: 1.15, d: 0.35 }); c.s("thud", t); }
   return { html, ...c };
 };
 
@@ -311,15 +318,15 @@ R.result = (s, sid, dur) => {
       <div class="rs">${rows.join("")}</div>
       ${s.note ? `<span class="note" id="${c.id("note")}">${md(s.note)}</span>` : ""}`;
   c.rise(`#${c.id("h")}`, 0.05);
-  c.T.rows = ms.map((_, i) => r3(0.5 + i * 1.3));
+  c.T.rows = ms.map((m, i) => r3(atOf(m) ?? 0.5 + i * 1.3));
   ms.forEach((_, i) => {
-    const t = 0.5 + i * 1.3;
+    const t = c.T.rows[i];
     c.fade(`#${c.id("m" + (i + 1))}`, t, { d: 0.3 });
     c.tw.push(`tl.fromTo(${J("#" + c.id("b" + (i + 1)))}, { scaleX: 0 }, { scaleX: 1, transformOrigin: "0% 50%", duration: 0.5, ease: "power2.out" }, ${c.P(t + 0.1)});`);
     c.tw.push(`tl.fromTo(${J("#" + c.id("f" + (i + 1)))}, { scaleX: 0 }, { scaleX: 1, transformOrigin: "0% 50%", duration: 0.5, ease: "power2.out" }, ${c.P(t + 0.5)});`);
     c.pop(`#${c.id("p" + (i + 1))}`, t + 0.95, { from: 1.6 }); c.s(i === ms.length - 1 ? "ok" : "pop", t + 0.95);
   });
-  if (s.note) c.fade(`#${c.id("note")}`, 0.5 + ms.length * 1.3 + 0.2);
+  if (s.note) c.fade(`#${c.id("note")}`, Math.max(...c.T.rows, 0) + 1.2);
   return { html, ...c };
 };
 
@@ -346,7 +353,7 @@ R.outro = (s, sid, dur) => {
   return { html, ...c };
 };
 
-const NON_TEXT = new Set(["caption", "root_tag", "phenomenon_tag", "type", "tone", "verdict", "svg", "js", "js_file", "anim", "sfx", "icon", "better", "unit", "tag", "duration", "at", "gap", "numbered", "before", "after"]);
+const NON_TEXT = new Set(["narration", "cue", "note_cue", "root_cue", "caption", "root_tag", "phenomenon_tag", "type", "tone", "verdict", "svg", "js", "js_file", "anim", "sfx", "icon", "better", "unit", "tag", "duration", "at", "gap", "numbered", "before", "after"]);
 function textOf(v, k) {
   if (k && NON_TEXT.has(k)) return "";
   if (typeof v === "string") return plain(v);
@@ -372,36 +379,72 @@ function defaultDuration(s) {
 
 // ---------------------------------------------------------------- assemble
 const scenes = [...(spec.scenes || [])];
-if (scenes[0]?.type !== "title") scenes.unshift({ type: "title" });
+if (scenes[0]?.type !== "title") scenes.unshift({ type: "title", ...(spec.title?.narration ? { narration: spec.title.narration } : {}) });
 if (spec.outro !== false && scenes[scenes.length - 1]?.type !== "outro") scenes.push({ type: "outro", ...(spec.outro || {}) });
 
+// Narration: per-scene segments, real lengths from narrate.py's vo.json, otherwise estimated.
+const VO_DIR = path.join(proj, "assets", "vo");
+const voJson = fs.existsSync(path.join(VO_DIR, "vo.json")) ? JSON.parse(fs.readFileSync(path.join(VO_DIR, "vo.json"), "utf8")) : null;
+const VO_LEAD = 0.5, VO_GAP = 0.3, VO_TAIL = 0.8, VO_EST_CPS = 13; // seconds; base Thai chars/s when estimating
+const baseChars = (t) => String(t).replace(/[\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]/g, "").replace(/[^\u0E00-\u0E7Fa-zA-Z0-9]/g, "").length;
+const narrated = scenes.some((s) => s.narration);
+let estimated = 0;
+
+// pass 1 — durations and narration cue times
+const plan = scenes.map((s, i) => {
+  const sid = `s${i + 1}`;
+  const segs = !s.narration ? [] : [].concat(s.narration).filter(Boolean);
+  const real = voJson?.scenes?.[sid];
+  const haveAudio = real && real.length === segs.length && segs.every((_, k) => fs.existsSync(path.join(VO_DIR, `${sid}-${k + 1}.mp3`)));
+  const lens = segs.map((t, k) => (haveAudio ? real[k] : r3(baseChars(t) / VO_EST_CPS + 0.4)));
+  if (segs.length && !haveAudio) estimated++;
+  const cues = [];
+  let t = s.type === "title" ? 1.2 : VO_LEAD;
+  lens.forEach((len) => { cues.push(r3(t)); t += len + VO_GAP; });
+  const voEnd = lens.length ? t - VO_GAP + VO_TAIL : 0;
+  const textChars = baseChars(textOf(s));
+  const auto = defaultDuration(s);
+  let dur = s.duration ?? Math.ceil(clamp(Math.max(auto, textChars / READ_CPS), auto, Math.max(auto, 10)) * 10) / 10;
+  if (voEnd > dur) {
+    if (s.duration != null) warnings.push(`${sid}: narration needs ${voEnd.toFixed(1)}s but duration is ${s.duration}s — extended`);
+    dur = Math.ceil(voEnd * 10) / 10;
+  }
+  return { s, sid, segs, lens, cues, haveAudio, textChars, dur: r3(dur) };
+});
+if (narrated && estimated) warnings.push(`narration: ${estimated} scene(s) use ESTIMATED speech length (no audio yet) — run narrate.py, then rebuild`);
+
+// optional fixed length (e.g. a 75 s training-clip slot): pad the outro, or report the overrun
+if (spec.target_duration) {
+  const sum = plan.reduce((a, p) => a + p.dur, 0), diff = r3(spec.target_duration - sum), last = plan[plan.length - 1];
+  if (diff > 0 && last.s.type === "outro") last.dur = r3(last.dur + diff);
+  else if (diff < -1) warnings.push(`target_duration ${spec.target_duration}s exceeded by ${(-diff).toFixed(1)}s — shorten narration: ` + plan.map((p) => `${p.sid} ${p.dur}s`).join(", "));
+}
+
+// pass 2 — render scenes
 let base = 0;
 const built = [];
 const animSeen = new Set();
 const sfx = [];
-scenes.forEach((s, i) => {
-  const sid = `s${i + 1}`;
+const vo = [];
+plan.forEach(({ s, sid, segs, lens, cues, haveAudio, textChars, dur }, i) => {
   if (!R[s.type]) { errors.push(`${sid}: unknown scene type "${s.type}"`); return; }
-  // Screen time: the scene's structural default, stretched so operators can read its text
-  // (~READ_CPS base characters per second), capped at 10 s. An explicit `duration` always wins.
-  // Thai vowel/tone marks sit on a consonant and add no reading time, so only base characters count.
-  const textChars = textOf(s).replace(/[\u0E31\u0E34-\u0E3A\u0E47-\u0E4E]/g, "").replace(/[^\u0E00-\u0E7Fa-zA-Z0-9]/g, "").length;
-  const auto = defaultDuration(s);
-  const dur = r3(s.duration ?? Math.ceil(clamp(Math.max(auto, textChars / READ_CPS), auto, Math.max(auto, 10)) * 10) / 10);
+  CUES = cues;
   const out = R[s.type](s, sid, dur);
+  out.T.cues = cues;
   const anims = (s.anim || []).map((a) => {
     const to = { ...(a.to || {}), duration: a.dur ?? 0.5, ease: a.ease ?? "power2.out" };
     if (a.repeat != null) to.repeat = a.repeat;
     if (a.yoyo) to.yoyo = true;
     if (a.stagger != null) to.stagger = a.stagger;
-    if (a.sfx) out.sfx.push([a.sfx, a.at]);
+    const at = atOf(a) ?? 0;
+    if (a.sfx) out.sfx.push([a.sfx, at]);
     // a later fromTo on the same target must not apply its from-values at build time
     const key = J(a.t);
     if (a.from && animSeen.has(key)) to.immediateRender = false;
     animSeen.add(key);
     return a.from
-      ? `tl.fromTo(${J(a.t)}, ${J(a.from)}, ${J(to)}, b + ${r3(a.at)});`
-      : `tl.to(${J(a.t)}, ${J(to)}, b + ${r3(a.at)});`;
+      ? `tl.fromTo(${J(a.t)}, ${J(a.from)}, ${J(to)}, b + ${r3(at)});`
+      : `tl.to(${J(a.t)}, ${J(to)}, b + ${r3(at)});`;
   });
   for (const [name, t] of s.sfx || []) out.sfx.push([name, t]);
   if (i > 0) out.sfx.push(["whoosh", 0]);
@@ -411,12 +454,14 @@ scenes.forEach((s, i) => {
     if (t > dur) warnings.push(`${sid}: sfx "${name}" at ${t}s is after the scene ends (${dur}s)`);
     sfx.push({ name, t: r3(base + t) });
   }
-  const cps = textChars / dur;
-  if (s.type !== "title" && s.type !== "outro" && cps > READ_CPS * 1.35)
+  if (haveAudio) segs.forEach((_, k) => vo.push({ id: `vo-${sid}-${k + 1}`, src: `assets/vo/${sid}-${k + 1}.mp3`, t: r3(base + cues[k]), len: lens[k] }));
+  // on-screen text with a voice reading the detail may be a little denser than silent text
+  const cps = textChars / dur, limit = READ_CPS * (segs.length ? 1.6 : 1.35);
+  if (s.type !== "title" && s.type !== "outro" && cps > limit)
     warnings.push(`${sid} (${s.type}): ${textChars} chars in ${dur}s = ${cps.toFixed(1)} chars/s — too dense for operators; cut words or set duration ≥ ${Math.ceil(textChars / READ_CPS)}s`);
   if (s.caption && s.type !== "diagram") out.html += `\n      <span class="dg-cap">${md(s.caption)}</span>`;
   // T = when generated elements appear (seconds from scene start), so scene js can sync to them
-  const tDecl = Object.keys(out.T).length ? `const T = ${J(out.T)};` : "";
+  const tDecl = `const T = ${J(out.T)};`;
   built.push({ sid, type: s.type, base: r3(base), dur, html: out.html, code: [tDecl, sceneJs(s), ...out.tw, ...anims].filter(Boolean), dark: s.type === "alert", custom: !!(s.js || s.js_file || (s.anim || []).length) });
   base += dur;
 });
@@ -424,7 +469,7 @@ const TOTAL = r3(base);
 
 const keyCount = (JSON.stringify(spec).match(/!![^!]+!!/g) || []).length;
 if (keyCount > 4) warnings.push(`${keyCount} !!key!! (red) highlights — 70:25:5 rule wants red only on the single most important point per scene`);
-if (TOTAL > 60) warnings.push(`total ${TOTAL}s — OPL videos work best at 30–45s (one point only)`);
+if (TOTAL > 60 && !spec.target_duration) warnings.push(`total ${TOTAL}s — OPL videos work best at 30–45s (one point only)`);
 
 const fontCssPath = path.join(proj, "assets", "fonts", "fontfaces.css");
 if (!fs.existsSync(fontCssPath)) errors.push(`missing ${fontCssPath} — run setup_project.mjs first`);
@@ -442,14 +487,16 @@ const sectionsHtml = built.map((b) => `
       <section id="${b.sid}" class="clip scene sc-${b.type}${b.dark ? " dark" : ""}" data-start="${b.base}" data-duration="${b.dur}" data-track-index="1">${b.html}
       </section>`).join("\n");
 
+const duck = narrated ? 0.4 : 1; // keep effects under the voice
 const audioHtml = sfx
   .sort((a, b) => a.t - b.t)
-  .map((x, i) => `      <audio id="sfx-${String(i + 1).padStart(2, "0")}" src="assets/sfx/${x.name}.wav" data-start="${x.t}" data-duration="${SFX_LEN[x.name]}" data-track-index="${SFX_TRACK[x.name]}" data-volume="${SFX_VOL[x.name]}"></audio>`)
+  .map((x, i) => `      <audio id="sfx-${String(i + 1).padStart(2, "0")}" src="assets/sfx/${x.name}.wav" data-start="${x.t}" data-duration="${SFX_LEN[x.name]}" data-track-index="${SFX_TRACK[x.name]}" data-volume="${r3(SFX_VOL[x.name] * duck)}"></audio>`)
+  .concat(vo.map((v) => `      <audio id="${v.id}" src="${v.src}" data-start="${v.t}" data-duration="${v.len}" data-track-index="20" data-volume="1"></audio>`))
   .join("\n");
 
 const sceneCode = built.map((b) => `
         // ---- ${b.sid} ${b.type} (${b.base}s – ${r3(b.base + b.dur)}s)
-        { const b = ${b.base};
+        { const b = ${b.base}, D = ${b.dur};
           ${b.code.join("\n          ")}
         }`).join("\n");
 

@@ -35,6 +35,16 @@ Every scene accepts: `type`, `duration` (seconds, optional — normally derived 
 Optional top-level `"js_lib": "lib.js"` (or a list of files): shared JavaScript that runs once before scene 1
 (see § 5).
 
+Narration (voice-over) fields:
+- top level `"voice": { "name": "th-TH-PremwadeeNeural", "rate": "+0%" }` and `"target_duration": 75`
+- any scene: `"narration": "…"` or `["segment 1", "segment 2", …]`; for the automatic title use
+  `title.narration`, for the automatic outro `outro.narration`
+- elements that support `at` also accept `"cue": k` — appear 0.1 s after narration segment k starts
+  (points, callout, compare left/right/banner, judgment cards/banner, checklist items, whys, result metrics,
+  anim entries; plus `note_cue`, `root_cue`)
+- the scene lasts at least until its narration ends (+0.8 s); segments start 0.5 s into a scene
+  (1.2 s in the title) with 0.3 s between them
+
 ### When things appear (seconds from scene start)
 
 Use these to line custom animation up with the generated layout; every `at` override is optional.
@@ -174,6 +184,8 @@ runs in its own block (`{ const b = …; … }`), so a `const` in one scene's fi
 Plain JavaScript run inside the timeline build, before the scene's generated tweens. In scope:
 - `tl` — the paused GSAP master timeline; add tweens at `b + t`
 - `b` — this scene's start time in seconds
+- `D` — this scene's duration in seconds
+- `T.cues` — start time of each narration segment (seconds from scene start)
 - `T` — when this scene's generated elements appear, seconds from scene start (don't redeclare it):
   compare `{left, right, banner}`, diagram `{points: [...], callout}`, judgment `{stamps: [...], banner}`,
   checklist `{items: [...]}`, whywhy `{phenomenon, whys: [...], root}`, result `{rows: [...]}`.
