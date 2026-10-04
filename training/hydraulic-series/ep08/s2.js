@@ -29,10 +29,10 @@ const cardG = CL.map(([code, hs, th, en, col, n, ctext], i) => {
   const outer = H.el("g", { transform: `translate(${x} ${y})` }, cards2);
   const g = H.el("g", { id: `s2-v-c${i + 1}` }, outer);
   H.el("rect", { x: 0, y: 0, width: 864, height: 196, rx: 22, fill: "#fffdf8", stroke: "#d6cdb9", "stroke-width": 4 }, g);
-  const Tr = H.orTorus(g, 140, 100, 92, 0.42, 24, { sw: 4 });
+  const Tr = H.orTorus(g, 146, 100, 100, 0.44, 27, { sw: 4 });
   const dots = n ? H.orDots(Tr, g, OR_DOT[col], n, 15) : [];
-  H.text(g, 290, 96, code, { size: 78, fill: HC.ink });
-  if (hs) H.text(g, 292, 152, hs, { size: 30, fill: "#59606a" });
+  H.text(g, 300, 96, code, { size: 78, fill: HC.ink });
+  if (hs) H.text(g, 302, 152, hs, { size: 30, fill: "#59606a" });
   H.text(g, 470, 78, th, { size: 42, fill: HC.ink });
   H.text(g, 470, 118, en, { size: 28, fill: "#59606a", weight: 600 });
   // colour legend: swatch dot(s) + words
