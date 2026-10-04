@@ -102,10 +102,14 @@ H.pumpStation = (parent, p, o = {}) => {
 
   // labels
   if (has("tank")) T(625, 596, "ถังน้ำมัน (Oil tank)", { size: 24 });
-  if (has("gauge")) T(362, 122, "เกจวัดแรงดัน", { size: 23, anchor: "end" });
-  if (has("breather")) T(110, 334, "Air breather", { size: 22 });
-  if (has("strainer")) T(172, 578, "Strainer", { size: 22, anchor: "end" });
-  if (has("suction")) T(224, 494, "ท่อดูด (Suction)", { size: 22, anchor: "start" });
+  const lp = (k, x, y, s, anchor, size = 22) => {
+    const q = (o.lpos || {})[k] || [];
+    T(q[0] ?? x, q[1] ?? y, q[3] ?? s, { size, anchor: q[2] ?? anchor });
+  };
+  if (has("gauge")) lp("gauge", 362, 122, "เกจวัดแรงดัน", "end", 23);
+  if (has("breather")) lp("breather", 110, 334, "Air breather", "middle");
+  if (has("strainer")) lp("strainer", 172, 578, "Strainer", "end");
+  if (has("suction")) lp("suction", 224, 494, "ท่อดูด (Suction)", "start");
   if (has("return")) T(704, 377, "ท่อกลับ (Return)", { size: 22, anchor: "start" });
   if (has("level")) T(824, 560, "ระดับน้ำมัน", { size: 21, anchor: "start" });
 

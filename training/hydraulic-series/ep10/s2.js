@@ -1,13 +1,13 @@
 // Phenomenon at the real spot: the pump is noisy (red ring, noise arcs, the pump shakes), the gauge needle
 // shakes (magnified inset) and sinks below the green band (lack of pressure).
-const S = H.pumpStation("s2-v-st", "s2-v-s");
+const S = H.pumpStation("s2-v-st", "s2-v-s", { lpos: { breather: [152, 330, "end"], gauge: [350, 122, "end"] } });
 const fx = H.$("s2-v-fx");
 const c = T.cues;
 const tShake = T.points[1]; // "เข็มเกจสั่นแรง"
 H.hydFlow(S.flows, b + 0.3, D - 0.3);
 
 // seg 1: noise at the pump
-H.ring(fx, "s2-v-ring", 235, 312, 80, b + c[0] + 0.2, 6);
+H.ring(fx, "s2-v-ring", 235, 312, 72, b + c[0] + 0.2, 6);
 H.psNoise(S.noise, b + c[0] + 0.2, D - c[0] - 0.6);
 H.psShake(S.pump, b + c[0] + 0.2, b + D - 0.3);
 

@@ -1,6 +1,8 @@
 // Title: the pump unit runs noisy — noise waves, the pump body shakes, the gauge needle shakes and sinks below
 // the green band. No labels (the title text names the trouble).
 const S = H.pumpStation("s1-v-st", "s1-v-s", { labels: [] });
+// keep the tilted OPL stamp clear of the tone mark on the first title line
+gsap.set("#s1-stamp", { y: -16 });
 H.hydFlow(S.flows, b + 0.3, D - 0.3);
 H.psNoise(S.noise, b + 0.9, D - 1.3);
 H.psShake(S.pump, b + 0.9, b + D - 0.2);

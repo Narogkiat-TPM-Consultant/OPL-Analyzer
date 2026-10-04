@@ -114,7 +114,7 @@ for (let t = tCav, i = 0; t < tEnd - 1.0; t += 0.27, i++) bubble(t, 574 + 34 * r
 const tAir = c[1] + 0.6;
 H.ring(fx, "s3-v-ring", 330, 300, 46, b + tAir - 0.2, 4);
 const air = H.el("g", { id: "s3-v-air", opacity: 0 }, fx);
-for (const [y1, y2] of [[226, 258], [374, 342]])
+for (const [y1, y2] of [[226, 258]])
   for (const [col, w] of [["#ffffff", 10], [PC.blue, 5]])
     H.el("path", { d: H.arrowD(330, y1, 330, y2, 13), fill: "none", stroke: col, "stroke-width": w, "stroke-linecap": "round", "stroke-linejoin": "round" }, air);
 tl.fromTo(air, { opacity: 0 }, { opacity: 1, duration: 0.3 }, b + tAir);

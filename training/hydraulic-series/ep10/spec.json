@@ -13,7 +13,7 @@
   "scenes": [
     {
       "type": "title",
-      "svg": { "viewBox": "0 0 1100 640", "body": "<g id='s1-v-st'></g>" },
+      "svg": { "viewBox": "18 62 836 566", "body": "<g id='s1-v-st' data-layout-allow-overflow></g>" },
       "narration": "OPL กรณีปัญหา ปั๊มไฮดรอลิกเสียงดัง แรงดันไม่ถึง",
       "sfx": [["squeal", 1.0]],
       "js_file": "s1.js"
@@ -24,9 +24,9 @@
       "svg": { "viewBox": "0 0 1100 640", "body": "<g id='s2-v-st'></g><g id='s2-v-fx'></g>" },
       "numbered": false,
       "points": [
-        { "text": "**Huge noise** — ปั๊มเสียงดังผิดปกติ", "cue": 1 },
-        { "text": "**Vibrating pressure** — เข็มเกจสั่นแรง", "at": 2.3 },
-        { "text": "**Lack of pressure / flow** — แรงดัน · อัตราไหลไม่ถึง", "cue": 2 }
+        { "text": "**ปั๊มเสียงดัง**ผิดปกติ (Huge noise)", "cue": 1 },
+        { "text": "**เข็มเกจสั่น**แรง (Large vibrating pressure)", "at": 2.3 },
+        { "text": "**แรงดัน / อัตราไหลไม่ถึง** (Lack of pressure / flow)", "cue": 2 }
       ],
       "callout": { "label": "สาเหตุ (ตาม OPL 5-B-2)", "value": "!!Cavitation · Aeration!!", "example": "· น้ำมันความหนืดต่ำ (Low viscosity)", "at": 6.5 },
       "sfx": [["squeal", 0.7]],
@@ -69,7 +69,7 @@
     },
     {
       "type": "alert", "icon": "lock",
-      "pre": "ก่อนทำความสะอาด Strainer / Breather · แตะ Coupling",
+      "pre": "ก่อนทำความสะอาด หรือแตะ Coupling",
       "big": "หยุดปั๊ม + LOTO",
       "note": "ปล่อยแรงดันค้างจนเกจแรงดันชี้ 0 ก่อนเริ่มงานทุกครั้ง",
       "caption": "* ข้อเสนอ — ให้หัวหน้างานยืนยัน",

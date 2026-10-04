@@ -8,7 +8,8 @@
 const c = T.cues;
 const f = H.f;
 const OXs = 10, OYs = 24; // station offset inside the 1760 × 740 view
-const S = H.pumpStation("s4-v-st", "s4-v-s", { labels: ["gauge", "breather", "strainer", "suction", "return", "level", "circuit"], transform: `translate(${OXs} ${OYs})` });
+const S = H.pumpStation("s4-v-st", "s4-v-s", { labels: ["gauge", "breather", "strainer", "suction", "return", "level", "circuit"],
+  lpos: { breather: [150, 326, "end"], strainer: [246, 592, "start"], suction: [220, 494, "start", "ท่อดูด"] }, transform: `translate(${OXs} ${OYs})` });
 const hl = H.el("g", { transform: `translate(${OXs} ${OYs})` }, "s4-v-hl");
 H.hydFlow(S.flows, b + 0.3, D - 0.3);
 const show = (el, t, d = 0.35) => tl.fromTo(el, { opacity: 0 }, { opacity: 1, duration: d }, b + t);
@@ -31,10 +32,10 @@ const box = (id, rects, badges) => {
   }
   return g;
 };
-const B1 = box("s4-v-b1", [[150, 362, 120, 252]], [[150, 452, 1]]);
-const B2 = box("s4-v-b2", [[74, 338, 72, 60], [640, 404, 300, 210]], [[74, 338, 2], [940, 404, 2]]);
-const B3 = box("s4-v-b3", [[282, 452, 348, 160]], [[630, 452, 3]]);
-const B4 = box("s4-v-b4", [[166, 248, 404, 110]], [[166, 248, 4]]);
+const B1 = box("s4-v-b1", [[150, 362, 192, 252]], [[150, 452, 1]]);
+const B2 = box("s4-v-b2", [[78, 340, 64, 56], [640, 404, 300, 210]], [[56, 368, 2], [940, 404, 2]]);
+const B3 = box("s4-v-b3", [[354, 452, 276, 160]], [[405, 452, 3]]);
+const B4 = box("s4-v-b4", [[166, 248, 520, 110]], [[166, 248, 4]]);
 
 // ---- cards (cause → countermeasure, deck wording)
 const cards = H.$("s4-v-cards");
@@ -47,7 +48,7 @@ const cardDefs = [
   { n: 2, title: "ถังน้ำมัน (Tank) — ฟองอากาศ", lines: [
     ["Air breather ตัน", "→ ทำความสะอาด", TT.breather],
     ["น้ำมันต่ำ", "→ เติมถึงระดับมาตรฐาน", TT.level],
-    ["ท่อกลับเหนือผิวน้ำมัน", "→ วางใต้ผิวน้ำมัน", TT.ret]], t: TT.g2 },
+    ["ฟองในถัง: ท่อกลับไหลแรง", "→ วางใต้ผิวน้ำมัน", TT.ret]], t: TT.g2 },
   { n: 3, title: "น้ำมัน (Oil)", lines: [
     ["ความหนืดสูงเกิน", "→ เปลี่ยนให้ถูกความหนืด", TT.visc]], t: TT.g3 },
   { n: 4, title: "ปั๊ม + Coupling", lines: [
@@ -105,15 +106,15 @@ H.fnTo(S.cpl, "rotation", (t) => 6 * H.env(t, b + TT.cpl, b + D - 0.2, 0.3) * Ma
 const rpm = H.el("g", { id: "s4-v-rpm", opacity: 0 }, hl);
 const spin = H.el("g", {}, rpm);
 for (const [col, w] of [["#ffffff", 10], [PC.ink, 5]]) {
-  H.el("path", { d: H.arcD(612, 300, 24, -60, 215), fill: "none", stroke: col, "stroke-width": w, "stroke-linecap": "round" }, spin);
+  H.el("path", { d: H.arcD(600, 300, 24, -60, 215), fill: "none", stroke: col, "stroke-width": w, "stroke-linecap": "round" }, spin);
 }
 {
-  const pt = (a) => [612 + 24 * Math.cos((a * Math.PI) / 180), 300 + 24 * Math.sin((a * Math.PI) / 180)];
+  const pt = (a) => [600 + 24 * Math.cos((a * Math.PI) / 180), 300 + 24 * Math.sin((a * Math.PI) / 180)];
   const [x0, y0] = pt(200), [x1, y1] = pt(222);
   for (const [col, w] of [["#ffffff", 10], [PC.ink, 5]])
     H.el("path", { d: H.arrowD(x0, y0, x1, y1, 13), fill: "none", stroke: col, "stroke-width": w, "stroke-linecap": "round", "stroke-linejoin": "round" }, spin);
 }
-H.text(rpm, 652, 309, "RPM", { size: 22, anchor: "start" });
+H.text(rpm, 632, 309, "RPM", { size: 22, anchor: "start" });
 show(rpm, TT.rpm);
-tl.fromTo(spin, { rotation: 0, svgOrigin: "612 300" }, { rotation: 360 * Math.round((D - TT.rpm) * 2.5), svgOrigin: "612 300", duration: D - TT.rpm, ease: "none" }, b + TT.rpm);
+tl.fromTo(spin, { rotation: 0, svgOrigin: "600 300" }, { rotation: 360 * Math.round((D - TT.rpm) * 2.5), svgOrigin: "600 300", duration: D - TT.rpm, ease: "none" }, b + TT.rpm);
 H.ring(hl, "s4-v-r4", 290, 312, 22, b + TT.sseal, 3);
