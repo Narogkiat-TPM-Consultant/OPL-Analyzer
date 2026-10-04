@@ -43,7 +43,7 @@ const colTo = (t, at, dur = 0.9) => tl.to(col, { attr: { y: Y(t), height: 676 - 
 // daily-check line at 55 °C
 const chk = H.el("g", { opacity: 0 }, fx);
 H.el("path", { d: `M ${XT + TW / 2} ${Y(55)} L ${X1} ${Y(55)}`, fill: "none", stroke: TC.ink, "stroke-width": 5, "stroke-dasharray": "16 10" }, chk);
-H.t17Lab(chk, "s7-v-lchk", X1 + 30, Y(55) - 50, "ตรวจประจำวัน: < 55 °C", { size: 28, anchor: "start", shown: true, fill: TC.paper });
+H.t17Lab(chk, "s7-v-lchk", X1 + 46, Y(55), "ตรวจประจำวัน: < 55 °C (ปั๊มหยุด)", { size: 28, anchor: "start", shown: true, fill: TC.paper });
 
 // oil-life bar (relative): halves at each +8 °C step in the limit area
 const LX = 1220, LY = 120, LW = 480;

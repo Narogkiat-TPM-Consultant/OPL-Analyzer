@@ -208,9 +208,10 @@ H.t17Breather = (parent, cx, y, s = 1, o = {}) => {
   return { g, dirt };
 };
 
-// Open hand (palm facing the viewer), fingers up. cx, cy = palm centre; s = scale. → group
+// Open hand (palm facing the viewer), fingers up. cx, cy = palm centre; s = scale. → outer group
 H.t17Palm = (parent, cx, cy, s = 1, o = {}) => {
-  const g = H.el("g", { transform: `translate(${cx} ${cy}) scale(${s})`, ...(o.id ? { id: o.id } : {}) }, parent);
+  const outer = H.el("g", o.id ? { id: o.id } : {}, parent);
+  const g = H.el("g", { transform: `translate(${cx} ${cy}) scale(${s})` }, outer);
   const skin = o.fill || "#f2c9a0", st = { fill: skin, stroke: TC.ink, "stroke-width": 4, "stroke-linejoin": "round" };
   // fingers (rounded rects), thumb, palm
   [[-33, -88, 20, 66], [-11, -100, 20, 78], [11, -96, 20, 74], [33, -82, 19, 60]].forEach(([x, y, w, h]) =>
@@ -218,7 +219,7 @@ H.t17Palm = (parent, cx, cy, s = 1, o = {}) => {
   H.el("path", { d: "M -42 -10 Q -72 -34 -70 -48 Q -66 -60 -54 -50 L -34 -26 Z", ...st }, g);
   H.el("path", { d: "M -44 -36 L 44 -36 L 44 18 Q 44 52 0 52 Q -44 52 -44 18 Z", ...st }, g);
   H.el("path", { d: "M -22 -36 L -22 -30 M 0 -36 L 0 -30 M 22 -36 L 22 -30", fill: "none", stroke: TC.ink, "stroke-width": 3 }, g);
-  return g;
+  return outer; // tween x / y / opacity on the outer group (the inner one carries the placement transform)
 };
 // Heat waves (three wavy lines rising), start hidden
 H.t17Heat = (parent, x, y, h = 50, o = {}) => {

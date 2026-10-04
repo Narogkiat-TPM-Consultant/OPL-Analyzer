@@ -19,7 +19,7 @@ H.t17Lab(ug, "s2-v-lfil", 304, 465, "Filter", { size: 22, shown: true });
 
 // seg 1
 const L1 = [
-  H.t17Lab(ug, "s2-v-ltank", 610, 455, "ถังน้ำมัน (Tank body)", { size: 24 }),
+  H.t17Lab(ug, "s2-v-ltank", 610, 455, "ถังน้ำมัน (Tank body)", { size: 24, anchor: "middle" }),
   H.t17Lab(ug, "s2-v-lman", 806, 300, ["Manhole", "(ล้างภายใน)"], { size: 23 }),
   H.t17Lab(ug, "s2-v-lfill", 640, 102, "ช่องเติม", { size: 24, leader: [626, 156] }),
 ];
