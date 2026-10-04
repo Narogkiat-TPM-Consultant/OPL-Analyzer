@@ -49,9 +49,9 @@ const flash2 = (els, t, hold) => els.forEach((e) => H.e3flash(e, t, hold));
 // ---- row 3: relief valve + pressure gauge on its stop valve
 {
   const r = R[2];
-  const a = G3(r.act, 319 - 115, r.cy + 33, 1);
+  const a = G3(r.act, 319 - 115, r.cy + 37, 1);
   pipe3(a, "M 52 0 L 270 0");
-  pipe3(a, "M 0 34 L 0 68");
+  pipe3(a, "M 0 34 L 0 62");
   P3.relief(G3(a, 0, 0));
   const gs = P3.gaugeStop(G3(a, 150, -26), "s2-v-gs");
   const s = G3(r.sym, 858 - 93, r.cy + 15, 1);
@@ -67,6 +67,6 @@ const flash2 = (els, t, hold) => els.forEach((e) => H.e3flash(e, t, hold));
   H.e3rowOn(r, b + T.cues[2]);
   const t1 = at(3, 0.02), t2 = at(3, 0.47);
   flash2([H.e3ring(a, -50, -110, 116, 152), H.e3ring(s, -52, -62, 144, 130)], t1, t2 - t1 - 0.5);
-  flash2([H.e3ring(a, 82, -144, 112, 154), H.e3ring(s, 132, -114, 76, 112)], t2, 2.2);
+  flash2([H.e3ring(a, 82, -140, 112, 150), H.e3ring(s, 132, -114, 76, 112)], t2, 2.2);
   tl.fromTo(gs.needle, { rotation: 0, svgOrigin: gs.origin }, { rotation: 120, svgOrigin: gs.origin, duration: 0.8, ease: "power2.out" }, t2 + 0.2);
 }
