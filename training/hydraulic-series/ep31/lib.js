@@ -7,7 +7,7 @@
 const FC = {
   ink: "#1a1d21", muted: "#59606a", metal: "#c9c1ae", dark: "#9aa1aa", paper: "#fffdf8",
   pipe: "#1f5fbf", flow: "#2a8fc9", air: "#dff1fb", water: "#3b7dd8", oil: "#f2c94c", oilEdge: "#c9971b",
-  dirt: "#7a5c3a", bowl: "#eef6fb", milky: "#f1ece0", red: "#d0233a", green: "#178a4e", blue: "#1f5fbf", warn: "#f2a900",
+  dirt: "#7a5c3a", bowl: "#eef6fb", milky: "#e6dece", red: "#d0233a", green: "#178a4e", blue: "#1f5fbf", warn: "#f2a900",
 };
 const FK = { F: 0, R: 230, L: 460, bowlTop: 76, bowlStraight: 232, bowlBot: 272, wEmpty: 276, wNG: 214, oilY: 128 };
 // Thai base characters (vowels / tone marks take no width) — for sizing label boxes
@@ -169,19 +169,20 @@ H.frl = (parent, p, o = {}) => {
   const pipe = H.el("g", {}, g), back = H.el("g", {}, g), mid = H.el("g", { id: `${p}-mid` }, g), front = H.el("g", {}, g);
   const L = { back, mid, front };
   // air line: blue pipe, compressed-air tint inside, flow dashes (start hidden)
-  const run = "M -175 0 L 640 0";
+  const x0 = o.x0 ?? -175, x1 = o.x1 ?? 640;
+  const run = `M ${x0} 0 L ${x1} 0`;
   H.el("path", { d: run, fill: "none", stroke: FC.pipe, "stroke-width": 26 }, pipe);
   H.el("path", { d: run, fill: "none", stroke: FC.air, "stroke-width": 15 }, pipe);
   const flow = H.el("path", { id: `${p}-flow`, d: run, fill: "none", stroke: FC.flow, "stroke-width": 6, "stroke-dasharray": "12 16", "stroke-linecap": "butt", opacity: 0 }, pipe);
-  H.el("path", { d: "M 638 -24 L 670 0 L 638 24 Z", fill: FC.pipe }, pipe);
+  H.el("path", { d: `M ${x1 - 2} -24 L ${x1 + 30} 0 L ${x1 - 2} 24 Z`, fill: FC.pipe }, pipe);
   const S = { g, mid, flow, L };
   S.F = H.frlF(g, FK.F, `${p}-f`, o.F || {}, L);
   S.R = H.frlR(g, FK.R, `${p}-r`, o.R || {}, L);
   S.L = H.frlL(g, FK.L, `${p}-l`, o.L || {}, L);
   S.over = H.el("g", { id: `${p}-over` }, g);
   if (o.io !== false) {
-    H.text(front, -170, -26, "IN", { size: 26, fill: FC.pipe });
-    H.text(front, 668, -30, "OUT", { size: 26, fill: FC.pipe, anchor: "end" });
+    H.text(front, x0 + 5, -26, "IN", { size: 26, fill: FC.pipe });
+    H.text(front, x1 + 28, -30, "OUT", { size: 26, fill: FC.pipe, anchor: "end" });
   }
   if (o.labels !== false) {
     H.text(front, FK.F, 342, "Air filter", { size: 30, anchor: "middle" });

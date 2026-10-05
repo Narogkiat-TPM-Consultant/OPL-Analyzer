@@ -15,7 +15,7 @@
   const L = H.el("g", {}, root);
   LU.port(L, 34, 150, 282, "IN");
   LU.port(L, 712, 828, 282, "OUT");
-  LU.label(L, "s1-v-lw", 40, 166, "Oil drop window", 371, 186, { size: 26, sub: "หน้าต่างดูหยด", fx: 248, fy: 160 });
+  LU.label(L, "s1-v-lw", 40, 166, "Oil drop window", 371, 186, { size: 26, sub: "หน้าต่างดูหยด", fx: 262, fy: 157 });
   tl.fromTo(S, { opacity: 0, y: -16 }, { opacity: 1, y: 0, duration: 0.4 }, b + 0.9);
   LU.flow([U.air.in, U.air.out], b + 0.3, b + D, { speed: 80 });
   LU.drops(U, "s1-v-u", LU.every(b + 0.5, b + D - 1.2, 1.15), { outside: [672, 285], mistTo: 790, n: 8, seed: 11 });

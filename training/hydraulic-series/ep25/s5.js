@@ -21,17 +21,21 @@
   // oil jet out of the cap hole
   const jet = H.el("g", { id: "s5-v-jet" }, g);
   const rnd = LU.rng(41), drops = [];
-  for (let i = 0; i < 16; i++) {
-    const a = (-90 + (rnd() - 0.5) * 70) * (Math.PI / 180), dist = 60 + rnd() * 70;
-    const d = H.el("circle", { cx: 78, cy: 170, r: H.f(4 + rnd() * 5), fill: LU.oil, opacity: 0 }, jet);
+  for (let i = 0; i < 22; i++) {
+    const a = (-90 + (rnd() - 0.5) * 60) * (Math.PI / 180), dist = 80 + rnd() * 60;
+    const d = H.el("circle", { cx: 78, cy: 168, r: H.f(4.5 + rnd() * 5), fill: LU.oil, opacity: 0 }, jet);
     drops.push([d, Math.cos(a) * dist, Math.sin(a) * dist, i]);
   }
+  // pressure stays in the bowl; the cap is loosened as the narration says it (~4.7 s) → oil sprays out
   LU.show(pr, b + 0.4, 0.3);
-  tl.fromTo(cap, { x: 0, y: 0, rotation: 0, svgOrigin: "78 165" }, { x: -10, y: -58, rotation: -28, svgOrigin: "78 165", duration: 0.35, ease: "power3.out" }, b + 0.9);
+  tl.fromTo(pr, { scale: 1, transformOrigin: "50% 50%" }, { scale: 1.12, transformOrigin: "50% 50%", duration: 0.3, yoyo: true, repeat: 5, immediateRender: false }, b + 0.8);
+  const tc = b + 4.7;
+  tl.fromTo(cap, { x: 0, y: 0, rotation: 0, svgOrigin: "78 165" }, { x: -12, y: -62, rotation: -28, svgOrigin: "78 165", duration: 0.35, ease: "power3.out" }, tc);
   for (const [d, dx, dy, i] of drops) {
-    for (let k = 0; k < 3; k++) {
-      const t = b + 1.0 + i * 0.04 + k * 0.9;
-      tl.fromTo(d, { x: 0, y: 0, opacity: 1 }, { x: H.f(dx), y: H.f(dy), opacity: 0, duration: 0.75, ease: "power2.out", immediateRender: false }, t);
+    for (let t = tc + 0.08 + i * 0.03; t < b + D - 0.75; t += 0.8) {
+      tl.fromTo(d, { x: 0, y: 0 }, { x: H.f(dx), y: H.f(dy), duration: 0.75, ease: "power1.out", immediateRender: false }, t);
+      tl.fromTo(d, { opacity: 0 }, { opacity: 1, duration: 0.05, immediateRender: false }, t);
+      tl.fromTo(d, { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, t + 0.55);
     }
   }
 }

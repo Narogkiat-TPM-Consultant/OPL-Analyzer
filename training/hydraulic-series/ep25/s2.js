@@ -38,8 +38,8 @@
   const L = H.el("g", { id: "s2-v-lb", opacity: 0 }, root);
   LU.label(L, "s2-v-l1", 20, 70, "Oil drop window", 388, 180, { sub: "หน้าต่างดูหยด", fx: 236, fy: 78 });
   LU.label(L, "s2-v-l2", 580, 52, "Drop adjust screw", 523, 98, { sub: "สกรูปรับหยด", fx: 576, fy: 60 });
-  LU.label(L, "s2-v-l3", 20, 232, "Oil cap", 264, 243, { sub: "ฝาเติมน้ำมัน", fx: 118, fy: 240 });
-  LU.label(L, "s2-v-l4", 20, 520, "Bowl", 328, 496, { sub: "ถ้วยน้ำมัน", fx: 84, fy: 528 });
+  LU.label(L, "s2-v-l3", 20, 232, "Oil cap", 264, 243, { sub: "ฝาเติมน้ำมัน", fx: 118, fy: 222 });
+  LU.label(L, "s2-v-l4", 20, 520, "Bowl", 328, 496, { sub: "ถ้วยน้ำมัน", fx: 86, fy: 510 });
 
   // cue 1: devices work — the rod strokes out and back, marks show where lubrication is needed
   const t1 = b + c[0] + 0.4;

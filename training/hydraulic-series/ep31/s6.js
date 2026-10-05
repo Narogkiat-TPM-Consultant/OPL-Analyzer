@@ -1,7 +1,7 @@
 // Judgment 4–5 (p.49): oil drips in the sight glass (OK) / no drip → oil does not reach all areas → adjust + repair /
 // bowl oil milky white → water mixed in → replace with new oil.
 const st = T.stamps;
-const lab = (g, x, y, s, fill = FC.muted) => H.text(g, x, y, s, { size: 23, anchor: "middle", fill, weight: 700 });
+const lab = (g, x, y, s, fill = FC.muted) => H.text(g, x, y, s, { size: 26, anchor: "middle", fill, weight: 700 });
 
 // card 1 — OK: drops fall inside the sight dome (inset)
 {

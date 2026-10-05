@@ -35,21 +35,21 @@
   H.el("rect", { x: 20, y: 344, width: 318, height: 282, rx: 14, fill: LU.paper, stroke: LU.muted, "stroke-width": 2.5, "stroke-dasharray": "10 7" }, IN);
   H.text(IN, 36, 376, "หลักการเดียวกับ", { size: 22, fill: LU.muted, weight: 600 });
   H.text(IN, 36, 408, "กระบอกฉีดฝอย", { size: 28 });
-  H.el("path", { d: "M 74 478 H 166 V 586 Q 166 610 142 610 H 98 Q 74 610 74 586 Z", fill: LU.bowl, stroke: LU.ink, "stroke-width": 4, "stroke-linejoin": "round" }, IN);
-  H.el("path", { d: "M 78 540 H 162 V 586 Q 162 606 142 606 H 98 Q 78 606 78 586 Z", fill: LU.oil }, IN);
-  H.el("rect", { x: 96, y: 464, width: 48, height: 16, rx: 3, fill: LU.dark, stroke: LU.ink, "stroke-width": 3 }, IN);
-  H.el("path", { d: "M 120 600 V 446", fill: "none", stroke: LU.ink, "stroke-width": 10 }, IN);
-  const inOil = H.el("path", { id: "s3-v-inoil", d: "M 120 600 V 447", fill: "none", stroke: LU.oil, "stroke-width": 5, "stroke-dasharray": "153 153", "stroke-dashoffset": 93 }, IN);
-  const bulb = H.el("ellipse", { id: "s3-v-bulb", cx: 52, cy: 440, rx: 22, ry: 28, fill: LU.knob, stroke: LU.ink, "stroke-width": 3 }, IN);
-  LU.tube(IN, "M 72 440 H 112", 16);
-  const inAir = LU.dash(IN, "s3-v-inair", "M 72 440 H 112", { w: 3, dash: "10 8" });
+  H.el("path", { d: "M 74 512 H 166 V 588 Q 166 612 142 612 H 98 Q 74 612 74 588 Z", fill: LU.bowl, stroke: LU.ink, "stroke-width": 4, "stroke-linejoin": "round" }, IN);
+  H.el("path", { d: "M 78 560 H 162 V 588 Q 162 608 142 608 H 98 Q 78 608 78 588 Z", fill: LU.oil }, IN);
+  H.el("rect", { x: 96, y: 498, width: 48, height: 16, rx: 3, fill: LU.dark, stroke: LU.ink, "stroke-width": 3 }, IN);
+  H.el("path", { d: "M 120 602 V 478", fill: "none", stroke: LU.ink, "stroke-width": 10 }, IN);
+  const inOil = H.el("path", { id: "s3-v-inoil", d: "M 120 602 V 479", fill: "none", stroke: LU.oil, "stroke-width": 5, "stroke-dasharray": "123 123", "stroke-dashoffset": 81 }, IN);
+  const bulb = H.el("ellipse", { id: "s3-v-bulb", cx: 52, cy: 472, rx: 22, ry: 28, fill: LU.knob, stroke: LU.ink, "stroke-width": 3 }, IN);
+  LU.tube(IN, "M 72 472 H 112", 16);
+  const inAir = LU.dash(IN, "s3-v-inair", "M 72 472 H 112", { w: 3, dash: "10 8" });
   const spray = H.el("g", { id: "s3-v-spray" }, IN);
   const rr = LU.rng(23);
   const puffs = LU.every(b + c[1] + 1.7, b + D - 1.0, 1.2);
   puffs.forEach((tp) => {
-    tl.fromTo(bulb, { scaleX: 1, svgOrigin: "52 440" }, { scaleX: 0.72, svgOrigin: "52 440", duration: 0.25, yoyo: true, repeat: 1, ease: "power1.inOut", immediateRender: false }, tp - 0.1);
+    tl.fromTo(bulb, { scaleX: 1, svgOrigin: "52 472" }, { scaleX: 0.72, svgOrigin: "52 472", duration: 0.25, yoyo: true, repeat: 1, ease: "power1.inOut", immediateRender: false }, tp - 0.1);
     for (let i = 0; i < 9; i++) {
-      const d = H.el("circle", { cx: 128, cy: 442, r: H.f(2.5 + rr() * 3), fill: LU.oil, stroke: LU.oilEdge, "stroke-width": 1, opacity: 0 }, spray);
+      const d = H.el("circle", { cx: 128, cy: 474, r: H.f(2.5 + rr() * 3), fill: LU.oil, stroke: LU.oilEdge, "stroke-width": 1, opacity: 0 }, spray);
       const t0 = tp + i * 0.05;
       const dx = 110 + rr() * 80, dy = (rr() - 0.5) * 70;
       tl.fromTo(d, { opacity: 0 }, { opacity: 1, duration: 0.06, immediateRender: false }, t0);
@@ -63,7 +63,7 @@
   tl.fromTo(U.oilPath, { strokeDashoffset: U.oilLen - 130 }, { strokeDashoffset: 0, duration: 2.0, ease: "power1.inOut", immediateRender: false }, t2 + 0.6);
   LU.show(IN, t2 + 0.4);
   LU.flow(inAir.id, t2 + 0.8, b + D, { speed: 70, period: 18 });
-  tl.fromTo(inOil, { strokeDashoffset: 93 }, { strokeDashoffset: 0, duration: 0.8, ease: "power1.inOut", immediateRender: false }, t2 + 1.0);
+  tl.fromTo(inOil, { strokeDashoffset: 81 }, { strokeDashoffset: 0, duration: 0.8, ease: "power1.inOut", immediateRender: false }, t2 + 1.0);
 
   // ③ drops in the window → mist → OUT
   const t3 = b + c[2] + 0.1;

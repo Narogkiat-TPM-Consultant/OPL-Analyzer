@@ -9,12 +9,13 @@ const pg = (lx, ly) => [TX + SC * lx, TY + SC * ly];
 const at = (k, dt = 0) => b + c[k] + dt;
 
 // spots: ring centre (local), ring r (page), eye position (page)
+// m = marker direction (degrees, 0 = right, −90 = up)
 const SP = [
-  { l: [0, 226], r: 74, eye: [96, 520] },
-  { l: [230, 0], r: 60, eye: [404, 84] },
-  { l: [230, -99], r: 42, eye: [672, 70] },
-  { l: [460, -84], r: 48, eye: [954, 104] },
-  { l: [460, 196], r: 74, eye: [990, 470] },
+  { l: [0, 226], r: 74, eye: [96, 520], m: -135 },
+  { l: [230, 0], r: 60, eye: [404, 84], m: 180 },
+  { l: [230, -106], r: 50, eye: [404, 84], m: -45 },
+  { l: [460, -84], r: 48, eye: [954, 104], m: -135 },
+  { l: [460, 196], r: 74, eye: [990, 470], m: -135 },
 ];
 SP.forEach((s, i) => { s.p = pg(...s.l); });
 const sight = H.el("path", { id: "s3-v-sight", d: "M 0 0 L 1 1", fill: "none", stroke: FC.blue, "stroke-width": 3, "stroke-dasharray": "8 7", opacity: 0 }, fx);
@@ -32,13 +33,14 @@ SP.forEach((s, i) => {
   tl.set(sight, { attr: { d: `M ${H.f(x1)} ${H.f(y1)} L ${H.f(x2)} ${H.f(y2)}` } }, t + 0.45);
   tl.to(sight, { opacity: 1, duration: 0.2 }, t + 0.5);
   H.frlRing(fx, `s3-v-ring${i + 1}`, px, py, s.r, t + 0.45);
-  const n = H.frlNum(fx, `s3-v-n${i + 1}`, +H.f(px - s.r * 0.72), +H.f(py - s.r * 0.72), i + 1, 21);
-  tl.fromTo(n, { opacity: 0, scale: 0.4, svgOrigin: `${H.f(px - s.r * 0.72)} ${H.f(py - s.r * 0.72)}` }, { opacity: 1, scale: 1, svgOrigin: `${H.f(px - s.r * 0.72)} ${H.f(py - s.r * 0.72)}`, duration: 0.3, ease: "back.out(2)", immediateRender: false }, t + 0.5);
+  const ma = (s.m * Math.PI) / 180, mx = +H.f(px + Math.cos(ma) * s.r), my = +H.f(py + Math.sin(ma) * s.r);
+  const n = H.frlNum(fx, `s3-v-n${i + 1}`, mx, my, i + 1, 21);
+  tl.fromTo(n, { opacity: 0, scale: 0.4, svgOrigin: `${mx} ${my}` }, { opacity: 1, scale: 1, svgOrigin: `${mx} ${my}`, duration: 0.3, ease: "back.out(2)", immediateRender: false }, t + 0.5);
 });
 tl.to(sight, { opacity: 0, duration: 0.3 }, b + D - 0.6);
 
 // "machine running" chip for checks 2 and 4 (air flows only then)
-const run = H.frlLab(fx, "s3-v-run", 540, 596, "ขณะเครื่องเดิน (Running)", { size: 27, anchor: "middle", color: "#ffffff", fill: FC.blue, stroke: FC.blue });
+const run = H.frlLab(fx, "s3-v-run", pg(230, 0)[0], 470, "ขณะเครื่องเดิน", { size: 28, anchor: "middle", color: "#ffffff", fill: FC.blue, stroke: FC.blue });
 [[1, 2], [3, 4]].forEach(([k0, k1]) => {
   const t0 = at(k0, 0.3), dur = c[k1] - c[k0] - 0.2;
   H.frlFlow(U, t0, dur, true);
@@ -65,8 +67,7 @@ H.frlShow(chClog, at(1, 1.8));
 tl.fromTo(U.R.handle, { scaleX: 1, svgOrigin: U.R.handleOrigin }, { scaleX: 0.25, svgOrigin: U.R.handleOrigin, duration: 0.22, ease: "sine.inOut", yoyo: true, repeat: 3, immediateRender: false }, at(2, 0.6));
 tl.fromTo(U.R.nut, { y: 0 }, { y: -13, duration: 0.7, ease: "power2.out", immediateRender: false }, at(2, 0.7));
 tl.to(U.R.needle, { rotation: U.R.rot(4.6), svgOrigin: U.R.origin, duration: 1.0, ease: "power1.inOut" }, at(2, 1.6));
-const [nx, ny] = pg(203, -100);
-const chNut = H.frlLab(fx, "s3-v-cnut", 456, 66, ["หลวม", "→ ค่าตั้งเคลื่อน"], { size: 25, anchor: "end", leader: [nx, ny] });
+const chNut = H.frlLab(fx, "s3-v-cnut", 604, 54, ["หลวม", "→ ค่าตั้งเคลื่อน"], { size: 25 });
 H.frlShow(chNut, at(2, 1.0));
 H.frlHide(chNut, at(3, -0.1));
 

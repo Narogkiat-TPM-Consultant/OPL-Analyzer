@@ -18,8 +18,8 @@ const t2 = b + c[1] + 0.2;
 const parts = [[-6, "d", 0], [5, "w", 0.25], [-3, "d", 0.5], [6, "w", 0.75], [-5, "w", 1.0], [2, "d", 1.25]];
 parts.forEach(([dy, k, dt], i) => {
   const el = k === "d"
-    ? H.el("circle", { cx: -170, cy: dy, r: 5.5, fill: FC.dirt, opacity: 0 }, U.mid)
-    : H.el("path", { d: H.frlDropD(-170, dy, 6), fill: FC.water, stroke: "#1d4f9a", "stroke-width": 1.2, opacity: 0 }, U.mid);
+    ? H.el("circle", { cx: -170, cy: dy, r: 7.5, fill: FC.dirt, stroke: "#4a3622", "stroke-width": 1.5, opacity: 0 }, U.mid)
+    : H.el("path", { d: H.frlDropD(-170, dy, 8), fill: FC.water, stroke: "#1d4f9a", "stroke-width": 1.5, opacity: 0 }, U.mid);
   const t = t2 + dt, dx = (i % 3) * 22 - 22;
   tl.fromTo(el, { x: 0, y: 0, opacity: 0 }, { x: 110, opacity: 1, duration: 0.7, ease: "none", immediateRender: false }, t);
   tl.fromTo(el, { x: 170 + dx, y: 84 }, { y: k === "w" ? 236 : 262, duration: 0.7, ease: "power2.in", immediateRender: false }, t + 0.7);
@@ -33,15 +33,14 @@ H.frlShow(chF, t2 + 0.9);
 // seg 3: regulator — the needle comes down from factory pressure to the steady set value
 const t3 = b + c[2] + 0.2;
 tl.to(U.R.needle, { rotation: U.R.rot(6), svgOrigin: U.R.origin, duration: 1.1, ease: "back.out(1.4)" }, t3 + 0.3);
-const [gx, gy] = pg(230, 40);
-const chR = H.frlLab(fx, "s2-v-cr", 540, 430, ["ลดแรงดันลง", "→ คงที่ตามใช้งาน"], { size: 27, anchor: "middle", color: FC.blue, stroke: FC.blue, leader: [gx, gy] });
+const chR = H.frlLab(fx, "s2-v-cr", pg(230, 0)[0], 412, ["ลดแรงดันลง", "→ คงที่ตามใช้งาน"], { size: 27, anchor: "middle", color: FC.blue, stroke: FC.blue });
 H.frlShow(chR, t3 + 0.5);
 
 // seg 4: lubricator — oil drips in the sight dome, then leaves as mist with the air
 const t4 = b + c[3] + 0.2;
 H.frlDrip(U.L.drop, t4, 4, 0.75);
 for (let i = 0; i < 9; i++) {
-  const m = H.el("circle", { cx: 540, cy: ((i * 7) % 13) - 6, r: 4.5, fill: FC.oil, stroke: FC.oilEdge, "stroke-width": 1, opacity: 0 }, U.mid);
+  const m = H.el("circle", { cx: 540, cy: ((i * 7) % 13) - 6, r: 6, fill: FC.oil, stroke: FC.oilEdge, "stroke-width": 1.5, opacity: 0 }, U.mid);
   const t = t4 + 0.6 + i * 0.32;
   tl.fromTo(m, { x: 0, opacity: 0 }, { x: 118, opacity: 1, duration: 0.9, ease: "none", immediateRender: false }, t);
   tl.to(m, { opacity: 0, duration: 0.2 }, t + 0.75);

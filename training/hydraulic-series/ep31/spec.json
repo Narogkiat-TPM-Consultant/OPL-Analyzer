@@ -13,7 +13,7 @@
   "scenes": [
     {
       "type": "title",
-      "svg": { "viewBox": "0 0 820 600", "body": "<g id='s1-v-unit'></g><g id='s1-v-fx'></g>" },
+      "svg": { "viewBox": "0 0 790 646", "body": "<g id='s1-v-unit'></g><g id='s1-v-fx'></g>" },
       "narration": "OPL ความรู้พื้นฐาน ตรวจชุดสามตัวด้วยตา",
       "js_file": "s1.js"
     },
@@ -44,7 +44,7 @@
         { "text": "**ถ้วยกรอง** (Bowl): มีน้ำขังไหม", "cue": 1 },
         { "text": "**เข็มเกจ** แกว่งมาก (ขณะเดินเครื่อง) = !!ไส้กรองตัน!!", "cue": 2 },
         { "text": "**Lock nut** (น็อตล็อก): หลวมไหม", "cue": 3 },
-        { "text": "**Sight glass**: มีน้ำมันหยดไหม (ขณะเดินเครื่อง)", "cue": 4 },
+        { "text": "**Sight glass**: มีน้ำมันหยดไหม (ขณะ⁠เดิน⁠เครื่อง)", "cue": 4 },
         { "text": "**น้ำมันในถ้วย**: ขุ่นขาวไหม", "cue": 5 }
       ],
       "narration": [
@@ -72,7 +72,7 @@
       "type": "judgment",
       "heading": "ตัดสินผล ข้อ 1–3: **Air filter · Regulator**",
       "cards": [
-        { "label": "ถ้วยใส", "verdict": "OK", "cond": "ไม่มีน้ำ · เข็มไม่แกว่ง", "svg": { "viewBox": "0 0 360 190", "body": "<g id='s5-v-c1'></g>" }, "cue": 1 },
+        { "label": "ถ้วยใส", "verdict": "OK", "cond": "ไม่มีน้ำ · เข็ม⁠ไม่⁠แกว่ง", "svg": { "viewBox": "0 0 360 190", "body": "<g id='s5-v-c1'></g>" }, "cue": 1 },
         { "label": "น้ำขัง", "verdict": "NG", "cond": "มีน้ำในถ้วยกรอง", "act": "→ เปิดวาล์วเดรน ระบายน้ำ", "svg": { "viewBox": "0 0 360 190", "body": "<g id='s5-v-c2'></g>" }, "cue": 2 },
         { "label": "ไส้กรองตัน", "verdict": "NG", "cond": "เข็มแกว่งมาก", "act": "→ เปลี่ยนไส้กรอง (แจ้งช่าง *)", "svg": { "viewBox": "0 0 360 190", "body": "<g id='s5-v-c3'></g>" }, "cue": 3 },
         { "label": "Nut หลวม", "verdict": "NG", "cond": "ค่าตั้งเคลื่อนได้", "act": "→ ขันให้แน่น", "svg": { "viewBox": "0 0 360 190", "body": "<g id='s5-v-c4'></g>" }, "at": 8.7 }

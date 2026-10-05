@@ -51,9 +51,9 @@
   // ---- ② worn seals: air leaks at the rod seal and out of the valve exhaust
   const t2 = b + c[2] + 0.3;
   const [rsx, rsy] = C.at(586, 20);
-  const p1 = H.p27Puff(g, rsx, rsy, 40, { w: 5 });
+  const p1 = H.p27Puff(g, rsx, rsy, 40, { w: 6 });
   const [ex, ey] = V.at(417, -40);
-  const p2 = H.p27Puff(g, ex + 2, ey, -15, { w: 5 });
+  const p2 = H.p27Puff(g, ex + 2, ey, -15, { w: 6 });
   H.p27Puffs(p1, t2, 6, 0.55);
   H.p27Puffs(p2, t2 + 0.25, 6, 0.55);
   tag(640, 556, 2, "ลมรั่ว", t2 + 0.2);

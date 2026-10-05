@@ -30,7 +30,7 @@
       const n = selective ? 11 : 10;
       for (let i = 0; i < n; i++) {
         const big = selective && i >= 8;
-        const r = big ? 6 + rnd() * 1.5 : selective ? 2 + rnd() * 1.6 : 2.5 + rnd() * 3.5;
+        const r = big ? 7.5 + rnd() * 1.5 : selective ? 2.5 + rnd() * 1.5 : 3 + rnd() * 4;
         const cdot = H.el("circle", { cx: 180, cy: 172, r: f(r), fill: LU.oil, stroke: LU.oilEdge, "stroke-width": 1, opacity: 0 }, g);
         const t0 = t + 0.62 + rnd() * 0.2;
         const dx = big ? 22 + (i - 8) * 12 : 440 + rnd() * 80, dy = big ? 62 : (rnd() - 0.45) * 26;
