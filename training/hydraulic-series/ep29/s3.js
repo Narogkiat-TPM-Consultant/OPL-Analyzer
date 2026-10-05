@@ -5,14 +5,14 @@
 {
   const ST = T.stamps.map((s) => b + s);
   const valve = (g, x, w = 300) => {
-    H.el("rect", { x: x - w / 2, y: 6, width: w, height: 48, rx: 6, fill: PN.metal, stroke: PN.ink, "stroke-width": 4 }, g);
-    H.el("rect", { x: x - w / 2, y: 6, width: 56, height: 48, rx: 6, fill: PN.knob, stroke: PN.ink, "stroke-width": 4 }, g);
-    H.el("rect", { x: x - 10, y: 54, width: 20, height: 9, fill: PN.dark, stroke: PN.ink, "stroke-width": 2.5 }, g);
-    H.el("rect", { x: x - 14, y: 62, width: 28, height: 40, rx: 6, fill: "#d9d4c7", stroke: PN.ink, "stroke-width": 3 }, g);
-    for (let yy = 70; yy <= 94; yy += 8) for (let xx = x - 7; xx <= x + 7; xx += 7) H.el("circle", { cx: xx, cy: yy, r: 1.8, fill: PN.muted }, g);
+    H.el("rect", { x: x - w / 2, y: 6, width: w, height: 40, rx: 6, fill: PN.metal, stroke: PN.ink, "stroke-width": 4 }, g);
+    H.el("rect", { x: x - w / 2, y: 6, width: 50, height: 40, rx: 6, fill: PN.knob, stroke: PN.ink, "stroke-width": 4 }, g);
+    H.el("rect", { x: x - 13, y: 46, width: 26, height: 8, fill: PN.dark, stroke: PN.ink, "stroke-width": 2.5 }, g);
+    H.el("rect", { x: x - 20, y: 53, width: 40, height: 46, rx: 8, fill: "#d9d4c7", stroke: PN.ink, "stroke-width": 3.5 }, g);
+    for (let yy = 62; yy <= 92; yy += 8) for (let xx = x - 10; xx <= x + 10; xx += 10) H.el("circle", { cx: xx, cy: yy, r: 2.2, fill: PN.muted }, g);
   };
   const puffs = (g, id, x, mist, t0, t1, every = 1.1) => {
-    const p = H.pnPuff(g, id, x, 104, { mist, s: 1.15 });
+    const p = H.pnPuff(g, id, x, 96, { mist, s: 1.45 });
     let first = true;
     for (let t = t0; t + 0.85 <= t1; t += every) { H.pnPuffAt(p, t, !first); first = false; }
     return p;
@@ -27,22 +27,22 @@
   // 2 — too much: heavy oil mist, drips and a growing puddle
   const g2 = H.$("s3-v-c2");
   valve(g2, 230);
-  const pud = H.el("ellipse", { id: "s3-v-pud", cx: 230, cy: 176, rx: 40, ry: 7, fill: PN.oil, stroke: "#b8921c", "stroke-width": 2 }, g2);
+  const pud = H.el("ellipse", { id: "s3-v-pud", cx: 230, cy: 180, rx: 46, ry: 7, fill: PN.oil, stroke: "#b8921c", "stroke-width": 2 }, g2);
   puffs(g2, "s3-v-p2", 230, 2, ST[1] + 0.15, end);
-  tl.fromTo(pud, { scaleX: 0.15, opacity: 0, svgOrigin: "230 176" }, { scaleX: 1, opacity: 1, svgOrigin: "230 176", duration: Math.max(1, end - ST[1] - 0.6), ease: "power1.out" }, ST[1] + 0.4);
+  tl.fromTo(pud, { scaleX: 0.15, opacity: 0, svgOrigin: "230 180" }, { scaleX: 1, opacity: 1, svgOrigin: "230 180", duration: Math.max(1, end - ST[1] - 0.6), ease: "power1.out" }, ST[1] + 0.4);
   for (let i = 0, t = ST[1] + 0.3; t + 0.5 <= end && i < 12; i++, t += 0.55) {
-    const dr = H.el("path", { id: `s3-v-od${i}`, d: H.pnDropD(i % 2 ? 238 : 222, 112, 0.7), fill: PN.oil, stroke: "#b8921c", "stroke-width": 1.2, opacity: 0 }, g2);
+    const dr = H.el("path", { id: `s3-v-od${i}`, d: H.pnDropD(i % 2 ? 240 : 220, 108, 0.8), fill: PN.oil, stroke: "#b8921c", "stroke-width": 1.2, opacity: 0 }, g2);
     tl.fromTo(dr, { opacity: 0 }, { opacity: 1, duration: 0.05 }, t);
-    tl.fromTo(dr, { y: 0 }, { y: 56, duration: 0.45, ease: "power1.in" }, t);
+    tl.fromTo(dr, { y: 0 }, { y: 62, duration: 0.45, ease: "power1.in" }, t);
     tl.to(dr, { opacity: 0, duration: 0.1 }, t + 0.4);
   }
 
   // 3 — leak: air keeps hissing out; inset: dust under the poppet / cut on the seat / broken spring
   const g3 = H.$("s3-v-c3");
   valve(g3, 140, 230);
-  const hs = H.pnHiss(g3, "s3-v-hs", 140, 120, 90, 1.15);
+  const hs = H.pnHiss(g3, "s3-v-hs", 140, 112, 90, 1.35);
   tl.fromTo(hs, { opacity: 0 }, { opacity: 1, duration: 0.2 }, ST[2] + 0.1);
-  tl.fromTo(hs, { scale: 0.85, svgOrigin: "140 120" }, { scale: 1.12, svgOrigin: "140 120", duration: 0.28, yoyo: true, repeat: 2 * Math.max(1, Math.floor((end - ST[2] - 0.2) / 0.56)) - 1, ease: "sine.inOut" }, ST[2] + 0.1);
+  tl.fromTo(hs, { scale: 0.85, svgOrigin: "140 112" }, { scale: 1.12, svgOrigin: "140 112", duration: 0.28, yoyo: true, repeat: 2 * Math.max(1, Math.floor((end - ST[2] - 0.2) / 0.56)) - 1, ease: "sine.inOut" }, ST[2] + 0.1);
   const ins = H.el("g", { id: "s3-v-ins" }, g3);
   H.el("rect", { x: 272, y: 10, width: 176, height: 170, rx: 10, fill: "#f4f1ea", stroke: PN.ink, "stroke-width": 3 }, ins);
   // seat blocks (opening in the middle), poppet held up by a dust grain, stem + spring
