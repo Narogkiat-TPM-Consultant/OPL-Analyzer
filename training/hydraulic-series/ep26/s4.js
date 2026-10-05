@@ -55,7 +55,7 @@
   const zpop = H.el("g", { id: "s4-v-zpop" }, zin);
   R(zpop, 352, 350, 16, 98, P26.dark, { rx: 2, sw: 3 });
   R(zpop, 314, 446, 92, 16, P26.dark, { rx: 3, sw: 3 });
-  const zgrit = P26.grain(zin, 326, 465, 9, 3, { attrs: { opacity: 0 } });
+  const zgrit = P26.grain(zin, 328, 460, 13, 3, { attrs: { opacity: 0 } });
   const zleak = H.el("path", { d: "M 360 476 L 360 556", fill: "none", stroke: P26.flow, "stroke-width": 7, "stroke-dasharray": "12 10", opacity: 0 }, zin);
   H.el("circle", { cx: ZX, cy: ZY, r: ZR, fill: "none", stroke: P26.ink, "stroke-width": 5 }, zoom);
   H.text(zoom, ZX, 578, "บ่าวาล์ว (Valve seat)", { size: 22, anchor: "middle", fill: P26.muted });
@@ -122,7 +122,7 @@
   tl.fromTo(zoom, { opacity: 0, scale: 0.6, svgOrigin: `${ZX} ${ZY}` }, { opacity: 1, scale: 1, svgOrigin: `${ZX} ${ZY}`, duration: 0.4, ease: "back.out(1.6)" }, t2 + 0.1);
   tl.fromTo(zpop, { y: -24 }, { y: -24, duration: 0.01 }, b);
   tl.fromTo(zgrit, { opacity: 0, x: -30, y: -60 }, { opacity: 1, x: 0, y: 0, duration: 0.5, ease: "power2.in" }, t2 + 0.6);
-  tl.fromTo(zpop, { y: -24 }, { y: -6, duration: 0.3, ease: "power2.in", immediateRender: false }, t2 + 1.2);
+  tl.fromTo(zpop, { y: -24 }, { y: -14, duration: 0.3, ease: "power2.in", immediateRender: false }, t2 + 1.2);
   tl.fromTo(zleak, { opacity: 0 }, { opacity: 1, duration: 0.2 }, t2 + 1.5);
   tl.fromTo(zleak, { strokeDashoffset: 0 }, { strokeDashoffset: -22 * Math.round((D - c[1]) * 3), duration: D - c[1] - 1.6, ease: "none", immediateRender: false }, t2 + 1.5);
 

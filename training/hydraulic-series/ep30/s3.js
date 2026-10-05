@@ -11,15 +11,15 @@ H.atLabel(art, 14, yS - 78, "ลมเข้า", { size: 24, fill: AT.muted });
 H.el("rect", { x: 780, y: yS - 58, width: 64, height: 116, rx: 6, fill: AT.metal, stroke: AT.ink, "stroke-width": 4 }, art);
 H.el("line", { x1: 844, y1: yS, x2: 896, y2: yS, stroke: AT.pipe, "stroke-width": 12 }, art);
 const G = H.gauge(art, 970, yS, 76, { id: "s3-v-g", min: 0, max: 10, ticks: 5, minor: 1, labels: false, value: 7 });
-H.atLabel(art, 970, yS + 112, "แรงดันปลายทาง", { size: 25, anchor: "middle", fill: AT.muted });
+H.atLabel(art, 970, yS + 122, "แรงดันปลายทาง", { size: 25, anchor: "middle", fill: AT.muted });
 H.atLabel(art, 600, yS + 112, "สายลม (Air tube)", { size: 25, anchor: "middle", line: [600, yS + 88, 600, yS + 62] });
 H.atLabel(art, 296, 50, "Binder (เคเบิลไทร์)", { size: 25, anchor: "end", line: [302, 56, 322, 80] });
 
 // cross-section at the tie
-const cx = 230, cy = 482;
-const X = H.atXsec(art, cx, cy, { q: 0, slack: 14, tail: 26 });
-H.el("line", { x1: tx, y1: yS + 80, x2: 318, y2: 356, stroke: AT.muted, "stroke-width": 3, "stroke-dasharray": "8 7" }, art);
-H.atLabel(art, 36, 356, "หน้าตัดที่จุดรัด", { size: 25, fill: AT.muted });
+const cx = 235, cy = 478, k = 1.15;
+const X = H.atXsec(H.atG(art, cx, cy, k), 0, 0, { q: 0, slack: 14, tail: 26 });
+H.el("line", { x1: tx, y1: yS + 80, x2: 322, y2: 340, stroke: AT.muted, "stroke-width": 3, "stroke-dasharray": "8 7" }, art);
+H.atLabel(art, 30, 350, "หน้าตัดที่จุดรัด", { size: 25, fill: AT.muted });
 
 // air that gets through (block arrow)
 const fa = { x0: 540, x1: 1070, yc: 492 };
@@ -44,8 +44,8 @@ S.run(1, 2, t2, 1.4, 10);
 X.run(1, 2, t2, 1.4, 10);
 H.atOp(pull, 1, 0, t2 + 1.6, 0.3);
 const g2 = X.geo(2);
-H.atRing(art, cx, f(cy - g2.d), 66, 34, t2 + 1.5, 3);
-const lab2 = H.atLabel(art, 352, 600, "บุบ / แบน", { size: 30, fill: AT.red });
+H.atRing(art, cx, f(cy - g2.d * k), 76, 40, t2 + 1.5, 3);
+const lab2 = H.atLabel(art, 372, 606, "บุบ / แบน", { size: 30, fill: AT.red });
 H.atHide(lab2);
 H.atOp(lab2, 0, 1, t2 + 1.6);
 
@@ -55,4 +55,4 @@ tl.fromTo(G.needle, { rotation: G.rot(7), svgOrigin: G.origin }, { rotation: G.r
 const lab3 = H.atLabel(art, 805, 590, "น้อยลง", { size: 30, anchor: "middle", fill: AT.red });
 H.atHide(lab3);
 H.atOp(lab3, 0, 1, tFlow + 1.2);
-H.atRing(art, 970, yS, 92, 92, tFlow + 1.5, 2);
+H.atRing(art, 970, yS, 84, 84, tFlow + 1.5, 2);

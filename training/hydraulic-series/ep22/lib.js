@@ -256,8 +256,9 @@ H.pnCircuit = (parent, p, o = {}) => {
     bl(3, 462, 270, "Regulator");
     bl(2, 600, 296, "Lubricator");
     bl(4, 434, 92, "Cylinder");
-    bl(3, 1004, 470, "Solenoid");
-    H.text(lab, 1025, 498, "valve", { size: 24 });
+    badges[3].push(H.pnBadge(lab, 1026, 444, 3, 15));
+    H.text(lab, 1026, 484, "Solenoid", { size: 24, anchor: "middle" });
+    H.text(lab, 1026, 512, "valve", { size: 24, anchor: "middle" });
     bl(3, 912, 312, "Speed");
     H.text(lab, 933, 340, "controller", { size: 24 });
     bl(2, 545, 364);   // pressure gauge on the regulator

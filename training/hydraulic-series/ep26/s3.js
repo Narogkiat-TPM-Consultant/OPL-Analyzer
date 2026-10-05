@@ -100,8 +100,8 @@
     tl.fromTo(d, { x: 0 }, { x: dx, duration: slide, ease: "power1.in", immediateRender: false }, at + 0.45);
     tl.fromTo(d, { y: 0, opacity: 1 }, { y: 130, opacity: 0, duration: 0.45, ease: "power2.in", immediateRender: false }, at + 0.45 + slide);
   });
-  tl.fromTo(water, { attr: { y: 500, height: 0 } }, { attr: { y: 400, height: 100 }, duration: c[2] - c[1] - 0.6, ease: "power1.in" }, t2 + 1.0);
-  tl.fromTo(dl, { opacity: 0, x: 12 }, { opacity: 1, x: 0, duration: 0.35 }, t2 + 1.8);
+  tl.fromTo(water, { attr: { y: 500, height: 0 } }, { attr: { y: 400, height: 100 }, duration: c[2] - c[1] - 0.7, ease: "none" }, t2 + 0.5);
+  tl.fromTo(dl, { opacity: 0, x: 12 }, { opacity: 1, x: 0, duration: 0.35 }, t2 + 2.2);
 
   // --- cue 3: once a day — open the drain cock, the drain runs out into the cup
   tl.fromTo(cal, { opacity: 0, scale: 0.85, svgOrigin: "975 477" }, { opacity: 1, scale: 1, svgOrigin: "975 477", duration: 0.4, ease: "back.out(2)" }, t3);

@@ -13,7 +13,7 @@
   // labels
   H.p27Label(g, 64, 42, "ลม + ละอองน้ำมัน (Oil mist)", { size: 25, fill: P27.blue });
   H.p27Label(Z.g, Z.sx + 132, 52, "ซีล (Seal)", { size: 26, line: [Z.sx + 128, 44, Z.sx + 98, 70] });
-  const filmLab = H.p27Label(Z.g, Z.sx + 160, 178, "ฟิล์มน้ำมัน (Oil film)", { size: 26, fill: P27.oilDk, line: [Z.sx + 156, 170, Z.sx + 128, 205], lineColor: P27.oilDk, opacity: 0 });
+  const filmLab = H.p27Label(Z.g, Z.sx + 160, 178, "ฟิล์มน้ำมัน (Oil film)", { size: 26, fill: P27.oilDk, line: [Z.sx + 156, 170, Z.sx + 128, 204], lineColor: P27.oilDk, opacity: 0 });
 
   // film forms from the mist
   tl.fromTo([C.film, Z.film], { opacity: 0.15 }, { opacity: 1, duration: 0.6 }, b + 1.0);

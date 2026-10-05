@@ -19,7 +19,7 @@
   H.p27Label(Z.g, sx + 132, 50, "ซีล (Seal)", { size: 26, line: [sx + 128, 42, sx + 98, 70] });
   H.p27Label(Z.g, Z.W - 170, 66, "ลูกสูบ (Piston)", { size: 26, anchor: "middle" });
   H.p27Label(Z.g, Z.W - 30, 284, "ผนังกระบอก (Tube wall)", { size: 26, anchor: "end" });
-  const filmLab = H.p27Label(Z.g, sx + 330, 192, "ฟิล์มน้ำมัน (Oil film)", { size: 26, fill: P27.oilDk, line: [sx + 326, 184, sx + 296, 206], lineColor: P27.oilDk, opacity: 0 });
+  const filmLab = H.p27Label(Z.g, sx + 330, 192, "ฟิล์มน้ำมัน (Oil film)", { size: 26, fill: P27.oilDk, line: [sx + 326, 184, sx + 296, 205], lineColor: P27.oilDk, opacity: 0 });
 
   // ---- cue 1: air + oil mist enter, the film forms (cylinder and zoom)
   tl.fromTo([C.film, Z.film], { opacity: 0 }, { opacity: 1, duration: 0.8 }, b + c[0] + 1.6);
@@ -72,14 +72,14 @@
   air.forEach((F, i) => H.p27Run(F, b + c[2] + 0.2 + i * 0.15, 3.2, 90));
   tl.fromTo(airLab, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: false }, b + c[2] + 0.2);
   tl.to(airLab, { opacity: 0, duration: 0.3 }, b + c[2] + 3.2);
-  const gap = H.el("rect", { x: sx - 4, y: 194, width: 118, height: 26, rx: 8, fill: "none", stroke: P27.oilDk, "stroke-width": 4, "stroke-dasharray": "7 5", opacity: 0 }, Z.inner);
+  const gap = H.el("rect", { x: sx - 8, y: 190, width: 126, height: 36, rx: 10, fill: "none", stroke: P27.oilDk, "stroke-width": 5, opacity: 0 }, Z.inner);
   tl.fromTo(gap, { opacity: 0 }, { opacity: 1, duration: 0.25, yoyo: true, repeat: 5, ease: "none", immediateRender: false }, b + c[2] + 0.9);
   eff(2, "ลมผ่านไม่ได้ → ไม่รั่ว", b + c[2] + 0.1, b + c[3]);
 
   // ---- cue 4 ③: the seal glides on the film (wall slides both ways), the lip edge stays sharp
   move(b + c[3] + 0.3, 0, 140, 1.2, false);
   move(b + c[3] + 1.6, 140, 0, 1.1, false);
-  const edge = H.el("path", { d: `M ${sx + 14} 206 L ${sx + 96} 206`, stroke: P27.green, "stroke-width": 6, fill: "none", opacity: 0 }, Z.inner);
+  const edge = H.el("path", { d: `M ${sx + 14} 204 L ${sx + 96} 204`, stroke: P27.green, "stroke-width": 6, fill: "none", opacity: 0 }, Z.inner);
   tl.fromTo(edge, { opacity: 0 }, { opacity: 1, duration: 0.25, yoyo: true, repeat: 3, repeatDelay: 0.2, immediateRender: false }, b + c[3] + 0.5);
   eff(3, "ซีลเลื่อนบนฟิล์ม → ไม่สึก", b + c[3] + 0.1, b + c[4]);
 
@@ -87,8 +87,8 @@
   [[120, 0], [236, 0.35]].forEach(([x, dt]) => {
     const dr = H.el("path", { d: H.p27DropD(x, 0, 13), fill: P27.water, stroke: P27.ink, "stroke-width": 2, opacity: 0 }, Z.inner);
     const t = b + c[4] + 0.3 + dt;
-    tl.fromTo(dr, { opacity: 1, y: 50 }, { y: 162, duration: 0.6, ease: "power2.in", immediateRender: false }, t);
-    tl.fromTo(dr, { scaleY: 1, scaleX: 1, svgOrigin: `${x} 36` }, { scaleY: 0.55, scaleX: 1.35, svgOrigin: `${x} 36`, duration: 0.2, ease: "power2.out", immediateRender: false }, t + 0.6);
+    tl.fromTo(dr, { opacity: 1, y: 50 }, { y: 160, duration: 0.6, ease: "power2.in", immediateRender: false }, t);
+    tl.fromTo(dr, { scaleY: 1, scaleX: 1, transformOrigin: "50% 100%" }, { scaleY: 0.55, scaleX: 1.35, transformOrigin: "50% 100%", duration: 0.2, ease: "power2.out", immediateRender: false }, t + 0.6);
   });
   const dry = H.p27Label(Z.inner, 60, 272, "โลหะไม่โดนน้ำ", { size: 26, fill: P27.green, opacity: 0 });
   tl.fromTo(dry, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: false }, b + c[4] + 1.4);

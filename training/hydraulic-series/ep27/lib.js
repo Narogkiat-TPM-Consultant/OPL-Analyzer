@@ -87,11 +87,12 @@ H.p27Puff = (parent, x, y, ang, o = {}) => {
   }
   return { g, arcs, x, y };
 };
-// Puff `n` times from t (absolute), one every `gap` seconds.
+// Puff waves from t (absolute): each arc grows outward and fades, `n` cycles of `gap` s, arcs staggered.
 H.p27Puffs = (P, t, n = 3, gap = 0.5) => {
+  const o = `${H.f(P.x)} ${H.f(P.y)}`;
   tl.fromTo(P.g, { opacity: 0 }, { opacity: 1, duration: 0.1, immediateRender: false }, t);
-  P.arcs.forEach((arc, k) => tl.fromTo(arc, { opacity: 0 }, { opacity: 1, duration: 0.12, yoyo: true, repeat: 2 * n - 1, repeatDelay: gap - 0.12, ease: "none", immediateRender: false }, t + k * 0.1));
-  tl.to(P.g, { opacity: 0, duration: 0.15 }, t + n * gap + 0.3);
+  P.arcs.forEach((arc, k) => tl.fromTo(arc, { opacity: 0.95, scale: 0.7, svgOrigin: o }, { opacity: 0, scale: 1.25, svgOrigin: o, duration: gap, ease: "power1.out", repeat: n - 1, immediateRender: false }, t + (k * gap) / 3));
+  tl.to(P.g, { opacity: 0, duration: 0.15 }, t + (n + 1) * gap);
 };
 
 // ------------------------------------------------------------------- air cylinder, cut-away (side view)
@@ -176,8 +177,8 @@ H.p27Jerky = (el, t, x0, x1, n = 4, jump = 0.18, pause = 0.32, extra = []) => {
 
 // ------------------------------------------------------- magnified view: piston seal on the tube wall
 // Local box 0..W × 0..Hh (clipped, rounded). Pressure side (head side) on the left. The wall at the bottom
-// has a rough top surface (zig-zag, peaks y 213 / valleys 227); the oil film fills it up to y 199, and the
-// seal lip (bottom y 205) rides in the film. Without oil, the tiny gaps under the lip stay open.
+// has a rough top surface (zig-zag, peaks y 215 / valleys 231); the oil film fills it up to y 197, and the
+// seal lip (bottom y 203) rides in the film. Without oil, the tiny gaps under the lip stay open.
 // o: { id, x, y, s, W, Hh, sx (seal left edge), oil (default true), tag }
 // → { g, inner, wall (slide in x), film, lip (path), lipD(w), rust (on the wall), sx, W, Hh }
 H.p27Zoom = (parent, o = {}) => {
@@ -194,18 +195,18 @@ H.p27Zoom = (parent, o = {}) => {
   // wall (slides under the seal): oil film, rough metal surface, explicit hatch lines, rust patch
   const X0 = -30, X1 = W + 560, PER = 26;                 // the wall only slides left (≤ 520)
   const wall = H.el("g", { id: id + "-wall" }, inner);
-  const film = H.el("rect", { id: id + "-film", x: X0, y: 199, width: X1 - X0, height: 34, fill: P27.oil, opacity: o.oil === false ? 0 : 1 }, wall);
-  let d = `M ${X0} ${Hh + 10} L ${X0} 213`;
-  for (let x = X0, k = 0; x < X1; x += PER / 2, k++) d += ` L ${f(x + PER / 2)} ${k % 2 ? 213 : 227}`;
+  const film = H.el("rect", { id: id + "-film", x: X0, y: 197, width: X1 - X0, height: 40, fill: P27.oil, opacity: o.oil === false ? 0 : 1 }, wall);
+  let d = `M ${X0} ${Hh + 10} L ${X0} 215`;
+  for (let x = X0, k = 0; x < X1; x += PER / 2, k++) d += ` L ${f(x + PER / 2)} ${k % 2 ? 215 : 231}`;
   d += ` L ${X1} ${Hh + 10} Z`;
   H.el("path", { d, fill: P27.metal, stroke: P27.ink, "stroke-width": 3, "stroke-linejoin": "round" }, wall);
-  for (let x = X0; x < X1; x += 30) H.el("line", { x1: x, y1: Hh + 6, x2: x + 46, y2: 240, stroke: P27.hatch, "stroke-width": 3 }, wall);
+  for (let x = X0; x < X1; x += 30) H.el("line", { x1: x, y1: Hh + 6, x2: x + 46, y2: 244, stroke: P27.hatch, "stroke-width": 3 }, wall);
   const rust = H.el("g", { id: id + "-rust", opacity: 0 }, wall);
 
   // piston body (fixed in this view) + seal lip
   H.el("rect", { x: sx - 50, y: -12, width: W - sx + 80, height: 132, fill: P27.metal, stroke: P27.ink, "stroke-width": 4 }, inner);
-  const lipD = (w = 0) => `M ${sx} 58 L ${sx + 110} 58 L ${sx + 110} 128 L ${sx + 96} ${f(205 - 5 * w)} L ${sx + 70} ${f(205 - 13 * w)} ` +
-    `L ${sx + 46} ${f(205 - 9 * w)} L ${sx + 14} ${f(205 - 17 * w)} L ${sx} 128 Z`;
+  const lipD = (w = 0) => `M ${sx} 58 L ${sx + 110} 58 L ${sx + 110} 128 L ${sx + 96} ${f(203 - 5 * w)} L ${sx + 70} ${f(203 - 13 * w)} ` +
+    `L ${sx + 46} ${f(203 - 9 * w)} L ${sx + 14} ${f(203 - 17 * w)} L ${sx} 128 Z`;
   const lip = H.el("path", { id: id + "-lip", d: lipD(0), fill: P27.rubber, stroke: P27.ink, "stroke-width": 3, "stroke-linejoin": "round" }, inner);
 
   // frame + tag

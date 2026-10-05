@@ -24,10 +24,10 @@ const st = T.stamps, f = H.f;
 // card 3 — NG: band smaller than the tube / more tubes than the band is made for
 {
   const c = H.$("s6-v-c3"), t0 = b + st[2];
-  const A = H.atClip(H.atG(c, 40, 0, 0.62), 40, 142, "small", { id: "s6-v-k1" });
-  const B = H.atClip(H.atG(c, 245, 0, 0.62), 40, 142, "two", { id: "s6-v-k2", wall: 10 });
+  const A = H.atClip(H.atG(c, 40, 0, 0.66), 40, 133, "small", { id: "s6-v-k1" });
+  const B = H.atClip(H.atG(c, 245, 0, 0.66), 40, 133, "two", { id: "s6-v-k2", wall: 10 });
   A.run(0, 1, t0 + 0.15, 0.8);
   B.run(0, 1, t0 + 0.15, 0.8);
-  H.atRing(c, f(40 + A.ccx(1) * 0.62), 88, 32, 44, t0 + 1.0, 3);
-  H.atRing(c, f(245 + B.ccx(1) * 0.62), 88, 34, 42, t0 + 1.0, 3);
+  H.atRing(c, f(40 + A.ccx(1) * 0.66), 88, 34, 46, t0 + 1.0, 3);
+  H.atRing(c, f(245 + B.ccx(1) * 0.66), 88, 36, 44, t0 + 1.0, 3);
 }

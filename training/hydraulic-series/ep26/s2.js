@@ -89,7 +89,7 @@
   const pop = H.el("g", { id: "s2-v-pop" }, a3);
   R(pop, 930, 392, 16, 62, P26.dark, { rx: 2, sw: 3 });
   R(pop, 898, 452, 80, 16, P26.dark, { rx: 3, sw: 3 });
-  const grit = P26.grain(a3, 908, 465, 8, 2, { attrs: { opacity: 0 } });
+  const grit = P26.grain(a3, 910, 461, 11, 2, { attrs: { opacity: 0 } });
   const leak = H.el("path", { id: "s2-v-leak", d: "M 938 474 L 938 556", fill: "none", stroke: P26.flow, "stroke-width": 6, "stroke-dasharray": "12 10", opacity: 0 }, a3);
   H.text(a3, 937, 610, "ปิดไม่สนิท → ลมรั่ว", { size: 21, fill: P26.muted, anchor: "middle" });
 
@@ -141,7 +141,7 @@
   dusts.forEach((d, i) => travel(d, t4 + 0.2 + i * 0.25, [[50 + i * 4, 34 - i * 6, 0.5], [0, 56, 0.5]]));
   tl.fromTo(rust, { opacity: 0 }, { opacity: 1, duration: 0.5 }, t4 + 0.8);
   tl.fromTo(grit, { opacity: 0, x: -40, y: -70 }, { opacity: 1, x: 0, y: 0, duration: 0.6, ease: "power2.in" }, t4 + 0.6);
-  tl.fromTo(pop, { y: -26 }, { y: -10, duration: 0.35, ease: "power2.in", immediateRender: false }, t4 + 1.2);
+  tl.fromTo(pop, { y: -26 }, { y: -16, duration: 0.35, ease: "power2.in", immediateRender: false }, t4 + 1.2);
   tl.fromTo(leak, { opacity: 0 }, { opacity: 1, duration: 0.2 }, t4 + 1.55);
   tl.fromTo(leak, { strokeDashoffset: 0 }, { strokeDashoffset: -22 * Math.round((D - c[3]) * 3), duration: D - c[3] - 1.7, ease: "none", immediateRender: false }, t4 + 1.55);
 

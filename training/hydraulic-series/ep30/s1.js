@@ -5,7 +5,7 @@ const S = H.atSide(H.atG(art, 0, 150), { x0: 40, x1: 720, ties: [210, 530], q: 0
 H.atFlow(S.flows, b + 0.4, b + D, 55);
 
 // lens on the right-hand binder
-const lx = 400, ly = 425, lr = 150, P = [530, 232];
+const lx = 530, ly = 428, lr = 150, P = [530, 232];
 const dx = P[0] - lx, dy = P[1] - ly, dist = Math.hypot(dx, dy), th = Math.atan2(dy, dx), be = Math.acos(lr / dist);
 const cone = H.el("g", { opacity: 0 }, art);
 for (const s of [-1, 1]) {
@@ -14,11 +14,11 @@ for (const s of [-1, 1]) {
 }
 const lens = H.el("g", { opacity: 0 }, art);
 H.el("circle", { cx: lx, cy: ly, r: lr, fill: AT.paper }, lens);
-const X = H.atXsec(H.atG(lens, lx, ly, 0.88), 0, 0, { q: 0, slack: 18, tail: 14, room: true });
+const X = H.atXsec(H.atG(lens, lx, ly, 0.95), 0, 0, { q: 0, slack: 18, tail: 8, room: true });
 H.el("circle", { cx: lx, cy: ly, r: lr, fill: "none", stroke: AT.ink, "stroke-width": 6 }, lens);
 
 H.atOp(cone, 0, 1, b + 0.7, 0.3);
 tl.fromTo(lens, { opacity: 0, scale: 0.3, svgOrigin: `${lx} ${ly}` }, { opacity: 1, scale: 1, svgOrigin: `${lx} ${ly}`, duration: 0.45, ease: "back.out(1.5)", immediateRender: false }, b + 0.8);
 X.run(0, 0.5, b + 1.5, 0.9);
 tl.fromTo(X.room, { opacity: 0 }, { opacity: 0.3, duration: 0.4, immediateRender: false }, b + 2.4);
-H.atCheck(art, lx + 128, ly - 118, 1.3, b + 2.6);
+H.atCheck(art, lx - 200, ly - 40, 1.6, b + 2.6);

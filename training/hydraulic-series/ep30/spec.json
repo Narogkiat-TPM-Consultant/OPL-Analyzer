@@ -102,7 +102,7 @@
       "cards": [
         { "label": "สายกลม", "verdict": "OK", "cond": "ไม่บุบ · มีระยะเผื่อ", "act": "→ บันทึกผล",
           "svg": { "viewBox": "0 0 460 170", "body": "<g id='s6-v-c1'></g>" }, "cue": 1 },
-        { "label": "สายบุบ / แบน", "verdict": "NG", "cond": "รัด Binder แน่นเกิน", "act": "→ แจ้งหัวหน้างาน · รัดใหม่ *",
+        { "label": "สายบุบ", "verdict": "NG", "cond": "รัด Binder แน่นเกิน", "act": "→ แจ้งหัวหน้างาน · รัดใหม่ *",
           "svg": { "viewBox": "0 0 460 170", "body": "<g id='s6-v-c2'></g>" }, "cue": 2 },
         { "label": "Band ไม่ตรง", "verdict": "NG", "cond": "ผิดขนาด / เกินจำนวน", "act": "→ แจ้งหัวหน้างาน · เปลี่ยน Band *",
           "svg": { "viewBox": "0 0 460 170", "body": "<g id='s6-v-c3'></g>" }, "cue": 3 }
