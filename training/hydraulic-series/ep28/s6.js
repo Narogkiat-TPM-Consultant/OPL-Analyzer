@@ -140,7 +140,7 @@
   tl.to(Lu.oil, { attr: { y: 150, height: 42 }, duration: 1.6, ease: "power1.in" }, tL + 0.3);
   tl.fromTo(fast, { opacity: 0 }, { opacity: 1, duration: 0.25 }, tL + 0.4);
   tl.fromTo(wet, { opacity: 0 }, { opacity: 1, duration: 0.3 }, tL + 0.4);
-  leaks.forEach((d, k) => tl.fromTo(d, { y: 0, opacity: 1 }, { y: 150, opacity: 0, duration: 0.8, ease: "power1.in", repeat: 2, repeatDelay: 0.6 }, tL + 0.5 + k * 0.35));
+  leaks.forEach((d, k) => tl.fromTo(d, { y: 0, opacity: 1 }, { y: 150, opacity: 0, duration: 0.8, ease: "power1.in", repeat: 2, repeatDelay: 0.6, immediateRender: false }, tL + 0.5 + k * 0.35));
   H.p28Pop(ring, tL + 1.3, 975, Y + 4, 1.4);
   tl.fromTo(mag, { opacity: 0, x: -40, y: 50 }, { opacity: 1, x: 0, y: 0, duration: 0.5, ease: "power2.out" }, tL + 1.6);
   tl.fromTo(findLbl, { opacity: 0 }, { opacity: 1, duration: 0.3 }, tL + 2.0);

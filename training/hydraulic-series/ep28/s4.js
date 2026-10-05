@@ -56,7 +56,7 @@
   // condensation drops on the inner wall (local units, inside the FRL group)
   const fg = F.g;
   const drops = [[18, 70], [66, 88], [20, 112], [64, 132], [24, 150], [60, 60]].map(([x, y]) =>
-    H.el("path", { d: H.p28DropD(x, y, 3.6), fill: P28.water, stroke: P28.ink, "stroke-width": 1, opacity: 0 }, fg));
+    H.el("path", { d: H.p28DropD(x, y, 5), fill: P28.water, stroke: P28.ink, "stroke-width": 1.2, opacity: 0 }, fg));
   const wLbl = H.el("g", { opacity: 0 }, m);
   const [wx, wy] = F.at(72, 182);
   H.el("line", { x1: f(wx - 10), y1: f(wy), x2: 700, y2: f(wy), stroke: P28.water, "stroke-width": 3 }, wLbl);

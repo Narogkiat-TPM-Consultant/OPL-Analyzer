@@ -20,11 +20,11 @@
 
   // ---- tags (number · device · what to check)
   const TAGS = [
-    [1, "Air filter", "Auto drain ทำงานไหม", 200, 640, t1 + 0.1],
-    [2, "Regulator", "ลองหมุนปรับแรงดัน", 175, 150, t2 + 0.1],
-    [3, "Pressure gauge", "ปล่อยลมออก → ชี้ 0", 700, 150, tRel],
-    [4, "Direction valve", "Exhaust: ดูน้ำมันหล่อลื่น", 1110, 600, t4 + 0.1],
-    [5, "Speed adjust valve", "ลองปรับความเร็ว", 1196, 374, t5 + 0.1],
+    [1, "Air filter", "Auto drain ทำงานไหม", 264, 646, t1 + 0.1],
+    [2, "Regulator", "ลองหมุนปรับแรงดัน", 175, 116, t2 + 0.1],
+    [3, "Pressure gauge", "ปล่อยลมออก → ชี้ 0", 700, 116, tRel],
+    [4, "Direction valve", "Exhaust: ดูน้ำมันหล่อลื่น", 1196, 612, t4 + 0.1],
+    [5, "Speed adjust valve", "ลองปรับความเร็ว", 1206, 404, t5 + 0.1],
     [6, "Air cylinder", "ลมรั่วที่ก้านสูบ?", 1390, 36, tCyl],
   ];
   TAGS.forEach(([n, ti, sub, x, y, t]) => {
@@ -75,8 +75,8 @@
 
   // ---- 2 regulator: knob turned up then back, both gauge needles follow
   const arc = H.el("g", { id: "s2-v-karc", opacity: 0 }, fx);
-  H.el("path", { d: "M 318 296 Q 360 322 402 296", fill: "none", stroke: PN.pipe, "stroke-width": 6 }, arc);
-  H.el("path", { d: "M 402 296 L 384 298 M 402 296 L 394 280 M 318 296 L 336 298 M 318 296 L 326 280", fill: "none", stroke: PN.pipe, "stroke-width": 6, "stroke-linecap": "round" }, arc);
+  H.el("path", { d: "M 312 300 Q 360 330 408 300", fill: "none", stroke: PN.ink, "stroke-width": 6 }, arc);
+  H.el("path", { d: "M 408 300 L 390 303 M 408 300 L 401 283 M 312 300 L 330 303 M 312 300 L 319 283", fill: "none", stroke: PN.ink, "stroke-width": 6, "stroke-linecap": "round" }, arc);
   tl.fromTo(arc, { opacity: 0 }, { opacity: 1, duration: 0.2 }, t2 + 0.15);
   tl.to(arc, { opacity: 0, duration: 0.3 }, t2 + 1.9);
   tl.fromTo(C.knurl, { x: 0 }, { x: -27, duration: 0.7, ease: "power1.inOut" }, t2 + 0.3);
@@ -112,8 +112,8 @@
   const slow = tSC + 0.8;
   H.pnCycle(C, t4 + 0.6, b + D - 0.2, (t) => (t < slow ? 0.75 : 1.5), 0.45);
   const sarc = H.el("g", { id: "s2-v-sarc", opacity: 0 }, fx);
-  H.el("path", { d: "M 1274 292 Q 1300 312 1326 292", fill: "none", stroke: PN.pipe, "stroke-width": 5 }, sarc);
-  H.el("path", { d: "M 1326 292 L 1311 294 M 1326 292 L 1320 279", fill: "none", stroke: PN.pipe, "stroke-width": 5, "stroke-linecap": "round" }, sarc);
+  H.el("path", { d: "M 1272 294 Q 1300 316 1328 294", fill: "none", stroke: PN.ink, "stroke-width": 5 }, sarc);
+  H.el("path", { d: "M 1328 294 L 1313 297 M 1328 294 L 1322 281", fill: "none", stroke: PN.ink, "stroke-width": 5, "stroke-linecap": "round" }, sarc);
   tl.fromTo(sarc, { opacity: 0 }, { opacity: 1, duration: 0.2 }, tSC);
   tl.to(sarc, { opacity: 0, duration: 0.3 }, tSC + 1.3);
   tl.fromTo(C.scKnurl, { x: 0 }, { x: -21, duration: 0.8, ease: "power1.inOut" }, tSC + 0.05);
