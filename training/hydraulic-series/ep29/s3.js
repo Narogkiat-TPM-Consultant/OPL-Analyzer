@@ -12,9 +12,9 @@
     for (let yy = 62; yy <= 92; yy += 8) for (let xx = x - 10; xx <= x + 10; xx += 10) H.el("circle", { cx: xx, cy: yy, r: 2.2, fill: PN.muted }, g);
   };
   const puffs = (g, id, x, mist, t0, t1, every = 1.1) => {
-    const p = H.pnPuff(g, id, x, 96, { mist, s: 1.45 });
+    const p = H.pnPuff(g, id, x, 96, { mist, s: 1.2 });
     let first = true;
-    for (let t = t0; t + 0.85 <= t1; t += every) { H.pnPuffAt(p, t, !first); first = false; }
+    for (let t = t0; t + 0.85 <= t1; t += every) { H.pnPuffAt(p, t, !first, 0.85, 12); first = false; }
     return p;
   };
   const end = b + D - 0.1;

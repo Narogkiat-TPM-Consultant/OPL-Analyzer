@@ -35,7 +35,7 @@
       "type": "judgment",
       "heading": "3 เดือน · ดูน้ำมันที่ **Exhaust port** (ช่องระบายลม)",
       "cards": [
-        { "label": "น้อยไป", "verdict": "NG", "cond": "ละอองน้ำมันน้อย / ไม่มี", "act": "→ ตรวจตำแหน่งติดตั้ง + การปรับ Lubricator", "svg": { "viewBox": "0 0 460 190", "body": "<g id='s3-v-c1'></g>" }, "cue": 1 },
+        { "label": "น้อยไป", "verdict": "NG", "cond": "ละอองน้ำมันน้อย / ไม่มี", "act": "→ ตรวจตำแหน่งติดตั้ง + การ\u2060ปรับ Lubricator", "svg": { "viewBox": "0 0 460 190", "body": "<g id='s3-v-c1'></g>" }, "cue": 1 },
         { "label": "มากไป", "verdict": "ปรับ", "cond": "ละอองน้ำมันมากไป", "act": "→ ปรับ Lubricator ลดลง", "svg": { "viewBox": "0 0 460 190", "body": "<g id='s3-v-c2'></g>" }, "cue": 2 },
         { "label": "ลมรั่ว", "verdict": "NG", "cond": "มีลมรั่ว (Leak)", "act": "→ ดู Valve seat: ฝุ่น / บาก · สปริง: หัก / สนิม", "svg": { "viewBox": "0 0 460 190", "body": "<g id='s3-v-c3'></g>" }, "cue": 3 }
       ],

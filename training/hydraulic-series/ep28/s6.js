@@ -84,7 +84,7 @@
   const [capX, capY] = [TX + (Lu.cap[0] + 8) * S, Y + Lu.cap[1] * S];
   const can = H.el("g", { opacity: 0 }, fx);
   H.el("path", { d: `M ${f(capX - 92)} ${f(capY - 38)} L ${f(capX - 2)} ${f(capY - 36)} L ${f(capX - 2)} ${f(capY - 28)} L ${f(capX - 90)} ${f(capY - 20)} Z`, fill: P28.dark, stroke: P28.ink, "stroke-width": 3, "stroke-linejoin": "round" }, can);
-  H.el("path", { d: `M ${f(capX - 150)} ${f(capY - 40)} L ${f(capX - 88)} ${f(capY - 40)} L ${f(capX - 84)} ${f(capY + 10)} L ${f(capX - 156)} ${f(capY + 10)} Z`, fill: "#c0392b", stroke: P28.ink, "stroke-width": 3.5, "stroke-linejoin": "round" }, can);
+  H.el("path", { d: `M ${f(capX - 150)} ${f(capY - 40)} L ${f(capX - 88)} ${f(capY - 40)} L ${f(capX - 84)} ${f(capY + 10)} L ${f(capX - 156)} ${f(capY + 10)} Z`, fill: "#7d8792", stroke: P28.ink, "stroke-width": 3.5, "stroke-linejoin": "round" }, can);
   H.el("path", { d: `M ${f(capX - 142)} ${f(capY - 40)} Q ${f(capX - 120)} ${f(capY - 70)} ${f(capX - 98)} ${f(capY - 40)}`, fill: "none", stroke: P28.ink, "stroke-width": 5 }, can);
   const pour = H.el("path", { d: `M ${f(capX - 3)} ${f(capY - 32)} Q ${f(capX + 1)} ${f(capY - 16)} ${f(capX)} ${f(capY + 2)}`, fill: "none", stroke: P28.oil, "stroke-width": 6, "stroke-linecap": "butt", opacity: 0 }, fx);
   // fast drop arrow + leak

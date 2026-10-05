@@ -80,9 +80,9 @@ H.pnPuff = (parent, id, x, y, o = {}) => {
   g.pnO = `${x} ${y}`;
   return g;
 };
-H.pnPuffAt = (g, t, again = true, dur = 0.85) => {
+H.pnPuffAt = (g, t, again = true, dur = 0.85, dy = 22) => {
   tl.fromTo(g, { opacity: 0 }, { opacity: 1, duration: 0.06, immediateRender: !again }, t);
-  tl.fromTo(g, { y: -8 }, { y: 22, duration: dur, ease: "power1.out", immediateRender: !again }, t);
+  tl.fromTo(g, { y: -8 }, { y: dy, duration: dur, ease: "power1.out", immediateRender: !again }, t);
   tl.to(g, { opacity: 0, duration: dur * 0.5, ease: "power1.in" }, t + dur * 0.5);
 };
 
@@ -127,7 +127,7 @@ H.pnDial = (parent, cx, cy, r, o = {}) => {
   const zs = Math.round(r * 0.27), za = (115 * Math.PI) / 180;
   const zeroAt = [cx + r * 0.62 * Math.cos(za), cy + r * 0.62 * Math.sin(za)];
   if (o.zero) H.text(g, zeroAt[0], zeroAt[1] + 0.36 * zs, "0", { size: zs, anchor: "middle", id: o.id ? `${o.id}-0` : undefined });
-  if (o.unit) H.text(g, cx + r * 0.08, cy + r * 0.86, "kgf/cm²", { size: Math.round(r * 0.18), anchor: "middle", fill: PN.muted, weight: 700 });
+  if (o.unit) H.text(g, cx + r * 0.1, cy + r * 0.9, "kgf/cm²", { size: Math.round(r * 0.15), anchor: "middle", fill: PN.muted, weight: 700 });
   const needle = H.el("g", o.id ? { id: `${o.id}-n` } : {}, g);
   H.el("path", { d: `M ${f(cx)} ${f(cy + r * 0.12)} L ${f(cx)} ${f(cy - r * 0.8)}`, stroke: o.needle || PN.ink, "stroke-width": Math.max(3, r * 0.07), "stroke-linecap": "round" }, needle);
   H.el("circle", { cx, cy, r: H.f(Math.max(4, r * 0.1)), fill: PN.ink }, g);

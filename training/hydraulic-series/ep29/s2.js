@@ -88,7 +88,7 @@
   H.el("circle", { cx: 600, cy: 200, r: 84, fill: "none", stroke: PN.pipe, "stroke-width": 5 }, gi);
   const BG = H.pnDial(gi, 600, 200, 76, { id: "s2-v-gb", zero: true, unit: true, ticks: 10 });
   const [zx, zy] = BG.zeroAt;
-  const ok0 = H.el("circle", { id: "s2-v-ok0", cx: H.f(zx), cy: H.f(zy), r: 19, fill: "none", stroke: PN.green, "stroke-width": 5, opacity: 0 }, gi);
+  const ok0 = H.el("circle", { id: "s2-v-ok0", cx: H.f(zx), cy: H.f(zy), r: 16, fill: "none", stroke: PN.green, "stroke-width": 5, opacity: 0 }, gi);
   tl.fromTo(gi, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t2 + 0.15);
   const needles = [[C.gauge.needle, C.gauge.origin], [BG.needle, BG.origin]];
   const A = BG.rot;
