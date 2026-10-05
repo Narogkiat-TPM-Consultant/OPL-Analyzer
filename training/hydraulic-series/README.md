@@ -2,7 +2,7 @@
 
 Motion-graphics training clips (75 s, Thai voice-over) built with the `tpm-opl-video` skill
 (`.claude/skills/tpm-opl-video`) from the JIPM-Solutions deck *Equipment Skills Training – Hydraulic / Pneumatic*.
-The source PDF is not stored here; attach it again in a session to write episodes 22–31.
+The source PDF is not stored here; attach it again in a session to revise an episode.
 
 | Path | What |
 |---|---|
@@ -11,6 +11,8 @@ The source PDF is not stored here; attach it again in a session to write episode
 | `ep01/` … `ep08/` | Part A (hydraulic basics, OPL 5-A-1 … 5-A-10): spec, scene animation files, episode `lib.js` |
 | `ep09/` … `ep12/` | Part B (hydraulic trouble, OPL 5-B-1 … 5-B-4): troubleshooting-type OPLs (symptom → cause → countermeasure; no Why-Why invented) |
 | `ep13/` … `ep21/` | Part C (hydraulic inspection, OPL 5-C-1 … 5-C-13): check item + OK/NG with the deck's criteria, for AM check sheets |
+| `ep22/` … `ep31/` | Part D (pneumatics, OPL 5'-A-1 … 5'-C-5): air basics, FRL set, drain, lubrication, periodic checks, tube binding |
+| `am/` | AM check sheet (Excel) for a hydraulic unit, built from Part C criteria |
 
 ## Status
 - Part A EP01–EP08 rendered: 75.0 s each, Azure th-TH-PremwadeeNeural at +8%, lint 0 errors, check passed,
@@ -19,7 +21,8 @@ The source PDF is not stored here; attach it again in a session to write episode
 - Part B EP09–EP12 rendered the same way (`opl_type: trouble`).
 - Part C EP13–EP21 rendered the same way (`opl_type: basic`, OK/NG cards with the deck's exact criteria).
 - Video library (private claude.ai page with players and MP4 save buttons): https://claude.ai/artifact/Gd2jwcZSmHLigisBJR5xqz
-- Next: Part D EP22–EP31 (pneumatics, PDF p.35–49).
+- Part D EP22–EP31 rendered the same way (pneumatics, PDF p.35–49; form machine `Equipment Skills Training · Pneumatic`).
+  All 31 episodes are on the video library page.
 - Voice: Azure AI Speech (`AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION`, host `<region>.tts.speech.microsoft.com`
   allowed in the environment). Edge TTS does not work in the cloud environment (WebSocket blocked).
 
