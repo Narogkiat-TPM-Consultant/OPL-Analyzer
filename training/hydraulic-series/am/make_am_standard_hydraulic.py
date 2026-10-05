@@ -255,4 +255,5 @@ T = {
     "links": "Know_My_Machine_Hydraulic_Unit.xlsx (สอนก่อน) · AM_Check_Sheet_Hydraulic_Unit.xlsx (D/W/P = เลขข้อในชีท Daily/Weekly/Periodic) · วิดีโอ EP01–EP21",
 }
 
-build(OUT, T, PARTS, STD, KAIZEN, CONFIRM)
+if __name__ == "__main__":
+    build(OUT, T, PARTS, STD, KAIZEN, CONFIRM)

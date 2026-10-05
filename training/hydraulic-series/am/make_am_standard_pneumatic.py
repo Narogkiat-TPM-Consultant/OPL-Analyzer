@@ -222,7 +222,9 @@ T = {
     "kmm_file": "Know_My_Machine_Pneumatic_System.xlsx",
     "confidence": "Breakdown / Normal condition / CILT: HIGH (จาก PDF p.35–49) · FMEA S, D: MEDIUM · O และเวลา: LOW–MEDIUM ([INFER] ยังไม่มีประวัติเสียและเวลาจริง) · ราคา Kaizen: LOW ([AI-KB])",
     "assume": "[ASSUME] ระบบลมมาตรฐานตามวงจร p.36 (FRL · Solenoid valve · Speed controller · Air cylinder) — เหตุผล: ไม่มีคู่มือเครื่องจริงและ Spare Part List",
+    "months": {"Q": (0, 3, 6, 9), "A": (6,)},  # levelled against the hydraulic 6M (Jun, Dec) and 1Y (Dec) *
     "links": "Know_My_Machine_Pneumatic_System.xlsx (สอนก่อน) · AM_Check_Sheet_Pneumatic_System.xlsx (D/W/P = เลขข้อในชีท Daily/Weekly/Periodic) · วิดีโอ EP22–EP31",
 }
 
-build(OUT, T, PARTS, STD, KAIZEN, CONFIRM)
+if __name__ == "__main__":
+    build(OUT, T, PARTS, STD, KAIZEN, CONFIRM)

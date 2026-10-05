@@ -108,8 +108,19 @@ def freq_code(freq):
     return {"D": "D", "W": "W", "M": "M", "3M": "Q", "6M": "S", "1Y": "A"}.get(f)
 
 
-def months_for(code):
-    return {"D": range(12), "W": range(12), "M": range(12), "Q": (2, 5, 8, 11), "S": (5, 11), "A": (11,)}.get(code, ())
+DEFAULT_MONTHS = {"Q": (2, 5, 8, 11), "S": (5, 11), "A": (11,)}  # 0-based month index, proposal *
+
+
+def months_for(code, plan=None):
+    """Months (0-based) a frequency code falls in; plan overrides the Q/S/A defaults (load levelling between systems)."""
+    if code in ("D", "W", "M"):
+        return range(12)
+    return (plan or {}).get(code, DEFAULT_MONTHS.get(code, ()))
+
+
+def plan_text(plan=None):
+    names = lambda ms: " ".join(MONTHS[m] for m in ms)
+    return " · ".join(f"{c} = {t} ({names(months_for(c, plan))} *)" for c, t in (("Q", "ทุก 3 เดือน"), ("S", "ทุก 6 เดือน"), ("A", "ทุก 1 ปี")))
 
 
 def risk_of(S, O, D):
@@ -274,7 +285,7 @@ def build(out, T, PARTS, STD, KAIZEN, CONFIRM):
     ws = wb.create_sheet("AM_Calendar")
     cols = ["No.", "กิจกรรม (CILT)", "CILT", "ความถี่", "Risk"] + MONTHS + ["ผู้รับผิดชอบ"]
     title(ws, f"AM Calendar — {T['name_th']} · ปี ……",
-          "D = ทุกวัน · W = รายสัปดาห์ · Q = ทุก 3 เดือน (มี.ค. มิ.ย. ก.ย. ธ.ค. *) · S = ทุก 6 เดือน (มิ.ย. ธ.ค. *) · A = ทุก 1 ปี (ธ.ค. *) · เดือนที่ตรวจตามรอบเป็นข้อเสนอ ให้วางตามแผนหยุดเครื่อง", len(cols))
+          "D = ทุกวัน · W = รายสัปดาห์ · " + plan_text(T.get("months")) + " · เดือนตามรอบเป็นข้อเสนอ เกลี่ยกับอีกระบบแล้ว (AM_Calendar_Combined.xlsx) ให้วางตามแผนหยุดเครื่อง", len(cols))
     header(ws, 4, cols, [5, 40, 6, 13, 11] + [6] * 12 + [13])
     r, no = 5, 0
     for row in STD:
@@ -292,7 +303,7 @@ def build(out, T, PARTS, STD, KAIZEN, CONFIRM):
         code = freq_code(freq)
         for m in range(12):
             c = put(ws, r, 6 + m, None, align=CENTER)
-            if m in months_for(code):
+            if m in months_for(code, T.get("months")):
                 c.value = code
                 c.fill, c.font = fill(FREQ_FILL[code]), font(True, 9)
         put(ws, r, 18, resp, align=CENTER)
