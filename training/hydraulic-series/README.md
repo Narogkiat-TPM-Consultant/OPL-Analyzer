@@ -12,7 +12,7 @@ The source PDF is not stored here; attach it again in a session to revise an epi
 | `ep09/` … `ep12/` | Part B (hydraulic trouble, OPL 5-B-1 … 5-B-4): troubleshooting-type OPLs (symptom → cause → countermeasure; no Why-Why invented) |
 | `ep13/` … `ep21/` | Part C (hydraulic inspection, OPL 5-C-1 … 5-C-13): check item + OK/NG with the deck's criteria, for AM check sheets |
 | `ep22/` … `ep31/` | Part D (pneumatics, OPL 5'-A-1 … 5'-C-5): air basics, FRL set, drain, lubrication, periodic checks, tube binding |
-| `am/` | AM check sheets (Excel): hydraulic unit from Part C (EP13–21), pneumatic system from Part D (EP28–31 + FRL EP23–25); Know My Machine for the pneumatic system (EP22–31) |
+| `am/` | AM check sheets (Excel): hydraulic unit from Part C (EP13–21), pneumatic system from Part D (EP28–31 + FRL EP23–25); Know My Machine for the hydraulic unit (EP01–21) and the pneumatic system (EP22–31), built by `kmm_common.py` |
 
 ## Status
 - Part A EP01–EP08 rendered: 75.0 s each, Azure th-TH-PremwadeeNeural at +8%, lint 0 errors, check passed,
