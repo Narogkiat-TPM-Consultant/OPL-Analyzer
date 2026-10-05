@@ -153,12 +153,12 @@
     const g = art[7];
     R(g, 20, 34, 300, 84, "#e9eef3", 4);
     const pis = H.el("g", { id: "s6-v-pis" }, g);
-    R(pis, 112, 38, 30, 76, PN.dark, 3, 3);
-    for (const y of [38, 106]) H.el("rect", { x: 116, y, width: 22, height: 8, rx: 3, fill: "#2b2f35" }, pis);
-    R(pis, 142, 66, 228, 20, PN.steel, 3, 3);
+    R(pis, 74, 38, 30, 76, PN.dark, 3, 3);
+    for (const y of [38, 106]) H.el("rect", { x: 78, y, width: 22, height: 8, rx: 3, fill: "#2b2f35" }, pis);
+    R(pis, 104, 66, 242, 20, PN.steel, 3, 3);
     R(g, 8, 26, 16, 100, PN.metal, 3); R(g, 318, 26, 18, 100, PN.metal, 3);
-    const scr = P(g, "M 60 46 L 150 44 L 250 47", { stroke: PN.red, sw: 4, id: "s6-v-scr", op: 0 });
-    tl.fromTo(pis, { x: 0 }, { x: 110, duration: 0.6, yoyo: true, repeat: 3, ease: "power1.inOut" }, T0[7]);
+    const scr = P(g, "M 120 46 L 200 44 L 300 47", { stroke: PN.red, sw: 4, id: "s6-v-scr", op: 0 });
+    tl.fromTo(pis, { x: 0 }, { x: 36, duration: 0.5, yoyo: true, repeat: 3, ease: "power1.inOut" }, T0[7]);
     drawOn(scr, T0[7] + 0.3, 0.8);
   }
 }
