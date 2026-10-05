@@ -42,8 +42,7 @@
       H.text(tile, x + 44, ly, s, { size: 24, weight: 700 });
     });
     const a = H.el("g", { transform: `translate(${x + 15} ${y + 80})` }, tile);
-    tl.fromTo(tile, { opacity: 0.16, y: 0 }, { opacity: 0.16, y: 0, duration: 0.01 }, b);
-    tl.fromTo(tile, { opacity: 0.16, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out", immediateRender: false }, t);
+    tl.fromTo(tile, { opacity: 0.16, y: 16 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" }, t);
     return a;
   });
   const T0 = TILES.map((d) => d[3] + 0.45);
