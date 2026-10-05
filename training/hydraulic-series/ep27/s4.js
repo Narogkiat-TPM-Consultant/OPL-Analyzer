@@ -56,7 +56,7 @@
   const p2 = H.p27Puff(g, ex + 2, ey, -15, { w: 5 });
   H.p27Puffs(p1, t2, 6, 0.55);
   H.p27Puffs(p2, t2 + 0.25, 6, 0.55);
-  tag(612, 552, 2, "ลมรั่ว", t2 + 0.2);
+  tag(640, 556, 2, "ลมรั่ว", t2 + 0.2);
   tag(572, 52, 2, "ลมรั่ว", t2 + 0.45);
 
   // ---- ③ rust: spots on the tube wall, a flake jams the spool
@@ -64,15 +64,15 @@
   tl.fromTo(C.rust, { opacity: 0 }, { opacity: 1, duration: 0.6, immediateRender: false }, t3);
   const [rsX, rsY] = C.at(470, 76);
   const rl = H.el("g", { opacity: 0 }, g);
-  H.p27Label(rl, 520, 586, "สนิม (ผิวเลื่อนลูกสูบ)", { size: 26, fill: P27.rust, line: [516, 578, rsX, rsY], lineColor: P27.rust });
+  H.p27Label(rl, 520, 606, "สนิม (ผิวเลื่อนลูกสูบ)", { size: 26, fill: P27.rust, line: [516, 598, rsX, rsY], lineColor: P27.rust });
   tl.fromTo(rl, { opacity: 0 }, { opacity: 1, duration: 0.3, immediateRender: false }, t3 + 0.3);
   const [stX, stY] = V.at(334, 52);                   // left edge of land 2 (spool shifted +40), at the bore wall
   const flakes = [[0, stX - 4, stY + 2, true], [0.35, ax + 26, ay - 50, false], [0.7, ax + 8, ay - 40, false]];
   flakes.forEach(([dt, fx, fy, stick]) => {
     const fl = H.el("path", { d: `M ${H.f(ax - 7)} 24 L ${H.f(ax + 3)} 18 L ${H.f(ax + 9)} 27 L ${H.f(ax + 1)} 34 Z`, fill: P27.rust, stroke: P27.ink, "stroke-width": 1.5, opacity: 0 }, g);
     const t = t3 + 0.2 + dt;
-    tl.fromTo(fl, { opacity: 1, x: 0, y: 0 }, { y: fy - 26 - 8, duration: 0.7, ease: "none", immediateRender: false }, t);
-    tl.to(fl, { x: fx - ax, duration: 0.45, ease: "power1.out" }, t + 0.7);
+    tl.fromTo(fl, { opacity: 1, x: 0, y: 0 }, { y: fy - 26, duration: 0.7, ease: "none", immediateRender: false }, t);
+    tl.to(fl, { x: fx - ax - 1, duration: 0.45, ease: "power1.out" }, t + 0.7);
     if (!stick) tl.to(fl, { opacity: 0, duration: 0.3 }, t + 1.1);
   });
   const ring = H.el("circle", { cx: H.f(stX - 4), cy: H.f(stY + 2), r: 24, fill: "none", stroke: P27.red, "stroke-width": 5, opacity: 0 }, g);
@@ -82,5 +82,5 @@
   // solenoid off → the spring should push the spool back, but the flake holds it: it only trembles
   tl.to(glow, { opacity: 0, duration: 0.2 }, tStick + 0.4);
   tl.fromTo(V.spool, { x: 40 }, { x: 36, duration: 0.07, yoyo: true, repeat: 9, ease: "none", immediateRender: false }, tStick + 0.5);
-  tag(150, 262, 3, "สนิมติด → วาล์วค้าง", tStick + 0.2, { fill: P27.red });
+  tag(530, 270, 3, "สนิมติด → วาล์วค้าง", tStick + 0.2, { fill: P27.red });
 }

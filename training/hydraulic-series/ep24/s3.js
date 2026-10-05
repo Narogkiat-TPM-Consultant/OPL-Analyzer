@@ -14,7 +14,7 @@
   const lH = part("s3-v-lh", 500, 38, "Handle", "มือหมุน", null, null, { anchor: "start" });
   const lN = part("s3-v-ln", 300, 98, "Lock nut", "น็อตล็อก", X - 31, 95, { fx: 306, fy: 90 });
   const lS = part("s3-v-ls", 268, 222, "Adjust spring", "สปริงปรับตั้ง", X - 46, 232, { fx: 274, fy: 214 });
-  const lD = part("s3-v-ld", 222, 298, "Diaphragm", "แผ่นยางไดอะแฟรม", 262, 326, { fx: 228, fy: 290 });
+  const lD = part("s3-v-ld", 222, 286, "Diaphragm", "แผ่นยาง", 262, 326, { fx: 228, fy: 280 });
   const lT = part("s3-v-lt", 128, 380, "Stem", "ก้านวาล์ว", X - 2, 398, { fx: 134, fy: 372 });
   const lV = part("s3-v-lv", 128, 584, "Valve", "วาล์ว", X - 38, 521, { fx: 134, fy: 576 });
   H.text(O, 960, 128, "ค่าตั้ง (Set)", { size: 25, anchor: "middle", fill: AR.green });

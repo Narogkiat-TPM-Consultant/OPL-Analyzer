@@ -6,10 +6,10 @@
     const g = H.$(id);
     const Dm = LU.miniDome(g, `${id}-dome`);
     LU.miniDrops(Dm, `${id}-dome`, times);
-    const W = H.stopwatch(g, 252, 94, 56, { id: `${id}-w`, color: LU.pipe });
+    const W = H.stopwatch(g, 252, 82, 48, { id: `${id}-w`, color: LU.pipe });
     tl.fromTo(W.ring, { strokeDashoffset: W.offset(0) }, { strokeDashoffset: W.offset(1), duration: M, ease: "none" }, t0);
     tl.fromTo(W.hand, { rotation: 0, svgOrigin: W.origin }, { rotation: W.rot(1), svgOrigin: W.origin, duration: M, ease: "none" }, t0);
-    H.text(g, 252, 168, "1 นาที", { size: 22, anchor: "middle", fill: LU.muted, weight: 600 });
+    H.text(g, 252, 154, "1 นาที", { size: 22, anchor: "middle", fill: LU.muted, weight: 600 });
     LU.counter(g, `${id}-n`, 386, 104, times.map((t) => t + 0.37));
     H.text(g, 386, 146, "หยด", { size: 26, anchor: "middle", fill: LU.muted, weight: 600 });
   };

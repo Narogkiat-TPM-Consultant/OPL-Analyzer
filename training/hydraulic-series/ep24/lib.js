@@ -217,8 +217,8 @@ AR.section = (parent, p, o = {}) => {
   const G = AR.gauge(g, 960, 236, 84, { id: `${p}-g`, value: 0 });
 
   // port words
-  H.text(g, 22, 412, "IN", { size: 34, fill: AR.blue });
-  H.text(g, 1082, 412, "OUT", { size: 34, anchor: "end", fill: AR.blue });
+  H.text(g, 22, 520, "IN", { size: 34, fill: AR.blue });
+  H.text(g, 1082, 520, "OUT", { size: 34, anchor: "end", fill: AR.blue });
 
   // state helpers -------------------------------------------------
   const st = { sd: 0, dv: 0 };
