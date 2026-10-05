@@ -3,8 +3,8 @@
 {
   const g = H.$("s3-v-icon"), f = H.f;
   const G = H.gauge(g, 150, 112, 92, { id: "s3-v-g", min: 0, max: 10, value: 6, ticks: 5, minor: 1, labels: false });
-  const a0 = (135 * Math.PI) / 180;
-  const zx = 150 + Math.cos(a0) * 92 * 0.52, zy = 112 + Math.sin(a0) * 92 * 0.52;
+  const a0 = (104 * Math.PI) / 180;   // just clockwise of the 0 mark, clear of the needle
+  const zx = 150 + Math.cos(a0) * 92 * 0.6, zy = 112 + Math.sin(a0) * 92 * 0.6;
   H.text(g, zx, zy + 11, "0", { size: 32, anchor: "middle" });
   // stem + bowl (head piece, transparent bowl with a little water, drain at the bottom)
   H.el("rect", { x: 141, y: 203, width: 18, height: 26, fill: P28.metal, stroke: "#121417", "stroke-width": 4 }, g);

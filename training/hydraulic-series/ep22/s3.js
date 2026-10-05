@@ -75,7 +75,7 @@
     H.pnCylMove(C, 0, 0.66, s0, 0.45, "power2.in");
     H.pnCylMove(C, 0.66, 0.38, s0 + 0.45, 0.35, "sine.inOut");
     H.pnCylMove(C, 0.38, 0.58, s0 + 0.8, 0.3, "sine.inOut");
-    H.pnCylMove(C, 0.58, 0.44, s0 + 1.1, 0.3, "sine.out");
+    H.pnCylMove(C, 0.58, 0.40, s0 + 1.1, 0.3, "sine.out");
   }
 
   // ③ low pressure → leaks are easier to repair
@@ -129,7 +129,7 @@
     H.text(g, x + 420, y + 288, "ลม", { size: 22, fill: PN.blue, anchor: "middle" });
     const pud = H.el("ellipse", { cx: x + 170, cy: y + 254, rx: 60, ry: 9, fill: PN.oil, stroke: PN.ink, "stroke-width": 2 }, g);
     const drop = H.el("path", { d: H.pnDropD(x + 170, y + 222, 7), fill: PN.oil, stroke: PN.ink, "stroke-width": 2, opacity: 0 }, g);
-    tl.fromTo(drop, { opacity: 1, y: 0 }, { opacity: 1, y: 24, duration: 0.35, ease: "power1.in", repeat: 3, repeatDelay: 0.15 }, a + 0.2);
+    tl.fromTo(drop, { opacity: 1, y: 0 }, { opacity: 1, y: 24, duration: 0.35, ease: "power1.in", repeat: 3, repeatDelay: 0.15, immediateRender: false }, a + 0.2);
     tl.fromTo(pud, { scaleX: 0.1, scaleY: 0.1, svgOrigin: `${x + 170} ${y + 254}` }, { scaleX: 1, scaleY: 1, svgOrigin: `${x + 170} ${y + 254}`, duration: 1.6, ease: "power1.out" }, a + 0.5);
     tl.fromTo(drop, { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, a + 2.1);
     pop(check(g, x + 512, y + 112, 28), a + 1.2);

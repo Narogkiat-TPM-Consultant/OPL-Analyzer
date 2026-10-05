@@ -103,14 +103,14 @@
   const arrow = H.el("path", { d: H.arrowD(472, 486, 566, 486, 22), fill: "none", stroke: P28.blue, "stroke-width": 8, opacity: 0 }, s);
   // the standard sheet
   const std = H.el("g", { opacity: 0 }, s);
-  H.el("rect", { x: 590, y: 384, width: 330, height: 220, rx: 12, fill: P28.paper, stroke: P28.ink, "stroke-width": 4 }, std);
-  H.el("path", { d: "M 590 438 L 590 396 Q 590 384 602 384 L 908 384 Q 920 384 920 396 L 920 438 Z", fill: P28.blue, stroke: P28.ink, "stroke-width": 4 }, std);
-  H.text(std, 755, 422, "มาตรฐานการตรวจ", { size: 28, anchor: "middle", fill: "#ffffff" });
+  H.el("rect", { x: 580, y: 384, width: 360, height: 220, rx: 12, fill: P28.paper, stroke: P28.ink, "stroke-width": 4 }, std);
+  H.el("path", { d: "M 580 438 L 580 396 Q 580 384 592 384 L 928 384 Q 940 384 940 396 L 940 438 Z", fill: P28.blue, stroke: P28.ink, "stroke-width": 4 }, std);
+  H.text(std, 760, 422, "มาตรฐานการตรวจ", { size: 28, anchor: "middle", fill: "#ffffff" });
   [["วิธีตรวจ", 488], ["เกณฑ์เปลี่ยนชิ้นส่วน", 560]].forEach(([t, y], k) => {
-    H.p28Badge(std, 626, y - 10, k + 1, { r: 19 });
-    H.text(std, 656, y, t, { size: 30 });
+    H.p28Badge(std, 614, y - 10, k + 1, { r: 19 });
+    H.text(std, 642, y, t, { size: 30 });
   });
-  const okStd = H.p28Tick(s, 975, 494, 36);
+  const okStd = H.p28Tick(s, 995, 494, 36);
   okStd.setAttribute("opacity", 0);
 
   // ---------------- timing
@@ -143,5 +143,5 @@
   eq.forEach((e) => tl.fromTo(e, { opacity: 0 }, { opacity: 1, duration: 0.25 }, tu + 0.2));
   tl.to(lblDiff, { opacity: 0, duration: 0.2 }, tu);
   tl.fromTo(lblSame, { opacity: 0 }, { opacity: 1, duration: 0.3 }, tu + 0.2);
-  H.p28Pop(okStd, tu + 0.4, 975, 494, 1.6, 0.3);
+  H.p28Pop(okStd, tu + 0.4, 995, 494, 1.6, 0.3);
 }

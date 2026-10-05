@@ -30,7 +30,7 @@
     if (k === 0) H.el("path", { d: H.p28DropD(x - 26, 158, 10), fill: P28.water, stroke: P28.ink, "stroke-width": 2 }, g);
     if (k === 1) for (const dy of [0, 12]) H.el("path", { d: `M ${x - 40} ${168 + dy} Q ${x - 28} ${160 + dy} ${x - 16} ${168 + dy} T ${x + 8 - 16} ${168 + dy}`, fill: "none", stroke: P28.flow, "stroke-width": 4 }, g);
     if (k === 2) for (const dx of [0, 10]) H.el("path", { d: `M ${x - 38 + dx} 190 Q ${x - 46 + dx} 180 ${x - 38 + dx} 172 Q ${x - 30 + dx} 164 ${x - 38 + dx} 156`, fill: "none", stroke: P28.muted, "stroke-width": 3.5 }, g);
-    H.text(g, x - (k === 1 ? 6 : 8), 186, s, { size: 26 });
+    H.text(g, x + (k === 1 ? 4 : -8), 186, s, { size: 26 });
     return g;
   });
   H.el("line", { x1: 168, y1: 208, x2: 472, y2: 208, stroke: P28.grid, "stroke-width": 3 }, cb);
@@ -57,47 +57,47 @@
   // ---------------- refill calendar (right, top)
   const cal = H.el("g", { opacity: 0 }, Rt);
   const x0 = 680, cw = 56, days = ["จ.", "อ.", "พ.", "พฤ.", "ศ.", "ส.", "อา."];
-  H.el("rect", { x: 548, y: 22, width: 526, height: 174, rx: 12, fill: P28.paper, stroke: P28.ink, "stroke-width": 3.5 }, cal);
-  H.el("path", { d: "M 548 62 L 548 34 Q 548 22 560 22 L 1062 22 Q 1074 22 1074 34 L 1074 62 Z", fill: P28.blue, stroke: P28.ink, "stroke-width": 3.5 }, cal);
-  days.forEach((d, i) => H.text(cal, x0 + cw * i + cw / 2, 51, d, { size: 22, anchor: "middle", fill: "#ffffff" }));
-  H.text(cal, 614, 51, "เติมน้ำมัน", { size: 22, anchor: "middle", fill: "#ffffff" });
-  H.el("line", { x1: 548, y1: 129, x2: 1074, y2: 129, stroke: P28.grid, "stroke-width": 3 }, cal);
-  for (let i = 0; i <= 7; i++) H.el("line", { x1: x0 + i * cw, y1: 64, x2: x0 + i * cw, y2: 194, stroke: P28.grid, "stroke-width": 2.5 }, cal);
-  H.text(cal, 614, 106, "ปกติ", { size: 26, anchor: "middle" });
-  const heavyLbl = H.text(cal, 614, 172, "เดินหนัก", { size: 26, anchor: "middle" });
+  H.el("rect", { x: 548, y: 22, width: 526, height: 162, rx: 12, fill: P28.paper, stroke: P28.ink, "stroke-width": 3.5 }, cal);
+  H.el("path", { d: "M 548 58 L 548 34 Q 548 22 560 22 L 1062 22 Q 1074 22 1074 34 L 1074 58 Z", fill: P28.blue, stroke: P28.ink, "stroke-width": 3.5 }, cal);
+  days.forEach((d, i) => H.text(cal, x0 + cw * i + cw / 2, 48, d, { size: 22, anchor: "middle", fill: "#ffffff" }));
+  H.text(cal, 614, 48, "เติมน้ำมัน", { size: 22, anchor: "middle", fill: "#ffffff" });
+  H.el("line", { x1: 548, y1: 121, x2: 1074, y2: 121, stroke: P28.grid, "stroke-width": 3 }, cal);
+  for (let i = 0; i <= 7; i++) H.el("line", { x1: x0 + i * cw, y1: 60, x2: x0 + i * cw, y2: 182, stroke: P28.grid, "stroke-width": 2.5 }, cal);
+  H.text(cal, 614, 101, "ปกติ", { size: 26, anchor: "middle" });
+  const heavyLbl = H.text(cal, 614, 163, "เดินหนัก", { size: 26, anchor: "middle" });
   const dropAt = (i, y) => { const d = H.el("path", { d: H.p28DropD(x0 + cw * i + cw / 2, y - 16, 11), fill: P28.oil, stroke: P28.oilDk, "stroke-width": 2.5, opacity: 0 }, cal); return d; };
-  const wDrop = dropAt(0, 96), hDrops = [0, 3, 6].map((i) => dropAt(i, 162));
+  const wDrop = dropAt(0, 90), hDrops = [0, 3, 6].map((i) => dropAt(i, 152));
 
   // ---------------- lubricator (big) + pipes + leaking fitting
-  const Y = 312;
-  H.p28Pipe(Rt, `M 690 ${Y} L 762 ${Y}`, { w: 26 });
-  H.p28Pipe(Rt, `M 878 ${Y} L 1086 ${Y}`, { w: 26 });
-  const fIn = H.p28Flow(Rt, "s6-v-fi", `M 690 ${Y} L 756 ${Y}`, { w: 7, dash: "14 16", period: 30 });
-  const fOut = H.p28Flow(Rt, "s6-v-fo", `M 884 ${Y} L 1086 ${Y}`, { w: 7, dash: "14 16", period: 30 });
+  const Y = 330, S = 1.5, TX = 487;
+  H.p28Pipe(Rt, `M 690 ${Y} L 764 ${Y}`, { w: 24 });
+  H.p28Pipe(Rt, `M 876 ${Y} L 1086 ${Y}`, { w: 24 });
+  const fIn = H.p28Flow(Rt, "s6-v-fi", `M 690 ${Y} L 760 ${Y}`, { w: 7, dash: "14 16", period: 30 });
+  const fOut = H.p28Flow(Rt, "s6-v-fo", `M 880 ${Y} L 1086 ${Y}`, { w: 7, dash: "14 16", period: 30 });
   // union fitting on the outlet
   H.el("rect", { x: 958, y: Y - 22, width: 34, height: 44, rx: 4, fill: P28.metal, stroke: P28.ink, "stroke-width": 3.5 }, Rt);
   for (const x of [969, 981]) H.el("line", { x1: x, y1: Y - 22, x2: x, y2: Y + 22, stroke: P28.ink, "stroke-width": 2, opacity: 0.5 }, Rt);
-  const lg = H.el("g", { transform: `translate(465 ${Y}) scale(1.6)` }, Rt);
+  const lg = H.el("g", { transform: `translate(${TX} ${Y}) scale(${S})` }, Rt);
   const Lu = H.p28LUnit(lg, "s6-v-lu", { oil: 50 });
-  H.p28Label(Rt, 742, 470, "Lubricator", { size: 28, anchor: "end" });
+  H.p28Label(Rt, 752, 470, "Lubricator", { size: 28, anchor: "end" });
   // oil can (pours into the fill cap)
-  const [capX, capY] = [465 + Lu.cap[0] * 1.6 + 13, Y + Lu.cap[1] * 1.6];
+  const [capX, capY] = [TX + (Lu.cap[0] + 8) * S, Y + Lu.cap[1] * S];
   const can = H.el("g", { opacity: 0 }, fx);
-  H.el("path", { d: `M ${f(capX - 120)} ${f(capY - 50)} L ${f(capX - 64)} ${f(capY - 50)} L ${f(capX - 58)} ${f(capY + 6)} L ${f(capX - 126)} ${f(capY + 6)} Z`, fill: "#c0392b", stroke: P28.ink, "stroke-width": 3.5, "stroke-linejoin": "round" }, can);
-  H.el("path", { d: `M ${f(capX - 62)} ${f(capY - 40)} L ${f(capX - 6)} ${f(capY - 64)} L ${f(capX - 2)} ${f(capY - 56)} L ${f(capX - 60)} ${f(capY - 26)} Z`, fill: P28.dark, stroke: P28.ink, "stroke-width": 3 }, can);
-  H.el("path", { d: `M ${f(capX - 112)} ${f(capY - 50)} Q ${f(capX - 92)} ${f(capY - 84)} ${f(capX - 72)} ${f(capY - 50)}`, fill: "none", stroke: P28.ink, "stroke-width": 5 }, can);
-  const pour = H.el("path", { d: `M ${f(capX - 4)} ${f(capY - 58)} Q ${f(capX + 2)} ${f(capY - 30)} ${f(capX)} ${f(capY + 4)}`, fill: "none", stroke: P28.oil, "stroke-width": 6, "stroke-linecap": "butt", opacity: 0 }, fx);
+  H.el("path", { d: `M ${f(capX - 92)} ${f(capY - 38)} L ${f(capX - 2)} ${f(capY - 36)} L ${f(capX - 2)} ${f(capY - 28)} L ${f(capX - 90)} ${f(capY - 20)} Z`, fill: P28.dark, stroke: P28.ink, "stroke-width": 3, "stroke-linejoin": "round" }, can);
+  H.el("path", { d: `M ${f(capX - 150)} ${f(capY - 40)} L ${f(capX - 88)} ${f(capY - 40)} L ${f(capX - 84)} ${f(capY + 10)} L ${f(capX - 156)} ${f(capY + 10)} Z`, fill: "#c0392b", stroke: P28.ink, "stroke-width": 3.5, "stroke-linejoin": "round" }, can);
+  H.el("path", { d: `M ${f(capX - 142)} ${f(capY - 40)} Q ${f(capX - 120)} ${f(capY - 70)} ${f(capX - 98)} ${f(capY - 40)}`, fill: "none", stroke: P28.ink, "stroke-width": 5 }, can);
+  const pour = H.el("path", { d: `M ${f(capX - 3)} ${f(capY - 32)} Q ${f(capX + 1)} ${f(capY - 16)} ${f(capX)} ${f(capY + 2)}`, fill: "none", stroke: P28.oil, "stroke-width": 6, "stroke-linecap": "butt", opacity: 0 }, fx);
   // fast drop arrow + leak
   const fast = H.el("g", { opacity: 0 }, fx);
-  H.el("path", { d: H.arrowD(712, 372, 712, 430, 16), fill: "none", stroke: P28.red, "stroke-width": 7 }, fast);
-  H.p28Label(fast, 742, 520, "ลดเร็ว", { size: 28, anchor: "end", fill: P28.red });
+  H.el("path", { d: H.arrowD(722, 382, 722, 440, 16), fill: "none", stroke: P28.red, "stroke-width": 7 }, fast);
+  H.p28Label(fast, 752, 520, "ลดเร็ว", { size: 28, anchor: "end", fill: P28.red });
   const leaks = [0, 1, 2, 3].map(() => H.el("path", { d: H.p28DropD(975, Y + 22, 7), fill: P28.oil, stroke: P28.oilDk, "stroke-width": 2, opacity: 0 }, fx));
   const wet = H.el("path", { d: `M 958 ${Y + 18} Q 975 ${Y + 34} 992 ${Y + 18} Z`, fill: P28.oil, stroke: P28.oilDk, "stroke-width": 2, opacity: 0 }, fx);
-  const ring = H.el("circle", { cx: 975, cy: Y + 4, r: 44, fill: "none", stroke: P28.red, "stroke-width": 6, opacity: 0 }, fx);
+  const ring = H.el("circle", { cx: 975, cy: Y + 4, r: 40, fill: "none", stroke: P28.red, "stroke-width": 6, opacity: 0 }, fx);
   const mag = H.el("g", { opacity: 0 }, fx);
-  H.el("line", { x1: 1010, y1: 446, x2: 1048, y2: 490, stroke: P28.ink, "stroke-width": 11, "stroke-linecap": "round" }, mag);
-  H.el("circle", { cx: 990, cy: 422, r: 30, fill: "rgba(223,241,251,0.6)", stroke: P28.ink, "stroke-width": 6 }, mag);
-  const findLbl = H.p28Label(fx, 1000, 545, "หาจุดรั่ว", { size: 30, anchor: "middle" });
+  H.el("line", { x1: 1062, y1: 422, x2: 1078, y2: 450, stroke: P28.ink, "stroke-width": 11, "stroke-linecap": "round" }, mag);
+  H.el("circle", { cx: 1046, cy: 398, r: 27, fill: "rgba(223,241,251,0.6)", stroke: P28.ink, "stroke-width": 6 }, mag);
+  const findLbl = H.p28Label(fx, 1006, 278, "หาจุดรั่ว", { size: 30, anchor: "middle" });
   findLbl.setAttribute("opacity", 0);
 
   // ---------------- timing
@@ -127,9 +127,9 @@
   tl.to(pour, { opacity: 0, duration: 0.15 }, tR + 1.95);
   tl.to(can, { opacity: 0, x: -30, duration: 0.3 }, tR + 2.05);
   tl.fromTo(chk[3], { opacity: 0, scale: 1.6, svgOrigin: `186 ${rows[3].y}` }, { opacity: 1, scale: 1, svgOrigin: `186 ${rows[3].y}`, duration: 0.25, ease: "back.out(2)" }, tR + 2.0);
-  H.p28Pop(wDrop, tR + 1.3, x0 + cw / 2, 96, 1.8);
+  H.p28Pop(wDrop, tR + 1.3, x0 + cw / 2, 90, 1.8);
   tl.fromTo(heavyLbl, { attr: { fill: P28.ink } }, { attr: { fill: P28.blue }, duration: 0.3 }, tR + 2.05);
-  hDrops.forEach((d, k) => H.p28Pop(d, tR + 2.75 + k * 0.22, x0 + cw * [0, 3, 6][k] + cw / 2, 162, 1.8));
+  hDrops.forEach((d, k) => H.p28Pop(d, tR + 2.75 + k * 0.22, x0 + cw * [0, 3, 6][k] + cw / 2, 152, 1.8));
   // cue 3: line runs again — level drops fast, oil drips from the fitting → find the leak
   const tL = b + c[2];
   tl.to(red, { opacity: 0, duration: 0.15 }, tL);
@@ -142,6 +142,6 @@
   tl.fromTo(wet, { opacity: 0 }, { opacity: 1, duration: 0.3 }, tL + 0.4);
   leaks.forEach((d, k) => tl.fromTo(d, { y: 0, opacity: 1 }, { y: 150, opacity: 0, duration: 0.8, ease: "power1.in", repeat: 2, repeatDelay: 0.6 }, tL + 0.5 + k * 0.35));
   H.p28Pop(ring, tL + 1.3, 975, Y + 4, 1.4);
-  tl.fromTo(mag, { opacity: 0, x: 70, y: 60 }, { opacity: 1, x: 0, y: 0, duration: 0.5, ease: "power2.out" }, tL + 1.6);
+  tl.fromTo(mag, { opacity: 0, x: -40, y: 50 }, { opacity: 1, x: 0, y: 0, duration: 0.5, ease: "power2.out" }, tL + 1.6);
   tl.fromTo(findLbl, { opacity: 0 }, { opacity: 1, duration: 0.3 }, tL + 2.0);
 }

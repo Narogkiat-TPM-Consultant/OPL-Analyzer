@@ -35,8 +35,8 @@
     tl.fromTo(tx, { opacity: 0 }, { opacity: 1, duration: 0.25 }, t + 0.1);
     tl.fromTo(h, { scale: 1, svgOrigin: `${X} ${Y}` }, { scale: 1.15, svgOrigin: `${X} ${Y}`, duration: 0.3, yoyo: true, repeat: 3, ease: "sine.inOut", immediateRender: false }, t + 0.4);
   });
-  mark(PIPE, "p", tP1 + 0.2, 0.42);
-  mark(UNIT, "u", tP2 + 0.1, 0.32);
+  mark(PIPE, "p", tP1 - 0.1, 0.2);
+  mark(UNIT, "u", tP2 + 0.05, 0.22);
 
   // inspection-interval timeline: 3-month spacing → marks spread out gradually
   const tg = H.el("g", { id: "s4-v-iv", opacity: 0 }, fx);

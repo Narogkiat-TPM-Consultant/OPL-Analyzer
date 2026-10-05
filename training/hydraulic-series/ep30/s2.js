@@ -40,7 +40,7 @@ const f = H.f;
   H.el("path", { d: "M -34 64 C -40 92 -38 150 -30 176 C -10 184 16 182 34 174 C 40 140 42 98 34 66 C 12 58 -12 58 -34 64 Z", fill: "#ffffff", stroke: AT.muted, "stroke-width": 3 }, rag);
   H.el("path", { d: "M -14 70 C -18 110 -16 140 -10 172 M 12 68 C 16 108 18 142 14 172", fill: "none", stroke: AT.line, "stroke-width": 3 }, rag);
   H.atOp(rag, 0, 1, tw - 0.25, 0.25);
-  tl.fromTo(rag, { x: xA }, { x: xB, duration: dur, ease: "none", immediateRender: false }, tw);
+  tl.fromTo(rag, { x: xA }, { x: xB, duration: dur, ease: "none" }, tw);
   H.atOp(rag, 1, 0, tw + dur, 0.3);
   specks.forEach((s, i) => H.atOp(s, 1, 0, tw + ((dust[i][0] - xA) / (xB - xA)) * dur - 0.05, 0.2));
   H.atCheck(R, 724, 46, 1.1, tw + dur + 0.2);

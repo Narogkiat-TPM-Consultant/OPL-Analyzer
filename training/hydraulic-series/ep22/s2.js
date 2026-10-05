@@ -40,7 +40,7 @@
   const v2 = H.text(bo, 286, 286, "½ V", { size: 30, fill: PN.blue, anchor: "middle" });
   v2.setAttribute("opacity", "0");
 
-  const t0 = b + c[0] + 1.5, du = 2.0;
+  const L1 = c[1] - c[0] - 0.3, t0 = b + c[0] + 0.4 * L1, du = 2.0;
   tl.fromTo(push, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t0 - 0.4);
   tl.fromTo(mv1, { x: 0 }, { x: -304, duration: du, ease: "power2.inOut" }, t0);
   tl.fromTo(air1, { attr: { width: 608, fill: PN.air } }, { attr: { width: 304, fill: PN.air2 }, duration: du, ease: "power2.inOut" }, t0);

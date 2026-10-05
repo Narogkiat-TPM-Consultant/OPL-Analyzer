@@ -101,7 +101,7 @@
   tl.fromTo(wLbl, { opacity: 0 }, { opacity: 1, duration: 0.3 }, tc + 1.6);
   // cue 2: open the drain valve → water runs out
   const td = b + c[1] + 0.5;
-  tl.to(panel, { opacity: 0.45, duration: 0.4 }, b + c[1]);
+  tl.to(panel, { opacity: 0.6, duration: 0.4 }, b + c[1]);
   tl.fromTo(vLbl, { opacity: 0 }, { opacity: 1, duration: 0.3 }, td - 0.2);
   tl.fromTo(F.lever, { rotation: 0, svgOrigin: F.leverOrigin }, { rotation: 55, svgOrigin: F.leverOrigin, duration: 0.4, ease: "power2.out" }, td);
   tl.fromTo(stream, { opacity: 0, scaleY: 0, svgOrigin: `${f(nx)} ${f(ny)}` }, { opacity: 0.9, scaleY: 1, svgOrigin: `${f(nx)} ${f(ny)}`, duration: 0.3 }, td + 0.35);

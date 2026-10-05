@@ -39,9 +39,9 @@ H.frlShow(chR, t3 + 0.5);
 // seg 4: lubricator — oil drips in the sight dome, then leaves as mist with the air
 const t4 = b + c[3] + 0.2;
 H.frlDrip(U.L.drop, t4, 4, 0.75);
-for (let i = 0; i < 9; i++) {
-  const m = H.el("circle", { cx: 540, cy: ((i * 7) % 13) - 6, r: 6, fill: FC.oil, stroke: FC.oilEdge, "stroke-width": 1.5, opacity: 0 }, U.mid);
-  const t = t4 + 0.6 + i * 0.32;
+for (let i = 0; i < 12; i++) {
+  const m = H.el("circle", { cx: 540, cy: ((i * 7) % 11) - 5, r: 7.5, fill: FC.oil, stroke: "#8a6a10", "stroke-width": 2, opacity: 0 }, U.mid);
+  const t = t4 + 0.6 + i * 0.26;
   tl.fromTo(m, { x: 0, opacity: 0 }, { x: 118, opacity: 1, duration: 0.9, ease: "none", immediateRender: false }, t);
   tl.to(m, { opacity: 0, duration: 0.2 }, t + 0.75);
 }

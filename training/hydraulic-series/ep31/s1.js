@@ -5,7 +5,7 @@ const fx = H.$("s1-v-fx");
 const pg = (lx, ly) => [TX + SC * lx, TY + SC * ly];
 H.frlFlow(U, b + 0.4, D - 0.4);
 // frames around the three units (page coordinates)
-const boxes = [[-86, -62, 172, 376], [148, -186, 164, 244], [374, -124, 172, 438]].map(([x, y, w, h], i) => {
+const boxes = [[-82, -62, 164, 368], [148, -186, 164, 244], [378, -124, 164, 430]].map(([x, y, w, h], i) => {
   const [px, py] = pg(x, y);
   return H.el("rect", { id: `s1-v-box${i}`, x: H.f(px), y: H.f(py), width: H.f(w * SC), height: H.f(h * SC), rx: 14, fill: "rgba(31,95,191,0.07)", stroke: FC.blue, "stroke-width": 4, "stroke-dasharray": "12 9", opacity: 0 }, fx);
 });

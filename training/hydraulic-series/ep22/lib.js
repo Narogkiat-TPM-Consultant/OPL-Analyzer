@@ -5,7 +5,7 @@ const PN = {
   ink: "#1a1d21", muted: "#59606a", metal: "#c9c1ae", dark: "#9aa1aa", paper: "#fffdf8", line: "#d6cdb9",
   pipe: "#1f5fbf", dash: "#2a8fc9", air: "#dff1fb", air2: "#a9d6f0", water: "#3b7dd8", oil: "#f2c94c",
   dirt: "#7a5c3a", bowl: "#eef6fb", blue: "#1f5fbf", green: "#178a4e", red: "#d0233a", yellow: "#f2a900",
-  orange: "#ef7d1a", puff: "#9cc9e6", elem: "#e6dfcf", coil: "#59606a", barrel: "#e9eef3",
+  orange: "#ef7d1a", puff: "#6fb0dd", elem: "#e6dfcf", coil: "#9aa1aa", barrel: "#e9eef3",
 };
 
 const pnR = (pa, x, y, w, h, fill, o = {}) =>
@@ -170,7 +170,7 @@ H.pnValve = (parent, x, y, s = 1, id) => {
   H.el("rect", { x: 26, y: 32, width: 112, height: 6, fill: PN.muted }, spool);
   for (const lx of [24, 72, 120]) pnR(spool, lx, 25, 18, 20, PN.dark, { rx: 2, sw: 2 });
   const coil = pnR(g, 170, 6, 54, 58, PN.coil, { rx: 6 });
-  H.text(g, 197, 42, "SOL", { size: 17, fill: "#ffffff", anchor: "middle" });
+  H.text(g, 197, 42, "SOL", { size: 17, fill: PN.ink, anchor: "middle" });
   const led = H.el("circle", { cx: 214, cy: 15, r: 5, fill: PN.dark, stroke: PN.ink, "stroke-width": 1.5 }, g);
   const gs = H.pnWrap(parent, x, y, s, id ? id + "-sil" : undefined);
   for (const px of [25, 145]) {
