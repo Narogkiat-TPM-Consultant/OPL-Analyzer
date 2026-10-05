@@ -129,7 +129,9 @@ H.pnDial = (parent, cx, cy, r, o = {}) => {
   const needle = H.el("g", o.id ? { id: `${o.id}-n` } : {}, g);
   H.el("path", { d: `M ${f(cx)} ${f(cy + r * 0.12)} L ${f(cx)} ${f(cy - r * 0.8)}`, stroke: o.needle || PN.ink, "stroke-width": Math.max(3, r * 0.07), "stroke-linecap": "round" }, needle);
   H.el("circle", { cx, cy, r: H.f(Math.max(4, r * 0.1)), fill: PN.ink }, g);
-  return { g, needle, origin: `${cx} ${cy}`, rot: (fr) => 270 * fr - 135 };
+  const zs = Math.round(r * 0.3), za = (A(0) * Math.PI) / 180;
+  const zeroAt = [cx + r * 0.5 * Math.cos(za) + r * 0.06, cy + r * 0.5 * Math.sin(za) + r * 0.04 - 0.36 * zs];
+  return { g, needle, origin: `${cx} ${cy}`, rot: (fr) => 270 * fr - 135, zeroAt };
 };
 
 // ---------------------------------------------------------------------------------------------------------

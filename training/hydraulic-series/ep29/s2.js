@@ -85,7 +85,8 @@
   H.el("line", { x1: 384, y1: 392, x2: 548, y2: 254, stroke: PN.muted, "stroke-width": 3, "stroke-dasharray": "8 7" }, gi);
   H.el("circle", { cx: 600, cy: 200, r: 84, fill: "none", stroke: PN.pipe, "stroke-width": 5 }, gi);
   const BG = H.pnDial(gi, 600, 200, 76, { id: "s2-v-gb", zero: true, unit: true, ticks: 10 });
-  const ok0 = H.el("circle", { id: "s2-v-ok0", cx: 578, cy: 222, r: 19, fill: "none", stroke: PN.green, "stroke-width": 5, opacity: 0 }, gi);
+  const [zx, zy] = BG.zeroAt;
+  const ok0 = H.el("circle", { id: "s2-v-ok0", cx: H.f(zx), cy: H.f(zy), r: 19, fill: "none", stroke: PN.green, "stroke-width": 5, opacity: 0 }, gi);
   tl.fromTo(gi, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t2 + 0.15);
   const needles = [[C.gauge.needle, C.gauge.origin], [BG.needle, BG.origin]];
   const A = BG.rot;
@@ -99,7 +100,7 @@
   // ---- 3: stop valve closed (lever across the pipe), needle drops to 0 → green ring on "0"
   tl.fromTo(C.lever, { rotation: 0, svgOrigin: C.O.lever }, { rotation: 90, svgOrigin: C.O.lever, duration: 0.35, ease: "power2.out" }, tRel);
   tl.fromTo(C.lever, { rotation: 90, svgOrigin: C.O.lever }, { rotation: 0, svgOrigin: C.O.lever, duration: 0.3, ease: "power2.out", immediateRender: false }, t4 - 0.25);
-  tl.fromTo(ok0, { opacity: 0, scale: 1.6, svgOrigin: "578 222" }, { opacity: 1, scale: 1, svgOrigin: "578 222", duration: 0.3, ease: "back.out(2)" }, tRel + 1.4);
+  tl.fromTo(ok0, { opacity: 0, scale: 1.6, svgOrigin: `${zx} ${zy}` }, { opacity: 1, scale: 1, svgOrigin: `${zx} ${zy}`, duration: 0.3, ease: "back.out(2)" }, tRel + 1.4);
   tl.to(ok0, { opacity: 0, duration: 0.3 }, t4);
   const svRing = H.el("circle", { id: "s2-v-svr", cx: 50, cy: 290, r: 46, fill: "none", stroke: PN.pipe, "stroke-width": 5, "stroke-dasharray": "10 8", opacity: 0 }, fx);
   tl.fromTo(svRing, { opacity: 0 }, { opacity: 1, duration: 0.2 }, tRel);
