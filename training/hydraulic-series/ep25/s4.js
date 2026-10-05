@@ -17,7 +17,7 @@
     H.text(g, 700, 132, "OUT", { size: 26, anchor: "end" });
     const air = LU.dash(g, `${id}-air`, "M 20 175 H 700", { w: 4 });
     LU.flow(air.id, b + tStart, b + D, { speed: 90 });
-    H.text(g, 450, 118, selective ? "เฉพาะละอองละเอียด → OUT" : "ทั้งหมด → OUT", { size: 26, anchor: "middle", fill: LU.muted });
+    H.text(g, 450, 118, selective ? "ผสมเฉพาะละอองละเอียด" : "ผสมทั้งหมด", { size: 26, anchor: "middle", fill: LU.muted });
     // drops: grow at the nozzle, fall into the air stream, burst
     const times = LU.every(b + tStart + 0.4, b + D - 1.3, 1.0);
     times.forEach((t, k) => {

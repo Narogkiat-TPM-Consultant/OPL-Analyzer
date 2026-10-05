@@ -64,9 +64,9 @@
       "type": "judgment",
       "heading": "ดูแลรักษา 3 จุด: **Gauge · Handle · Lock nut**",
       "cards": [
-        { "label": "เกจชำรุด", "verdict": "NG", "cond": "กระจกแตก / เข็มผิดปกติ", "act": "→ เปลี่ยนใหม่ + ทำ**สีเขียว**ที่ค่าตั้ง", "svg": { "viewBox": "0 0 460 170", "body": "<g id='s5-v-c1'></g>" }, "cue": 1 },
-        { "label": "หมุน Handle", "verdict": "OK", "cond": "เข็มเกจขยับตาม", "act": "→ คลาย = แรงดันลด · ขัน = เพิ่ม", "svg": { "viewBox": "0 0 460 170", "body": "<g id='s5-v-c2'></g>" }, "cue": 2 },
-        { "label": "Lock nut", "verdict": "NG", "cond": "หลวม → เครื่องสั่น Handle หมุนเอง", "act": "→ ตั้งเสร็จ !!ขัน Lock nut!!", "svg": { "viewBox": "0 0 460 170", "body": "<g id='s5-v-c3'></g>" }, "cue": 3 }
+        { "label": "เกจชำรุด", "verdict": "NG", "cond": "กระจกแตก / เข็มผิดปกติ", "act": "→ เปลี่ยนใหม่ + ทำ**สีเขียว**ที่ค่าตั้ง", "svg": { "viewBox": "0 0 460 170", "body": "<g id='s5-v-c1'></g>" }, "at": 2.2 },
+        { "label": "หมุน Handle", "verdict": "OK", "cond": "เข็มเกจขยับตาม", "act": "→ คลาย = แรงดันลด · ขัน = เพิ่ม", "svg": { "viewBox": "0 0 460 170", "body": "<g id='s5-v-c2'></g>" }, "at": 7.4 },
+        { "label": "Lock nut", "verdict": "NG", "cond": "หลวม → เครื่องสั่น Handle หมุนเอง", "act": "→ ตั้งเสร็จ !!ขัน Lock nut!!", "svg": { "viewBox": "0 0 460 170", "body": "<g id='s5-v-c3'></g>" }, "at": 12.7 }
       ],
       "narration": [
         "ดูแลสามจุด หนึ่ง เกจ กระจกแตกหรือเข็มผิดปกติ เปลี่ยนใหม่ แล้วทำสีเขียวที่ค่าตั้ง",

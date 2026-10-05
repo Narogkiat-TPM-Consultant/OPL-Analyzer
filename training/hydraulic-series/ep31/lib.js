@@ -50,7 +50,7 @@ H.frlF = (g, cx, p, o = {}, L) => {
   H.el("path", { d: bd, fill: FC.bowl, stroke: "none" }, L.back);
   const cg = frClip(L.back, `${p}-fclip`, bd);
   const wy = o.water ?? FK.wEmpty;
-  S.water = H.el("rect", { id: `${p}-water`, x: cx - 60, y: wy, width: 120, height: 320, fill: FC.water, opacity: 0.8 }, cg);
+  S.water = H.el("rect", { id: `${p}-water`, x: cx - 60, y: wy, width: 120, height: FK.wEmpty + 2 - wy, fill: FC.water, opacity: 0.8 }, cg);
   S.wsurf = H.el("line", { id: `${p}-wsurf`, x1: cx - 60, y1: wy, x2: cx + 60, y2: wy, stroke: "#1d4f9a", "stroke-width": 3, opacity: wy < FK.wEmpty ? 1 : 0 }, cg);
   // filter element (mesh) + clogging overlay
   frRect(L.back, cx - 26, 72, 52, 102, "#f6f2e6", { sw: 3, rx: 3 });
@@ -80,7 +80,7 @@ H.frlF = (g, cx, p, o = {}, L) => {
 };
 // water surface → y (rect + surface line)
 H.frlWater = (S, y, t, dur = 1.2, ease = "power1.inOut") => {
-  tl.to(S.water, { attr: { y }, duration: dur, ease }, t);
+  tl.to(S.water, { attr: { y, height: FK.wEmpty + 2 - y }, duration: dur, ease }, t);
   tl.to(S.wsurf, { attr: { y1: y, y2: y }, opacity: y < FK.wEmpty - 1 ? 1 : 0, duration: dur, ease }, t);
 };
 
@@ -125,9 +125,9 @@ H.frlL = (g, cx, p, o = {}, L) => {
   const bd = H.frlBowlD(cx);
   H.el("path", { d: bd, fill: FC.bowl, stroke: "none" }, L.back);
   const cg = frClip(L.back, `${p}-lclip`, bd);
-  S.oil = H.el("rect", { id: `${p}-oil`, x: cx - 60, y: FK.oilY, width: 120, height: 200, fill: FC.oil }, cg);
+  S.oil = H.el("rect", { id: `${p}-oil`, x: cx - 60, y: FK.oilY, width: 120, height: FK.bowlBot + 2 - FK.oilY, fill: FC.oil }, cg);
   S.milky = H.el("g", { id: `${p}-milky`, opacity: o.milky ?? 0 }, cg);
-  H.el("rect", { x: cx - 60, y: FK.oilY, width: 120, height: 200, fill: FC.milky }, S.milky);
+  H.el("rect", { x: cx - 60, y: FK.oilY, width: 120, height: FK.bowlBot + 2 - FK.oilY, fill: FC.milky }, S.milky);
   for (const [y, a] of [[160, 8], [196, -7], [232, 6]])
     frPath(S.milky, `M ${cx - 44} ${y} Q ${cx - 22} ${y - a} ${cx} ${y} T ${cx + 44} ${y}`, { stroke: "#ffffff", "stroke-width": 5, "stroke-linecap": "round", opacity: 0.9 });
   S.wdrops = H.el("g", { id: `${p}-wd`, opacity: o.milky ?? 0 }, cg);

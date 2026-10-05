@@ -78,7 +78,9 @@ H.pnPuff = (parent, id, x, y, o = {}) => {
   return g;
 };
 H.pnPuffAt = (g, t, again = true, dur = 0.85) => {
-  tl.fromTo(g, { opacity: 1, y: -6, scale: 0.55, svgOrigin: g.pnO }, { opacity: 0, y: 18, scale: 1.25, svgOrigin: g.pnO, duration: dur, ease: "power1.out", immediateRender: !again }, t);
+  tl.fromTo(g, { opacity: 0 }, { opacity: 1, duration: 0.06, immediateRender: !again }, t);
+  tl.fromTo(g, { y: -6, scale: 0.55, svgOrigin: g.pnO }, { y: 18, scale: 1.25, svgOrigin: g.pnO, duration: dur, ease: "power1.out", immediateRender: !again }, t);
+  tl.to(g, { opacity: 0, duration: dur * 0.5, ease: "power1.in" }, t + dur * 0.5);
 };
 
 // leak mark: three arcs radiating from (x, y) towards angle `ang` (degrees, 0 = right)
@@ -108,7 +110,8 @@ H.pnKnurl = (parent, id, x, y, w, h, step = 9) => {
   return mover;
 };
 
-// gauge face: 270° sweep, ticks, "0" and the unit only. rot(f) = needle angle for fraction f of full scale.
+// gauge face: 270° sweep, ticks, "0" and the unit only. The needle is drawn at half scale (pointing up);
+// rot(f) = needle rotation for fraction f of full scale (rot(0.5) = 0).
 H.pnDial = (parent, cx, cy, r, o = {}) => {
   const g = H.el("g", o.id ? { id: o.id } : {}, parent);
   const f = H.f, A = (fr) => 135 + 270 * fr;
@@ -122,11 +125,11 @@ H.pnDial = (parent, cx, cy, r, o = {}) => {
     const a = (A(0) * Math.PI) / 180;
     H.text(g, cx + r * 0.5 * Math.cos(a) + r * 0.06, cy + r * 0.5 * Math.sin(a) + r * 0.04, "0", { size: Math.round(r * 0.3), anchor: "middle", id: o.id ? `${o.id}-0` : undefined });
   }
-  if (o.unit) H.text(g, cx, cy + r * 0.62, "kgf/cm²", { size: Math.round(r * 0.17), anchor: "middle", fill: PN.muted, weight: 700 });
+  if (o.unit) H.text(g, cx, cy + r * 0.64, "kgf/cm²", { size: Math.round(r * 0.21), anchor: "middle", fill: PN.muted, weight: 700 });
   const needle = H.el("g", o.id ? { id: `${o.id}-n` } : {}, g);
-  H.el("path", { d: `M ${f(cx - r * 0.12)} ${f(cy)} L ${f(cx + r * 0.8)} ${f(cy)}`, stroke: o.needle || PN.ink, "stroke-width": Math.max(3, r * 0.07), "stroke-linecap": "round" }, needle);
+  H.el("path", { d: `M ${f(cx)} ${f(cy + r * 0.12)} L ${f(cx)} ${f(cy - r * 0.8)}`, stroke: o.needle || PN.ink, "stroke-width": Math.max(3, r * 0.07), "stroke-linecap": "round" }, needle);
   H.el("circle", { cx, cy, r: H.f(Math.max(4, r * 0.1)), fill: PN.ink }, g);
-  return { g, needle, origin: `${cx} ${cy}`, rot: A };
+  return { g, needle, origin: `${cx} ${cy}`, rot: (fr) => 270 * fr - 135 };
 };
 
 // ---------------------------------------------------------------------------------------------------------

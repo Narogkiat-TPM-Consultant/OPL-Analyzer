@@ -79,13 +79,14 @@ H.atArrow = (parent, x1, y1, x2, y2, o = {}) => {
 };
 
 // Frame plate (wall) seen in section: rect with explicit hatch lines (SVG <pattern> does not render in frames).
-H.atWall = (parent, x, y, w, h, id) => {
+// Hatch lines are cut to the rectangle exactly (no clip-path, so layout checks see the true extent).
+H.atWall = (parent, x, y, w, h) => {
   const g = H.el("g", {}, parent), f = H.f;
-  const defs = H.el("defs", {}, g), cp = H.el("clipPath", { id }, defs);
-  H.el("rect", { x, y, width: w, height: h }, cp);
   H.el("rect", { x, y, width: w, height: h, fill: AT.wall }, g);
-  const hg = H.el("g", { "clip-path": `url(#${id})` }, g);
-  for (let yy = y - w; yy < y + h + w; yy += 14) H.el("line", { x1: f(x), y1: f(yy + w), x2: f(x + w), y2: f(yy), stroke: AT.muted, "stroke-width": 2.5, opacity: 0.6 }, hg);
+  for (let Y0 = y + 6; Y0 < y + h + w; Y0 += 14) {
+    const s0 = Math.max(0, Y0 - y - h), s1 = Math.min(w, Y0 - y);
+    if (s1 - s0 > 2) H.el("line", { x1: f(x + s0), y1: f(Y0 - s0), x2: f(x + s1), y2: f(Y0 - s1), stroke: AT.muted, "stroke-width": 2.5, opacity: 0.6 }, g);
+  }
   H.el("line", { x1: x + w, y1: y, x2: x + w, y2: y + h, stroke: AT.ink, "stroke-width": 4 }, g);
   return g;
 };
@@ -225,7 +226,7 @@ H.atClip = (parent, wx, yc, kind, o = {}) => {
   }[kind];
   const lyMax = Math.max(S(0).ly, S(1).ly), ys = yc - lyMax - 24;
   const g = H.el("g", o.gid ? { id: o.gid } : {}, parent);
-  H.atWall(g, wx - 28, ys - 16, 28, 2 * (yc - ys) + 32, id + "-cp");
+  H.atWall(g, wx - 28, ys - 16, 28, 2 * (yc - ys) + 32);
   const gap = (q) => gap0 * (1 - q);
   const ccx = (q) => wx + 4 + gap(q) + S(q).lx;
   const tabD = (q) => `M ${f(wx + 5)} ${f(ys - 12)} L ${f(wx + 5)} ${f(ys + 4)} L ${f(wx + 5 + gap(q))} ${f(yc)}`;

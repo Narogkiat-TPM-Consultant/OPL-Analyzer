@@ -182,7 +182,8 @@ H.p27Jerky = (el, t, x0, x1, n = 4, jump = 0.18, pause = 0.32, extra = []) => {
 // → { g, inner, wall (slide in x), film, lip (path), lipD(w), rust (on the wall), sx, W, Hh }
 H.p27Zoom = (parent, o = {}) => {
   const id = o.id || "p27z", W = o.W ?? 1020, Hh = o.Hh ?? 290, sx = o.sx ?? 380, f = H.f;
-  const g = H.el("g", { id, transform: `translate(${o.x ?? 0} ${o.y ?? 0}) scale(${o.s ?? 1})` }, parent);
+  const g = H.el("g", { id, transform: `translate(${o.x ?? 0} ${o.y ?? 0}) scale(${o.s ?? 1})`, "data-layout-allow-overflow": "" }, parent);
+  (typeof parent === "string" ? H.$(parent) : parent).setAttribute("data-layout-allow-overflow", "");
   const svg = g.ownerSVGElement;
   const defs = H.el("defs", {}, svg);
   const clip = H.el("clipPath", { id: id + "-clip" }, defs);
@@ -191,7 +192,7 @@ H.p27Zoom = (parent, o = {}) => {
   const inner = H.el("g", { "clip-path": `url(#${id}-clip)`, "data-layout-allow-overflow": "" }, g);
 
   // wall (slides under the seal): oil film, rough metal surface, explicit hatch lines, rust patch
-  const X0 = -760, X1 = W + 760, PER = 26;
+  const X0 = -30, X1 = W + 560, PER = 26;                 // the wall only slides left (≤ 520)
   const wall = H.el("g", { id: id + "-wall" }, inner);
   const film = H.el("rect", { id: id + "-film", x: X0, y: 199, width: X1 - X0, height: 34, fill: P27.oil, opacity: o.oil === false ? 0 : 1 }, wall);
   let d = `M ${X0} ${Hh + 10} L ${X0} 213`;

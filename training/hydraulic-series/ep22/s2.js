@@ -26,8 +26,8 @@
   pnR(bo, 130, 160, 650, 100, PN.barrel, { rx: 2 });
   const air1 = H.el("rect", { x: 134, y: 164, width: 608, height: 92, fill: PN.air }, bo);
   const P1 = [];
-  for (let i = 0; i < 8; i++) P1.push([165 + i * 80, i % 2 ? 188 : 232]);
-  for (let i = 0; i < 7; i++) P1.push([205 + i * 80, i % 2 ? 232 : 188]);
+  const ys = [184, 236, 206, 190, 230, 212, 186];
+  for (let i = 0; i < 16; i++) P1.push([162 + i * 36, ys[i % 7]]);
   const d1 = dots(bo, P1);
   pnR(bo, 104, 150, 30, 120, PN.dark, { rx: 4 });
   const mv1 = H.el("g", {}, bo);
@@ -68,8 +68,8 @@
   const flames = [];
   for (const fx of [220, 330, 440, 550]) {
     const fg = H.el("g", { opacity: 0 }, ch);
-    H.el("path", { d: H.pnFlameD(fx, 582, 14), fill: PN.orange }, fg);
-    H.el("path", { d: H.pnFlameD(fx, 582, 7), fill: PN.oil }, fg);
+    H.el("path", { d: H.pnFlameD(fx, 584, 19), fill: PN.orange }, fg);
+    H.el("path", { d: H.pnFlameD(fx + 2, 584, 10), fill: PN.oil }, fg);
     flames.push(fg);
   }
   // thermometer + absolute temperature
@@ -83,7 +83,7 @@
   tl.fromTo(ch, { opacity: 0.3 }, { opacity: 1, duration: 0.4 }, t1);
   flames.forEach((fg, i) => {
     tl.fromTo(fg, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t1 + 0.3 + i * 0.08);
-    tl.fromTo(fg, { scaleY: 1, svgOrigin: `${[220, 330, 440, 550][i]} 582` }, { scaleY: 0.82, svgOrigin: `${[220, 330, 440, 550][i]} 582`, duration: 0.25, yoyo: true, repeat: 9, ease: "sine.inOut" }, t1 + 0.4 + i * 0.07);
+    tl.fromTo(fg, { scaleY: 1, svgOrigin: `${[220, 330, 440, 550][i]} 584` }, { scaleY: 0.82, svgOrigin: `${[220, 330, 440, 550][i]} 584`, duration: 0.25, yoyo: true, repeat: 9, ease: "sine.inOut" }, t1 + 0.4 + i * 0.07);
   });
   const t2 = t1 + 0.9, d2u = 2.4, k = 465 / 340;
   tl.fromTo(liq, { attr: { y: 530, height: 50 } }, { attr: { y: 430, height: 150 }, duration: d2u, ease: "power1.inOut" }, t2);

@@ -58,6 +58,15 @@ H.pnPuff = (puffs, t, dur, dy = 34) => {
   puffs.forEach((el, i) => tl.fromTo(el, { opacity: 0.9, y: 0, scale: 0.6, transformOrigin: "50% 50%" },
     { opacity: 0, y: dy, scale: 1.5, transformOrigin: "50% 50%", duration: 0.6, ease: "power1.out", repeat: reps, immediateRender: false }, t + i * 0.2));
 };
+// Spanner: open jaw at (0,0) facing −x, handle along +x; drawn inside a static wrapper at (cx, cy) rotated by ang.
+// Returns the inner group (rotate it with svgOrigin "0 0").
+H.pnWrench = (parent, cx, cy, s, ang) => {
+  const w = H.el("g", { transform: `translate(${cx} ${cy}) rotate(${ang}) scale(${s})` }, parent);
+  const g = H.el("g", {}, w);
+  H.el("path", { d: H.arcD(0, 0, 27, 222, 498), fill: "none", stroke: PN.muted, "stroke-width": 15 }, g);
+  H.el("line", { x1: 36, y1: 0, x2: 150, y2: 0, stroke: PN.muted, "stroke-width": 22, "stroke-linecap": "round" }, g);
+  return g;
+};
 // Blue number badge.
 H.pnBadge = (parent, cx, cy, n, r = 17) => {
   const g = H.el("g", {}, parent);
@@ -240,21 +249,19 @@ H.pnCircuit = (parent, p, o = {}) => {
   const lab = H.el("g", { id: `${p}-labels` }, root);
   const badges = { 1: [], 2: [], 3: [], 4: [] };
   if (o.labels) {
-    const t = (x, y, s, a = "middle") => H.text(lab, x, y, s, { size: 24, anchor: a });
-    t(168, 362, "Compressor");
-    t(384, 338, "Filter");
-    t(514, 270, "Regulator");
-    t(644, 294, "Lubricator");
-    t(546, 90, "Cylinder", "end");
-    t(1026, 470, "Solenoid");
-    t(1026, 498, "valve");
-    t(924, 312, "Speed", "start");
-    t(924, 340, "controller", "start");
-    const bd = (k, x, y) => badges[k].push(H.pnBadge(lab, x, y, k, 15));
-    bd(1, 84, 354);
-    bd(2, 340, 330); bd(2, 566, 286); bd(2, 545, 357);
-    bd(3, 442, 262); bd(3, 744, 444); bd(3, 652, 196); bd(3, 816, 288);
-    bd(4, 436, 82);
+    // badge + name: the badge sits at (x, y - 8), the name starts right of it
+    const bl = (k, x, y, s) => { badges[k].push(H.pnBadge(lab, x, y - 8, k, 15)); if (s) H.text(lab, x + 21, y, s, { size: 24 }); };
+    bl(1, 82, 362, "Compressor");
+    bl(2, 352, 338, "Filter");
+    bl(3, 462, 270, "Regulator");
+    bl(2, 600, 296, "Lubricator");
+    bl(4, 434, 92, "Cylinder");
+    bl(3, 1004, 470, "Solenoid");
+    H.text(lab, 1025, 498, "valve", { size: 24 });
+    bl(3, 912, 312, "Speed");
+    H.text(lab, 933, 340, "controller", { size: 24 });
+    bl(2, 545, 364);   // pressure gauge on the regulator
+    bl(3, 652, 204);   // second speed controller
   }
   const groups = { 1: [Cm.g], 2: [F.g, L.g, Rg.gg], 3: [Rg.g, V.g, V.gs, SA.g, SB.g], 4: [C.g] };
   return { root, tubes, lab, badges, Cm, F, Rg, L, V, SA, SB, C, groups, dash: { S: dS, FR: dFR, RL: dRL, LV: dLV, A: dA, B: dB } };

@@ -7,33 +7,33 @@
   const DAY = "#cfe8f7", NIGHT = "#22304d";
 
   // --- sky: sun sets, moon and stars come out
-  const sky = H.el("rect", { id: "s3-v-sky", x: 20, y: 20, width: 380, height: 200, rx: 18, fill: DAY, stroke: P26.ink, "stroke-width": 4 }, g);
-  const sun = H.el("circle", { cx: 110, cy: 104, r: 34, fill: P26.yellow, stroke: P26.ink, "stroke-width": 3 }, g);
+  const sky = H.el("rect", { id: "s3-v-sky", x: 20, y: 20, width: 540, height: 200, rx: 18, fill: DAY, stroke: P26.ink, "stroke-width": 4 }, g);
+  const sun = H.el("circle", { cx: 130, cy: 104, r: 38, fill: P26.yellow, stroke: P26.ink, "stroke-width": 3 }, g);
   const moon = H.el("g", { id: "s3-v-moon", opacity: 0 }, g);
-  H.el("circle", { cx: 300, cy: 104, r: 32, fill: "#f5f1e8" }, moon);
-  H.el("circle", { cx: 316, cy: 92, r: 28, fill: NIGHT }, moon);
+  H.el("circle", { cx: 420, cy: 100, r: 36, fill: "#f5f1e8" }, moon);
+  H.el("circle", { cx: 438, cy: 87, r: 31, fill: NIGHT }, moon);
   const stars = H.el("g", { id: "s3-v-stars", opacity: 0 }, g);
-  for (const [x, y] of [[70, 60], [150, 150], [210, 70], [250, 170], [360, 150], [120, 190]]) H.el("circle", { cx: x, cy: y, r: 3.5, fill: "#ffffff" }, stars);
-  const lDay = H.text(g, 382, 200, "กลางวัน", { size: 26, anchor: "end" });
-  const lNight = H.text(g, 382, 200, "กลางคืน", { size: 26, anchor: "end", fill: "#ffffff" });
+  for (const [x, y] of [[70, 60], [170, 150], [250, 70], [300, 170], [520, 60], [120, 190], [350, 110], [500, 140]]) H.el("circle", { cx: x, cy: y, r: 3.5, fill: "#ffffff" }, stars);
+  const lDay = H.text(g, 542, 200, "กลางวัน", { size: 26, anchor: "end" });
+  const lNight = H.text(g, 542, 200, "กลางคืน", { size: 26, anchor: "end", fill: "#ffffff" });
   lNight.setAttribute("opacity", 0);
 
   // --- thermometer: warm (amber) → cold (blue)
-  H.el("rect", { x: 452, y: 34, width: 28, height: 160, rx: 14, fill: "#ffffff", stroke: P26.ink, "stroke-width": 4 }, g);
-  const bulb = H.el("circle", { cx: 466, cy: 196, r: 22, fill: P26.yellow, stroke: P26.ink, "stroke-width": 4 }, g);
-  const col = H.el("rect", { x: 459, y: 56, width: 14, height: 140, fill: P26.yellow }, g);
-  for (let i = 0; i < 6; i++) H.el("line", { x1: 486, y1: 56 + i * 22, x2: 498, y2: 56 + i * 22, stroke: P26.ink, "stroke-width": 3 }, g);
-  const tLab = H.text(g, 510, 140, "อุณหภูมิลด", { size: 26, fill: P26.pipe });
+  H.el("rect", { x: 606, y: 34, width: 28, height: 160, rx: 14, fill: "#ffffff", stroke: P26.ink, "stroke-width": 4 }, g);
+  const bulb = H.el("circle", { cx: 620, cy: 196, r: 22, fill: P26.yellow, stroke: P26.ink, "stroke-width": 4 }, g);
+  const col = H.el("rect", { x: 613, y: 56, width: 14, height: 140, fill: P26.yellow }, g);
+  for (let i = 0; i < 6; i++) H.el("line", { x1: 640, y1: 56 + i * 22, x2: 652, y2: 56 + i * 22, stroke: P26.ink, "stroke-width": 3 }, g);
+  const tLab = H.text(g, 666, 140, "อุณหภูมิลด", { size: 26, fill: P26.pipe });
   tLab.setAttribute("opacity", 0);
 
-  // --- condensation legend (top right)
+  // --- condensation legend (bottom left): moisture → cools → water drop
   const lg = H.el("g", { id: "s3-v-lg", opacity: 0 }, g);
-  for (const [x, y] of [[700, 92], [722, 112], [742, 88], [716, 72], [748, 116]]) H.el("circle", { cx: x, cy: y, r: 5, fill: "#ffffff", stroke: "#7fb3dc", "stroke-width": 2 }, lg);
-  H.text(lg, 724, 160, "ความชื้น", { size: 24, anchor: "middle", fill: P26.muted });
-  H.el("path", { d: H.arrowD(780, 98, 880, 98, 16), fill: "none", stroke: P26.ink, "stroke-width": 5 }, lg);
-  H.text(lg, 830, 76, "เย็นตัว", { size: 22, anchor: "middle", fill: P26.muted });
-  P26.drop(lg, 930, 102, 16);
-  H.text(lg, 930, 160, "หยดน้ำ", { size: 24, anchor: "middle", fill: P26.water });
+  for (const [x, y] of [[100, 494], [132, 470], [158, 502], [120, 526], [152, 536], [178, 474]]) H.el("circle", { cx: x, cy: y, r: 7, fill: "#ffffff", stroke: "#7fb3dc", "stroke-width": 3 }, lg);
+  H.text(lg, 138, 586, "ความชื้นในลม", { size: 26, anchor: "middle", fill: P26.muted });
+  H.el("path", { d: H.arrowD(222, 504, 352, 504, 18), fill: "none", stroke: P26.ink, "stroke-width": 6 }, lg);
+  H.text(lg, 287, 480, "เย็นตัว", { size: 24, anchor: "middle", fill: P26.muted });
+  P26.drop(lg, 424, 512, 24, { sw: 3 });
+  H.text(lg, 424, 586, "หยดน้ำ", { size: 26, anchor: "middle", fill: P26.water });
 
   // --- main pipe (cut-away) with a drop leg + drain cock at the low point
   P26.tubeH(g, 20, 1080, 290, 350, { gaps: [[700, 760]] });
@@ -50,7 +50,7 @@
   P26.stream(vap, 1050, b, D, 120);
 
   // cooling label on the pipe
-  const cool = H.text(g, 30, 404, "ท่อลมเย็นตัว", { size: 26, fill: P26.pipe });
+  const cool = H.text(g, 1072, 266, "ท่อลมเย็นตัว", { size: 26, anchor: "end", fill: P26.pipe });
   cool.setAttribute("opacity", 0);
 
   // drain labels (left of the leg)
@@ -58,6 +58,9 @@
   H.text(dl, 680, 452, "Drain", { size: 38, anchor: "end", fill: P26.water });
   H.text(dl, 680, 486, "จุดต่ำ (Low point)", { size: 22, anchor: "end", fill: P26.muted });
   H.el("path", { d: "M 686 440 L 712 462", stroke: P26.ink, "stroke-width": 3 }, dl);
+
+  const outLab = H.text(g, 676, 606, "ระบายออก", { size: 28, anchor: "end", fill: P26.water });
+  outLab.setAttribute("opacity", 0);
 
   // calendar: once a day
   const cal = H.el("g", { id: "s3-v-cal", opacity: 0 }, g);
@@ -108,4 +111,6 @@
   tl.fromTo(jet, { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, t3 + 2.5);
   tl.fromTo(water, { attr: { y: 400, height: 100 } }, { attr: { y: 500, height: 0 }, duration: 1.5, ease: "power1.in", immediateRender: false }, t3 + 1.0);
   tl.fromTo(cupW, { attr: { y: 616, height: 0 } }, { attr: { y: 592, height: 24 }, duration: 1.5, ease: "power1.out" }, t3 + 1.1);
+  tl.fromTo(dl, { opacity: 1 }, { opacity: 0, duration: 0.3, immediateRender: false }, t3 + 1.9);
+  tl.fromTo(outLab, { opacity: 0, x: 10 }, { opacity: 1, x: 0, duration: 0.3 }, t3 + 1.9);
 }

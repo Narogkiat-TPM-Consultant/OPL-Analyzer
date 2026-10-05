@@ -40,18 +40,23 @@
   H.el("rect", { x: 96, y: 464, width: 48, height: 16, rx: 3, fill: LU.dark, stroke: LU.ink, "stroke-width": 3 }, IN);
   H.el("path", { d: "M 120 600 V 446", fill: "none", stroke: LU.ink, "stroke-width": 10 }, IN);
   const inOil = H.el("path", { id: "s3-v-inoil", d: "M 120 600 V 447", fill: "none", stroke: LU.oil, "stroke-width": 5, "stroke-dasharray": "153 153", "stroke-dashoffset": 93 }, IN);
-  LU.tube(IN, "M 36 440 H 112", 16);
-  const inAir = LU.dash(IN, "s3-v-inair", "M 36 440 H 112", { w: 3, dash: "10 8" });
+  const bulb = H.el("ellipse", { id: "s3-v-bulb", cx: 52, cy: 440, rx: 22, ry: 28, fill: LU.knob, stroke: LU.ink, "stroke-width": 3 }, IN);
+  LU.tube(IN, "M 72 440 H 112", 16);
+  const inAir = LU.dash(IN, "s3-v-inair", "M 72 440 H 112", { w: 3, dash: "10 8" });
   const spray = H.el("g", { id: "s3-v-spray" }, IN);
   const rr = LU.rng(23);
-  for (let i = 0; i < 12; i++) {
-    const d = H.el("circle", { cx: 128, cy: 442, r: H.f(2.5 + rr() * 3), fill: LU.oil, stroke: LU.oilEdge, "stroke-width": 1, opacity: 0 }, spray);
-    const t0 = b + c[1] + 1.6 + i * 0.22;
-    const dx = 120 + rr() * 70, dy = (rr() - 0.5) * 60;
-    tl.fromTo(d, { opacity: 0 }, { opacity: 1, duration: 0.08, immediateRender: false }, t0);
-    tl.fromTo(d, { x: 0, y: 0 }, { x: H.f(dx), y: H.f(dy), duration: 0.8, ease: "power1.out", immediateRender: false }, t0);
-    tl.fromTo(d, { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, t0 + 0.6);
-  }
+  const puffs = LU.every(b + c[1] + 1.7, b + D - 1.0, 1.2);
+  puffs.forEach((tp) => {
+    tl.fromTo(bulb, { scaleX: 1, svgOrigin: "52 440" }, { scaleX: 0.72, svgOrigin: "52 440", duration: 0.25, yoyo: true, repeat: 1, ease: "power1.inOut", immediateRender: false }, tp - 0.1);
+    for (let i = 0; i < 9; i++) {
+      const d = H.el("circle", { cx: 128, cy: 442, r: H.f(2.5 + rr() * 3), fill: LU.oil, stroke: LU.oilEdge, "stroke-width": 1, opacity: 0 }, spray);
+      const t0 = tp + i * 0.05;
+      const dx = 110 + rr() * 80, dy = (rr() - 0.5) * 70;
+      tl.fromTo(d, { opacity: 0 }, { opacity: 1, duration: 0.06, immediateRender: false }, t0);
+      tl.fromTo(d, { x: 0, y: 0 }, { x: H.f(dx), y: H.f(dy), duration: 0.7, ease: "power1.out", immediateRender: false }, t0);
+      tl.fromTo(d, { opacity: 1 }, { opacity: 0, duration: 0.2, immediateRender: false }, t0 + 0.5);
+    }
+  });
   const t2 = b + c[1] + 0.1;
   LU.flow(U.air.feed, t2, b + D, { speed: 60 });
   LU.show(S2, t2 + 0.3);

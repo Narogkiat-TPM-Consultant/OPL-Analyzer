@@ -77,8 +77,8 @@
   const ringL = H.el("circle", { cx: 644, cy: 504, r: 16, fill: "#2b2f35", stroke: P26.ink, "stroke-width": 2 }, a2);
   const oilU = H.el("rect", { x: 520, y: 436, width: 250, height: 6, fill: P26.oil, opacity: 0 }, a2);
   const oilL = H.el("rect", { x: 520, y: 480, width: 250, height: 6, fill: P26.oil, opacity: 0 }, a2);
-  const cracks = H.el("path", { d: "M 636 410 L 646 418 L 640 426 M 650 498 L 642 505 L 650 512", fill: "none", stroke: "#f5f1e8", "stroke-width": 3, opacity: 0 }, a2);
-  H.text(a2, 645, 610, "O-ring / Packing บวม · แตก", { size: 21, fill: P26.muted, anchor: "middle" });
+  const cracks = H.el("path", { d: "M 631 409 L 640 415 L 636 420 L 647 428 M 657 495 L 648 502 L 653 507 L 642 515", fill: "none", stroke: "#f5f1e8", "stroke-width": 3, "stroke-linejoin": "round", opacity: 0 }, a2);
+  H.text(a2, 645, 610, "Packing บวม · แตก", { size: 21, fill: P26.muted, anchor: "middle" });
 
   // card 3: poppet valve seat; a dust grain keeps the poppet open → air leaks through
   const a3 = C3.cg;

@@ -32,7 +32,7 @@ SP.forEach((s, i) => {
   tl.set(sight, { attr: { d: `M ${H.f(x1)} ${H.f(y1)} L ${H.f(x2)} ${H.f(y2)}` } }, t + 0.45);
   tl.to(sight, { opacity: 1, duration: 0.2 }, t + 0.5);
   H.frlRing(fx, `s3-v-ring${i + 1}`, px, py, s.r, t + 0.45);
-  const n = H.frlNum(fx, `s3-v-n${i + 1}`, H.f(px - s.r * 0.72), H.f(py - s.r * 0.72), i + 1, 21);
+  const n = H.frlNum(fx, `s3-v-n${i + 1}`, +H.f(px - s.r * 0.72), +H.f(py - s.r * 0.72), i + 1, 21);
   tl.fromTo(n, { opacity: 0, scale: 0.4, svgOrigin: `${H.f(px - s.r * 0.72)} ${H.f(py - s.r * 0.72)}` }, { opacity: 1, scale: 1, svgOrigin: `${H.f(px - s.r * 0.72)} ${H.f(py - s.r * 0.72)}`, duration: 0.3, ease: "back.out(2)", immediateRender: false }, t + 0.5);
 });
 tl.to(sight, { opacity: 0, duration: 0.3 }, b + D - 0.6);

@@ -74,7 +74,7 @@
   R(cyl, 928, 132, 20, 116, P26.metal, { rx: 3 });
   const slug = H.el("rect", { id: "s4-v-slug", x: 590, y: 180, width: 40, height: 20, rx: 8, fill: P26.water, stroke: P26.ink, "stroke-width": 2, opacity: 0 }, g);
   const hit = H.el("path", { id: "s4-v-hit", d: "M 0 -22 L 0 -38 M 16 -14 L 28 -26 M -16 -14 L -28 -26 M 0 22 L 0 38 M 16 14 L 28 26 M -16 14 L -28 26", fill: "none", stroke: P26.ink, "stroke-width": 4, opacity: 0 }, g);
-  const wh = H.text(g, 790, 112, "Water hammer", { size: 30, anchor: "middle", fill: P26.water });
+  const wh = H.text(g, 840, 296, "Water hammer", { size: 30, anchor: "middle", fill: P26.water });
   wh.setAttribute("opacity", 0);
 
   // stroke chart: smooth (normal) vs jerky (rust)
@@ -97,12 +97,15 @@
     const k = i % 3, x = 480, y = 330;
     bits.push(k === 0 ? P26.drop(plume, x, y, 6, { attrs: { opacity: 0 } }) : k === 1 ? P26.mist(plume, x, y, 5.5, { attrs: { opacity: 0 } }) : P26.grain(plume, x, y, 5.5, i, { attrs: { opacity: 0 } }));
   }
-  const exLab = H.text(g, 512, 300, "ไอเสีย (Exhaust)", { size: 22, fill: P26.muted });
+  const exLab = H.text(g, 512, 300, "ลมทิ้ง (Exhaust)", { size: 22, fill: P26.muted });
   exLab.setAttribute("opacity", 0);
   const airLab = H.text(g, 580, 600, "สู่อากาศ → มลพิษ", { size: 22, anchor: "middle", fill: P26.muted });
   airLab.setAttribute("opacity", 0);
 
-  // badges
+  // part names + badges (numbers pop with the voice)
+  H.text(g, 74, 121, "ท่อลม", { size: 24 });
+  H.text(g, 512, 104, "วาล์ว", { size: 24 });
+  H.text(g, 694, 113, "กระบอกสูบ", { size: 24 });
   const BP = [[44, 112], [278, 380], [664, 104], [540, 352]];
   BP.forEach(([x, y], i) => {
     const bg = P26.badge(g, x, y, i + 1, { id: `s4-v-b${i + 1}` });
@@ -136,7 +139,7 @@
   tl.fromTo(hit, { opacity: 0, x: 712, y: 190 }, { opacity: 1, x: 712, y: 190, duration: 0.15 }, tw + 0.4);
   tl.fromTo(hit, { opacity: 1 }, { opacity: 0, duration: 0.3, immediateRender: false }, tw + 1.1);
   tl.fromTo(cyl, { x: 0 }, { x: 6, duration: 0.06, yoyo: true, repeat: 7, ease: "sine.inOut" }, tw + 0.4);
-  tl.fromTo(wh, { opacity: 0, scale: 0.7, svgOrigin: "790 102" }, { opacity: 1, scale: 1, svgOrigin: "790 102", duration: 0.3, ease: "back.out(2)" }, tw + 0.45);
+  tl.fromTo(wh, { opacity: 0, scale: 0.7, svgOrigin: "840 286" }, { opacity: 1, scale: 1, svgOrigin: "840 286", duration: 0.3, ease: "back.out(2)" }, tw + 0.45);
 
   // ---------- cue 4: drain mist blows out of the exhaust into the air
   tl.fromTo(exLab, { opacity: 0 }, { opacity: 1, duration: 0.3 }, t4 + 0.1);

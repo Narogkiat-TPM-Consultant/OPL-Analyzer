@@ -75,7 +75,7 @@
         { "label": "ถ้วยใส", "verdict": "OK", "cond": "ไม่มีน้ำ · เข็มไม่แกว่ง", "svg": { "viewBox": "0 0 360 190", "body": "<g id='s5-v-c1'></g>" }, "cue": 1 },
         { "label": "น้ำขัง", "verdict": "NG", "cond": "มีน้ำในถ้วยกรอง", "act": "→ เปิดวาล์วเดรน ระบายน้ำ", "svg": { "viewBox": "0 0 360 190", "body": "<g id='s5-v-c2'></g>" }, "cue": 2 },
         { "label": "ไส้กรองตัน", "verdict": "NG", "cond": "เข็มแกว่งมาก", "act": "→ เปลี่ยนไส้กรอง (แจ้งช่าง *)", "svg": { "viewBox": "0 0 360 190", "body": "<g id='s5-v-c3'></g>" }, "cue": 3 },
-        { "label": "Nut หลวม", "verdict": "NG", "cond": "ค่าตั้งเคลื่อนได้", "act": "→ ขันให้แน่น", "svg": { "viewBox": "0 0 360 190", "body": "<g id='s5-v-c4'></g>" }, "at": 9.9 }
+        { "label": "Nut หลวม", "verdict": "NG", "cond": "ค่าตั้งเคลื่อนได้", "act": "→ ขันให้แน่น", "svg": { "viewBox": "0 0 360 190", "body": "<g id='s5-v-c4'></g>" }, "at": 8.7 }
       ],
       "narration": [
         "ถ้วยใส ปกติ",
@@ -90,7 +90,7 @@
       "heading": "ตัดสินผล ข้อ 4–5: **Lubricator**",
       "cards": [
         { "label": "มีหยด", "verdict": "OK", "cond": "น้ำมันหยดใน Sight glass", "svg": { "viewBox": "0 0 460 190", "body": "<g id='s6-v-c1'></g>" }, "cue": 1 },
-        { "label": "ไม่มีหยด", "verdict": "NG", "cond": "น้ำมันไปไม่ทั่ว", "act": "→ ปรับตั้ง + ซ่อม (แจ้งช่าง *)", "svg": { "viewBox": "0 0 460 190", "body": "<g id='s6-v-c2'></g>" }, "at": 2.9 },
+        { "label": "ไม่มีหยด", "verdict": "NG", "cond": "น้ำมันไปไม่ทั่ว", "act": "→ ปรับตั้ง + ซ่อม (แจ้งช่าง *)", "svg": { "viewBox": "0 0 460 190", "body": "<g id='s6-v-c2'></g>" }, "at": 2.1 },
         { "label": "ขุ่นขาว", "verdict": "NG", "cond": "มีน้ำปนในน้ำมัน", "act": "→ !!เปลี่ยนน้ำมันใหม่!!", "svg": { "viewBox": "0 0 460 190", "body": "<g id='s6-v-c3'></g>" }, "cue": 2 }
       ],
       "narration": [

@@ -75,8 +75,8 @@
       "heading": "ล้างแล้ว **ใช้ซ้ำได้ไหม?** — โบลว์ · Filter element",
       "cards": [
         { "label": "โบลว์ (Bowl)", "verdict": "OK", "cond": "ล้างด้วยน้ำ / น้ำมันก๊าด", "act": "→ เช็ดด้วยผ้า + แปรงไนลอน", "svg": { "viewBox": "0 0 460 170", "body": "<g id='s5-v-c1'></g>" }, "cue": 1 },
-        { "label": "ไส้กรองโลหะ", "verdict": "OK", "cond": "Metal element: ล้างด้วยน้ำมันก๊าด", "act": "→ ขัดด้วยแปรงไนลอน", "svg": { "viewBox": "0 0 460 170", "body": "<g id='s5-v-c2'></g>" }, "cue": 2 },
-        { "label": "ไส้กรองอัลลอย", "verdict": "NG", "cond": "Alloy element สีเงิน (Sintered)", "act": "→ !!เปลี่ยนใหม่ ห้ามใช้ซ้ำ!!", "svg": { "viewBox": "0 0 460 170", "body": "<g id='s5-v-c3'></g>" }, "cue": 3 }
+        { "label": "ไส้กรองโลหะ", "verdict": "OK", "cond": "Metal element: ล้าง\u2060ด้วย\u2060น้ำมัน\u2060ก๊าด", "act": "→ ขัดด้วยแปรงไนลอน", "svg": { "viewBox": "0 0 460 170", "body": "<g id='s5-v-c2'></g>" }, "cue": 2 },
+        { "label": "อัลลอยสีเงิน", "verdict": "NG", "cond": "Alloy element (Sintered)", "act": "→ !!เปลี่ยนใหม่ ห้ามใช้ซ้ำ!!", "svg": { "viewBox": "0 0 460 170", "body": "<g id='s5-v-c3'></g>" }, "cue": 3 }
       ],
       "banner": { "text": "โบลว์พลาสติก: ใช้น้ำยาตามคู่มือผู้ผลิต — **เกณฑ์ทั่วไป (General rule)**", "tone": "ink", "cue": 4 },
       "narration": [

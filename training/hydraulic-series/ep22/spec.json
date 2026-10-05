@@ -1,34 +1,58 @@
 {
   "opl_type": "basic",
   "target_duration": 75,
-  "voice": { "name": "th-TH-PremwadeeNeural", "rate": "+8%" },
-  "js_lib": ["../lib/hyd_lib.js", "lib.js"],
-  "form": { "no": "HP-22 (อ้างอิง OPL 5'-A-1, 5'-A-2)", "date": "2026-10-04", "author": "", "approver": "", "machine": "Equipment Skills Training · Pneumatic" },
+  "voice": {
+    "name": "th-TH-PremwadeeNeural",
+    "rate": "+8%"
+  },
+  "js_lib": [
+    "../lib/hyd_lib.js",
+    "lib.js"
+  ],
+  "form": {
+    "no": "HP-22 (อ้างอิง OPL 5'-A-1, 5'-A-2)",
+    "date": "2026-10-04",
+    "author": "",
+    "approver": "",
+    "machine": "Equipment Skills Training · Pneumatic"
+  },
   "title": {
     "line1": "พื้นฐานลมอัด และส่วนประกอบ",
     "line2": "ระบบนิวแมติก",
-    "sub": "กฎของลม · 6 ลักษณะเด่น · 4 ส่วนของระบบ (Pneumatics)",
+    "sub": "กฎของลม · 6 ลักษณะเด่น · 4 ส่วนของระบบ",
     "narration": "OPL ความรู้พื้นฐาน เรื่องลมอัด และส่วนประกอบของระบบนิวแมติก"
   },
   "scenes": [
     {
       "type": "title",
-      "svg": { "viewBox": "20 30 1070 600", "body": "<g id='s1-v-art'></g>" },
+      "svg": {
+        "viewBox": "20 30 1070 600",
+        "body": "<g id='s1-v-art'></g>"
+      },
       "narration": "OPL ความรู้พื้นฐาน เรื่องลมอัด และส่วนประกอบของระบบนิวแมติก",
       "js_file": "s1.js"
     },
     {
       "type": "diagram",
       "heading": "ลมอัดตัวได้: **แรงดัน · ปริมาตร · อุณหภูมิ**",
-      "svg": { "viewBox": "0 0 1100 640", "body": "<g id='s2-v-art'></g>" },
+      "svg": {
+        "viewBox": "0 0 1100 640",
+        "body": "<g id='s2-v-art'></g>"
+      },
       "points": [
-        { "text": "**กฎของบอยล์** (Boyle's law): แรงดัน ×2 → ปริมาตร ½", "cue": 1 },
-        { "text": "**กฎของชาร์ล** (Charles's law): ร้อนขึ้น → ปริมาตรเพิ่ม", "cue": 2 }
+        {
+          "text": "**กฎของบอยล์** (Boyle's law): แรง⁠ดัน ×2 → ปริมาตร ½",
+          "cue": 1
+        },
+        {
+          "text": "**กฎของชาร์ล** (Charles's law): ร้อน⁠ขึ้น → ปริมาตร⁠เพิ่ม",
+          "cue": 2
+        }
       ],
       "callout": {
         "label": "สภาวะมาตรฐาน (Standard condition)",
-        "value": "20 °C · 760 mmHg (abs) · RH 65 %",
-        "example": "สภาวะอ้างอิง (Reference): 0 °C · 760 mmHg (abs) · อากาศแห้ง",
+        "value": "20 °C · RH 65 %",
+        "example": "ความดันสัมบูรณ์ 760 mmHg · สภาวะอ้างอิง (Reference) = 0 °C อากาศแห้ง",
         "cue": 3
       },
       "narration": [
@@ -42,7 +66,10 @@
     {
       "type": "diagram",
       "heading": "ระบบลม เทียบกับไฮดรอลิก: **6 ลักษณะเด่น**",
-      "svg": { "viewBox": "0 0 1760 740", "body": "<g id='s3-v-grid'></g>" },
+      "svg": {
+        "viewBox": "0 0 1760 740",
+        "body": "<g id='s3-v-grid'></g>"
+      },
       "narration": [
         "เทียบกับไฮดรอลิก ระบบลมมีหกลักษณะเด่น",
         "หนึ่ง เดินท่อลมจากคอมเพรสเซอร์ไปทั้งโรงงานได้ง่าย",
@@ -58,12 +85,27 @@
     {
       "type": "diagram",
       "heading": "ระบบนิวแมติก แบ่งเป็น **4 ส่วน**",
-      "svg": { "viewBox": "0 0 1100 640", "body": "<g id='s4-v-art'></g>" },
+      "svg": {
+        "viewBox": "0 0 1100 640",
+        "body": "<g id='s4-v-art'></g>"
+      },
       "points": [
-        { "text": "**แหล่งลม** (Air source): Compressor", "cue": 2 },
-        { "text": "**อุปกรณ์ประกอบ** (Accessories): Filter · Lubricator · เกจ", "cue": 3 },
-        { "text": "**ส่วนควบคุม** (Controller): วาล์วคุม แรงดัน · ความเร็ว · ทิศทาง", "cue": 4 },
-        { "text": "**ส่วนทำงาน** (Actuator): Cylinder · Air motor", "cue": 5 }
+        {
+          "text": "**แหล่งลม** (Air source): Compressor",
+          "cue": 2
+        },
+        {
+          "text": "**อุปกรณ์ประกอบ** (Accessories): Filter · Lubricator · เกจ",
+          "cue": 3
+        },
+        {
+          "text": "**ส่วนควบคุม** (Controller): วาล์วคุม แรงดัน · ความเร็ว · ทิศทาง",
+          "cue": 4
+        },
+        {
+          "text": "**ส่วนทำงาน** (Actuator): Cylinder · Air motor",
+          "cue": 5
+        }
       ],
       "narration": [
         "ระบบลมแบ่งเป็นสี่ส่วน ดูจากวงจรตัวอย่างนี้",

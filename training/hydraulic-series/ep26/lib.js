@@ -112,7 +112,7 @@ P26.drainCock = (pa, cx, y, p, w = 52) => {
   H.el("rect", { x: cx - w / 2, y, width: w, height: 40, rx: 6, fill: P26.dark, stroke: P26.ink, "stroke-width": 4 }, g);
   H.el("rect", { x: cx - 9, y: y + 40, width: 18, height: 16, fill: P26.dark, stroke: P26.ink, "stroke-width": 3 }, g);
   const lever = H.el("g", { id: p + "-lev" }, g);
-  H.el("rect", { x: cx - 4, y: y + 12, width: 74, height: 14, rx: 7, fill: P26.yellow, stroke: P26.ink, "stroke-width": 3 }, lever);
+  H.el("rect", { x: cx - 4, y: y + 12, width: Math.max(74, w / 2 + 36), height: 14, rx: 7, fill: P26.yellow, stroke: P26.ink, "stroke-width": 3 }, lever);
   H.el("circle", { cx, cy: y + 19, r: 8, fill: P26.ink }, g);
   return { g, lever, origin: `${cx} ${y + 19}`, outY: y + 56 };
 };

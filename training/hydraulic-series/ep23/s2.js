@@ -55,7 +55,7 @@
   // ---- right card: solenoid valve → air cylinder; matter sticks on the spool and at the piston seal
   const Rg = H.$("s2-v-r");
   const tR = b + T.right;
-  AF.pipe(Rg, "M 14 210 H 118 V 182", 22, 4);
+  AF.pipe(Rg, "M 12 150 H 58", 22, 4);
   AF.pipe(Rg, "M 226 118 V 86 H 384 V 112", 22, 4);
   // solenoid valve: body with a cut window showing the spool, coil on top
   H.el("rect", { x: 56, y: 118, width: 214, height: 64, rx: 6, fill: AF.metal, stroke: AF.ink, "stroke-width": 4 }, Rg);
@@ -73,10 +73,10 @@
   H.el("rect", { x: 470, y: 144, width: 270, height: 20, fill: AF.dark, stroke: AF.ink, "stroke-width": 3 }, rod);
   H.el("rect", { x: 450, y: 116, width: 24, height: 76, fill: AF.dark, stroke: AF.ink, "stroke-width": 3.5 }, rod);
   H.text(Rg, 485, 232, "Air cylinder", { size: 22, anchor: "middle", fill: AF.muted });
-  const fr1 = AF.dash(Rg, "s2-v-rf1", "M 14 210 H 118 V 182", 4), fr2 = AF.dash(Rg, "s2-v-rf2", "M 226 118 V 86 H 384 V 112", 4);
+  const fr1 = AF.dash(Rg, "s2-v-rf1", "M 12 150 H 58", 4), fr2 = AF.dash(Rg, "s2-v-rf2", "M 226 118 V 86 H 384 V 112", 4);
   AF.flow([fr1, fr2], tR + 0.2, b + D, { speed: 2.5 });
   const pr = H.el("g", {}, Rg);
-  for (let i = 0; i < 4; i++) stream(pr, AF.KINDS[(i + 1) % 4], [[14, 210], [118, 210], [118, 184]], tR + 0.3 + i * 0.4, 1.2, 3, 1.0);
+  for (let i = 0; i < 4; i++) stream(pr, AF.KINDS[(i + 1) % 4], [[12, 150], [62, 150]], tR + 0.3 + i * 0.4, 0.8, 4, 1.0);
   for (let i = 0; i < 3; i++) stream(pr, AF.KINDS[(i + 2) % 4], [[226, 116], [226, 86], [384, 86], [384, 124], [430, 180]], tR + 0.8 + i * 0.6, 1.6, 2, 1.0);
   // dirt builds up on the spool and at the piston seal; the rod moves with a judder
   const crud = H.el("g", { opacity: 0 }, Rg);

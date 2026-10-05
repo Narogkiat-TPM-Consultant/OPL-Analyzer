@@ -61,10 +61,10 @@
   {
     const g = H.$("s5-v-c3"), cx = 116;
     const shake = H.el("g", { id: "s5-v-shk" }, g);
-    const M = mini(shake, "s5-v-m3", cx, 10);
+    const M = mini(shake, "s5-v-m3", cx, 16);
     const G = AR.gauge(g, 350, 86, 62, { id: "s5-v-g3", value: 5 });
     const vib = H.el("path", { id: "s5-v-vib", d: "M 22 70 l -8 10 l 8 10 l -8 10 l 8 10 M 210 70 l 8 10 l -8 10 l 8 10 l -8 10", fill: "none", stroke: AR.muted, "stroke-width": 4, "stroke-linejoin": "round", "stroke-linecap": "round", opacity: 0 }, g);
-    AR.ring(g, "s5-v-rn", cx, 92, 34, AR.red);
+    AR.ring(g, "s5-v-rn", cx, 94, 32, AR.red);
     const t = b + st[2];
     AR.op(vib, 0, 1, t + 0.1);
     tl.fromTo(shake, { x: 0 }, { x: 4, duration: 0.06, ease: "none", yoyo: true, repeat: 41, immediateRender: false }, t + 0.1);

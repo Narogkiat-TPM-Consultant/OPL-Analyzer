@@ -27,9 +27,8 @@
   H.el("path", { d: "M 200 72 H 310 L 298 154 H 212 Z", fill: AF.metal, stroke: AF.ink, "stroke-width": 4, "stroke-linejoin": "round" }, C1);
   H.el("path", { d: "M 205 92 H 305 L 299 150 H 211 Z", fill: AF.pool }, C1);
   H.el("path", { d: "M 204 72 Q 255 34 306 72", fill: "none", stroke: AF.ink, "stroke-width": 3.5 }, C1);
-  H.text(C1, 255, 128, "น้ำ / Kerosene", { size: 18, anchor: "middle", fill: AF.ink });
   H.el("path", { d: "M 340 110 Q 360 96 384 108 Q 408 120 430 104 L 438 150 Q 414 162 390 150 Q 366 138 346 152 Z", fill: "#e4ecf8", stroke: AF.ink, "stroke-width": 3, "stroke-linejoin": "round" }, C1);
-  H.text(C1, 390, 88, "ผ้า", { size: 20, anchor: "middle", fill: AF.muted });
+  H.text(C1, 390, 86, "ผ้า", { size: 24, anchor: "middle", fill: AF.muted });
   tl.fromTo(b1, { x: 96, y: 130 }, { x: 96, y: 96, duration: 0.28, ease: "sine.inOut", yoyo: true, repeat: 7 }, b + st[0] - 0.4);
   tl.fromTo(d1, { opacity: 1 }, { opacity: 0, duration: 1.6 }, b + st[0] - 0.2);
 
@@ -42,7 +41,7 @@
   for (let y = 86; y <= 122; y += 12) H.el("line", { x1: 92, y1: y, x2: 318, y2: y, stroke: AF.ink, "stroke-width": 1.5, opacity: 0.5 }, C2);
   for (const x of [80, 320]) H.el("rect", { x, y: 70, width: 12, height: 66, rx: 3, fill: AF.metal, stroke: AF.ink, "stroke-width": 3 }, C2);
   const d2 = specks(C2, [[122, 92], [168, 112], [214, 88], [258, 110], [298, 94], [146, 120]], 0.85);
-  H.text(C2, 380, 94, "Kerosene", { size: 20, anchor: "middle", fill: AF.muted });
+  H.text(C2, 438, 94, "Kerosene", { size: 22, anchor: "end", fill: AF.muted });
   const b2 = brush(C2, -20);
   tl.fromTo(b2, { x: 130, y: 100 }, { x: 290, y: 100, duration: 0.45, ease: "sine.inOut", yoyo: true, repeat: 5 }, b + st[1] - 0.4);
   tl.fromTo(d2, { opacity: 1 }, { opacity: 0, duration: 1.8 }, b + st[1] - 0.2);

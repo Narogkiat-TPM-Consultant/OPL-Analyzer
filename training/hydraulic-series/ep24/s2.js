@@ -10,11 +10,10 @@
   AR.pipe(g, `M 110 352 V ${PY}`, 18, AR.airHi);
   AR.dash(g, "s2-v-fi", `M 18 ${PY} H 430`);
   AR.dash(g, "s2-v-fo", `M 612 ${PY} H 926`);
-  // FRL: Filter → Regulator → Lubricator (F and L dimmed)
+  // FRL: Filter → Regulator → Lubricator (the regulator is boxed when it is named)
   const F = AR.filterExt(g, 300, 160, 0.9, "s2-v-f");
   const R = AR.regExt(g, 520, 135, 1.0, "s2-v-r", { gr: 44 });
   const L = AR.lubeExt(g, 740, 160, 0.9, "s2-v-l");
-  [F.g, L.g].forEach((e) => e.setAttribute("opacity", 0.45));
   // downstream user: air cylinder (rod goes up when it uses air)
   H.el("rect", { x: 930, y: 230, width: 70, height: 200, rx: 8, fill: AR.metal, stroke: AR.ink, "stroke-width": 4 }, g);
   H.el("rect", { x: 924, y: 418, width: 82, height: 18, rx: 3, fill: AR.dark, stroke: AR.ink, "stroke-width": 4 }, g);

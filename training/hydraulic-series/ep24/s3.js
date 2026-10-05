@@ -55,34 +55,35 @@
   AR.op(turn, 1, 0, t2 + 1.4);
   AR.op([fbar, dn, tDn], 0, 1, t2 + 0.3);
   fDn(84, t2 + 0.3, 1.0);
-  V.move({ dv: 16 }, t2 + 1.2, 0.6);
-  AR.op(cDN, 0, 1, t2 + 1.4);
-  AR.pulse("s3-v-rv", t2 + 1.4, 1);
-  AR.flow(V.fl, t2 + 1.7, b + c[2] + 1.7);
-  V.outTo(AR.air, t2 + 1.8, 2.0);
-  V.G.ndl(0, 4.3, t2 + 1.8, 2.3, "power1.out");
-  AR.op([up, tUp], 0, 1, t2 + 2.0);
-  fUp(66, t2 + 2.0, 2.0);
+  V.move({ dv: 16 }, t2 + 1.5, 0.6);
+  AR.op(cDN, 0, 1, t2 + 1.8);
+  AR.pulse("s3-v-rv", t2 + 1.8, 1);
+  AR.flow(V.fl, t2 + 2.1, b + c[2] + 2.8);
+  V.outTo(AR.air, t2 + 2.2, 2.0);
+  V.G.ndl(0, 4.3, t2 + 2.2, 2.0, "power1.out");
+  AR.op([up, tUp], 0, 1, t2 + 2.4);
+  fUp(66, t2 + 2.4, 1.6);
 
   // ③ OUT above the setting: air under the diaphragm pushes it UP against the spring → valve closes, air stops
   const t3 = b + c[2];
   V.G.ndl(4.3, 5.4, t3 + 0.1, 0.9, "power1.inOut");
   V.outTo(AR.airUp, t3 + 0.1, 0.9);
-  fUp(104, t3 + 0.2, 0.8);
-  AR.pulse("s3-v-rd", t3 + 0.7, 1);
-  V.move({ dv: 0 }, t3 + 1.0, 0.7);
-  fDn(96, t3 + 1.0, 0.7);
-  AR.op(cDN, 1, 0, t3 + 1.3);
-  AR.op(cUP, 0, 1, t3 + 1.5);
-  AR.pulse("s3-v-rv", t3 + 1.6, 1);
+  fUp(104, t3 + 0.3, 0.8);
+  AR.pulse("s3-v-rd", t3 + 1.4, 1);
+  V.move({ dv: 0 }, t3 + 1.8, 0.8);
+  fDn(96, t3 + 1.8, 0.8);
+  AR.op(cDN, 1, 0, t3 + 2.6);
+  AR.op(cUP, 0, 1, t3 + 2.8);
+  AR.pulse("s3-v-rv", t3 + 2.8, 1);
 
   // ④ spring force = air force: balance, valve stays, OUT pressure constant on the green mark
   const t4 = b + c[3];
-  fUp(96, t4 + 0.2, 0.9);
-  V.G.ndl(5.4, 5, t4 + 0.2, 0.9, "power2.inOut");
-  V.outTo(AR.air, t4 + 0.2, 0.9);
-  AR.op(cUP, 1, 0.35, t4 + 0.4);
-  AR.op(bal, 0, 1, t4 + 1.1);
-  tl.fromTo(bal, { scale: 1.3, transformOrigin: "50% 50%" }, { scale: 1, transformOrigin: "50% 50%", duration: 0.35, ease: "back.out(2)", immediateRender: false }, t4 + 1.1);
-  AR.pulse("s3-v-rg", t4 + 2.8, 2);
+  fUp(96, t4 + 0.3, 1.0);
+  V.G.ndl(5.4, 5, t4 + 0.3, 1.0, "power2.inOut");
+  V.outTo(AR.air, t4 + 0.3, 1.0);
+  AR.op(cUP, 1, 0.35, t4 + 0.5);
+  AR.op(bal, 0, 1, t4 + 1.7);
+  tl.fromTo(bal, { scale: 1.3, transformOrigin: "50% 50%" }, { scale: 1, transformOrigin: "50% 50%", duration: 0.35, ease: "back.out(2)", immediateRender: false }, t4 + 1.7);
+  AR.pulse("s3-v-rv", t4 + 2.5, 1);
+  AR.pulse("s3-v-rg", t4 + 3.6, 2);
 }
