@@ -11,7 +11,7 @@
   const segLen = (k) => (k < c.length ? c[k] - c[k - 1] - 0.3 : D - 0.8 - c[k - 1]);
   const at = (k, w) => b + c[k - 1] + (segLen(k) * Math.max(0, SEG[k - 1].indexOf(w))) / SEG[k - 1].length;
   const end = b + D - 0.1;
-  const W = 410, HT = 344, XS = [15, 455, 895, 1335], YS = [10, 386];
+  const W = 410, HT = 338, XS = [15, 455, 895, 1335], YS = [8, 384];
   const R = (g, x, y, w, h, fill = PN.metal, rx = 5, sw = 3.5) => H.el("rect", { x, y, width: w, height: h, rx, fill, stroke: PN.ink, "stroke-width": sw }, g);
   const P = (g, d, o = {}) => H.el("path", { d, fill: o.fill || "none", stroke: o.stroke || PN.ink, "stroke-width": o.sw || 3.5, "stroke-linecap": o.cap || "round", "stroke-linejoin": "round", ...(o.id ? { id: o.id } : {}), ...(o.op != null ? { opacity: o.op } : {}) }, g);
   const zig = (x, y0, y1, w, n) => { let d = `M ${x} ${y0}`; for (let i = 1; i <= n; i++) d += ` L ${x + (i % 2 ? w : -w)} ${H.f(y0 + ((y1 - y0) * (i - 0.5)) / n)}`; return d + ` L ${x} ${y1}`; };
@@ -37,7 +37,7 @@
     H.text(tile, x + 22, y + 40, en, { size: 27, fill: PN.pipe });
     H.text(tile, x + 22, y + 68, th, { size: 22, fill: PN.muted, weight: 700 });
     lines.forEach((s, k) => {
-      const ly = y + 268 + 33 * k;
+      const ly = y + 262 + 32 * k;
       H.el("circle", { cx: x + 30, cy: ly - 9, r: 5, fill: PN.pipe }, tile);
       H.text(tile, x + 44, ly, s, { size: 24, weight: 700 });
     });

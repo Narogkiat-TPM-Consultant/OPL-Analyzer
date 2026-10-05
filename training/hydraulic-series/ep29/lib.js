@@ -48,13 +48,16 @@ H.pnTag = (parent, id, x, y, n, title, sub, o = {}) => {
   return g;
 };
 
-// magnifier centred on (0,0): place it with x / y / scale tweens
+// magnifier centred on (0,0): move the returned group with x / y tweens, size its `.inner` with scale
+// (svgOrigin "0 0"); keeping scale on a separate group avoids GSAP's origin compensation shifting x / y.
 H.pnLens = (parent, id) => {
-  const g = H.el("g", { id, opacity: 0 }, parent);
+  const outer = H.el("g", { id, opacity: 0 }, parent);
+  const g = H.el("g", { id: `${id}-s` }, outer);
+  outer.inner = g;
   H.el("line", { x1: 38, y1: 38, x2: 74, y2: 74, stroke: PN.ink, "stroke-width": 13, "stroke-linecap": "round" }, g);
   H.el("circle", { cx: 0, cy: 0, r: 52, fill: "rgba(31,95,191,0.07)", stroke: PN.pipe, "stroke-width": 7 }, g);
   H.el("circle", { cx: 0, cy: 0, r: 58, fill: "none", stroke: "#ffffff", "stroke-width": 3, opacity: 0.9 }, g);
-  return g;
+  return outer;
 };
 
 // flow dashes on between t0 and t1 (absolute); `again` = this element was tweened before

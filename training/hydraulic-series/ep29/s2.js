@@ -33,11 +33,12 @@
   });
 
   // ---- magnifier: walks the air path during segment 1, then hops to each point
-  const lens = H.pnLens(fx, "s2-v-lens");
+  const lens = H.pnLens(fx, "s2-v-lens"), lensS = lens.inner;
   const route = [[50, 80], [50, 410], [680, 410], [680, 620], [1000, 620], [1000, 405], [960, 405], [960, 300], [1190, 300], [1190, 185], [1500, 185]];
   const rl = route.slice(1).map((q, i) => Math.hypot(q[0] - route[i][0], q[1] - route[i][1]));
   const rTot = rl.reduce((a, v) => a + v, 0), r0 = b + c[0] + 0.1, rDur = Math.max(1.5, t1 - r0 - 0.4);
-  tl.fromTo(lens, { opacity: 0, x: route[0][0], y: route[0][1], scale: 0.55, svgOrigin: "0 0" }, { opacity: 1, x: route[0][0], y: route[0][1], scale: 0.55, svgOrigin: "0 0", duration: 0.25 }, r0);
+  tl.fromTo(lens, { opacity: 0, x: route[0][0], y: route[0][1] }, { opacity: 1, x: route[0][0], y: route[0][1], duration: 0.25 }, r0);
+  tl.fromTo(lensS, { scale: 0.55, svgOrigin: "0 0" }, { scale: 0.55, svgOrigin: "0 0", duration: 0.25 }, r0);
   let tt = r0;
   route.slice(1).forEach((q, i) => {
     const d = (rDur * rl[i]) / rTot;
@@ -47,7 +48,8 @@
   const hops = [[C.at.drain, 1, t1], [C.at.knob, 0.9, t2], [C.at.gauge, 0.9, tRel], [C.at.exhaust, 1.65, t4], [C.at.sc, 0.95, t5], [C.at.rodSeal, 0.9, tCyl]];
   let prev = [route[route.length - 1], 0.55];
   hops.forEach(([[x, y], s, t]) => {
-    tl.fromTo(lens, { x: prev[0][0], y: prev[0][1], scale: prev[1], svgOrigin: "0 0" }, { x, y, scale: s, svgOrigin: "0 0", duration: 0.45, ease: "power2.inOut", immediateRender: false }, t);
+    tl.fromTo(lens, { x: prev[0][0], y: prev[0][1] }, { x, y, duration: 0.45, ease: "power2.inOut", immediateRender: false }, t);
+    tl.fromTo(lensS, { scale: prev[1], svgOrigin: "0 0" }, { scale: s, svgOrigin: "0 0", duration: 0.45, ease: "power2.inOut", immediateRender: false }, t);
     prev = [[x, y], s];
   });
 

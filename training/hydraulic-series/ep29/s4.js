@@ -40,7 +40,7 @@
 
   // inspection-interval timeline: 3-month spacing → marks spread out gradually
   const tg = H.el("g", { id: "s4-v-iv", opacity: 0 }, fx);
-  const Y = 560, X0 = 90;
+  const Y = 538, X0 = 90;
   H.el("line", { x1: X0 - 20, y1: Y, x2: 1060, y2: Y, stroke: PN.muted, "stroke-width": 5, "stroke-linecap": "round" }, tg);
   H.text(tg, X0 - 20, Y - 52, "รอบตรวจ (Interval)", { size: 24, fill: PN.muted, weight: 700 });
   const even = Array.from({ length: 8 }, (_, i) => X0 + 120 * i);
