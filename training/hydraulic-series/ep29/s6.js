@@ -66,7 +66,7 @@
     R(g, 34, 6, 110, 34);
     const bowl = H.el("g", { id: "s6-v-bowl" }, g);
     P(bowl, "M 48 44 L 48 118 Q 48 150 89 150 Q 130 150 130 118 L 130 44 Z", { fill: PN.bowl, sw: 4 });
-    const crack = P(bowl, "M 62 66 L 74 80 L 66 92 L 80 106 L 72 120", { stroke: PN.red, sw: 4, id: "s6-v-crack", op: 0 });
+    const crack = P(bowl, "M 62 66 L 74 80 L 66 92 L 80 106 L 72 120", { stroke: PN.red, sw: 4, id: "s6-v-crack", op: 0, cap: "butt" });
     tl.fromTo(bowl, { y: 0 }, { y: 8, duration: 0.4, ease: "power2.out" }, T0[1] - 0.3);
     drawOn(crack, T0[1]);
     R(g, 220, 16, 70, 128, "#ece8dc", 6, 3.5);
@@ -84,7 +84,7 @@
     const rust = [[52, 40], [74, 70], [46, 100], [70, 124]].map(([x, y], i) => H.el("circle", { id: `s6-v-ru${i}`, cx: x, cy: y, r: 6, fill: PN.dirt, opacity: 0 }, g));
     H.el("circle", { cx: 190, cy: 78, r: 58, fill: PN.knob, stroke: PN.ink, "stroke-width": 3.5 }, g);
     H.el("circle", { cx: 190, cy: 78, r: 24, fill: PN.metal, stroke: PN.ink, "stroke-width": 3 }, g);
-    const tear = P(g, "M 152 50 L 166 62 L 158 72 L 172 84", { stroke: PN.red, sw: 5, id: "s6-v-tear", op: 0 });
+    const tear = P(g, "M 152 50 L 166 62 L 158 72 L 172 84", { stroke: PN.red, sw: 5, id: "s6-v-tear", op: 0, cap: "butt" });
     H.el("circle", { cx: 318, cy: 78, r: 36, fill: "none", stroke: PN.ink, "stroke-width": 14 }, g);
     H.el("circle", { cx: 318, cy: 78, r: 36, fill: "none", stroke: "#3a3f46", "stroke-width": 9 }, g);
     const cut = H.el("rect", { id: "s6-v-cut", x: 312, y: 36, width: 12, height: 14, fill: PN.red, opacity: 0 }, g);
@@ -157,7 +157,7 @@
     for (const y of [38, 106]) H.el("rect", { x: 78, y, width: 22, height: 8, rx: 3, fill: "#2b2f35" }, pis);
     R(pis, 104, 66, 242, 20, PN.steel, 3, 3);
     R(g, 8, 26, 16, 100, PN.metal, 3); R(g, 318, 26, 18, 100, PN.metal, 3);
-    const scr = P(g, "M 120 46 L 200 44 L 300 47", { stroke: PN.red, sw: 4, id: "s6-v-scr", op: 0 });
+    const scr = P(g, "M 120 46 L 200 44 L 300 47", { stroke: PN.red, sw: 4, id: "s6-v-scr", op: 0, cap: "butt" });
     tl.fromTo(pis, { x: 0 }, { x: 36, duration: 0.5, yoyo: true, repeat: 3, ease: "power1.inOut" }, T0[7]);
     drawOn(scr, T0[7] + 0.3, 0.8);
   }
