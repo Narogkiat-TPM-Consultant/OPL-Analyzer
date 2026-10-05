@@ -9,3 +9,4 @@ snapshots/
 *.mp4
 work-*/
 .*.hf-transaction-*/
+__pycache__/
