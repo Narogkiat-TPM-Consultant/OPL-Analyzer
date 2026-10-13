@@ -111,7 +111,7 @@ python scripts/run.py notebook_manager.py list
 python scripts/run.py notebook_manager.py add \
   --url "https://notebooklm.google.com/notebook/..." \
   --name "Descriptive Name" \
-  --description "What this notebook contains" \  # REQUIRED - ASK USER IF UNKNOWN!
+  --description "What this notebook contains" \
   --topics "topic1,topic2,topic3"  # REQUIRED - ASK USER IF UNKNOWN!
 
 # Search notebooks by topic
@@ -255,7 +255,7 @@ Synthesize and respond to user
 | ModuleNotFoundError | Use `run.py` wrapper |
 | Authentication fails | Browser must be visible for setup! --show-browser |
 | Rate limit (50/day) | Wait or switch Google account |
-| Browser crashes | `python scripts/run.py cleanup_manager.py --preserve-library` |
+| Browser crashes | `python scripts/run.py cleanup_manager.py --preserve-library --confirm` |
 | Notebook not found | Check with `notebook_manager.py list` |
 
 ## Best Practices

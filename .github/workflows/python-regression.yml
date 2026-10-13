@@ -1,0 +1,57 @@
+name: Python regression checks
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - fix/notebooklm-review-followup
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: python-checks-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  regression:
+    name: Unit tests and static checks (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12", "3.14"]
+    steps:
+      - name: Check out the candidate
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Tests use only the standard library and mock dependency/browser installs.
+      # Do not invoke setup_environment.py or Google authentication in CI.
+      - name: Run NotebookLM regression tests
+        run: python -m unittest discover -s .claude/skills/notebooklm/tests -v
+
+      - name: Check Python syntax
+        run: python -m compileall -q main02.py .claude/skills/notebooklm/scripts .claude/skills/notebooklm/tests
+
+      - name: Check patch whitespace
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if [ "$EVENT_NAME" = "pull_request" ]; then
+            git diff --check "$BASE_SHA...$HEAD_SHA"
+          else
+            git show --format= --check HEAD
+          fi

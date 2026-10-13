@@ -52,7 +52,7 @@ def ask_notebooklm(question: str, notebook_url: str, headless: bool = True) -> s
     auth = AuthManager()
 
     if not auth.is_authenticated():
-        print("⚠️ Not authenticated. Run: python auth_manager.py setup")
+        print("⚠️ Not authenticated. Run: python scripts/run.py auth_manager.py setup")
         return None
 
     print(f"💬 Asking: {question}")
