@@ -48,9 +48,14 @@ const SFX_LEN = { whoosh: 0.45, pop: 0.12, tick: 0.05, thud: 0.35, ok: 0.5, ng: 
 const SFX_VOL = { whoosh: 0.5, pop: 0.5, tick: 0.5, thud: 0.9, ok: 0.8, ng: 0.7, alarm: 0.6, squeal: 0.35 };
 const SFX_TRACK = { whoosh: 10, thud: 11, pop: 12, tick: 12, squeal: 13, ng: 14, alarm: 14, ok: 15 };
 
-const type = TYPES[spec.opl_type];
+const type = typeof spec.opl_type === "string" && Object.hasOwn(TYPES, spec.opl_type)
+  ? TYPES[spec.opl_type] : undefined;
 if (!type) errors.push(`opl_type must be one of ${Object.keys(TYPES).join(" | ")}`);
 if (!Array.isArray(spec.scenes) || !spec.scenes.length) errors.push("scenes[] is empty");
+if (errors.length) {
+  console.error("✗ build failed:\n  - " + errors.join("\n  - "));
+  process.exit(1);
+}
 
 function svgMarkup(svg) {
   if (!svg) return "";
@@ -289,8 +294,8 @@ R.whywhy = (s, sid, dur) => {
   if (s.svg) c.fade(`#${c.id("vis")}`, 0.3, { scale: 0.94 });
   c.T.phenomenon = 0.4; c.T.whys = whys.map((w, i) => r3(atOf(w) ?? 1.1 + i * gap));
   c.slide(`#${c.id("ph")}`, 0.4, -40, { d: 0.4 }); c.s("pop", 0.4);
-  whys.forEach((w, i) => { const t = atOf(w) ?? 1.1 + i * gap; c.slide(`#${c.id("w" + (i + 1))}`, t, -40, { d: 0.35 }); c.s("tick", t); });
-  if (s.root) { const t = atOf({ at: s.root_at, cue: s.root_cue }) ?? 1.1 + whys.length * gap + 0.2; c.T.root = r3(t); c.pop(`#${c.id("root")}`, t, { from: 1.15, d: 0.35 }); c.s("thud", t); }
+  c.T.whys.forEach((t, i) => { c.slide(`#${c.id("w" + (i + 1))}`, t, -40, { d: 0.35 }); c.s("tick", t); });
+  if (s.root) { const t = atOf({ at: s.root_at, cue: s.root_cue }) ?? (c.T.whys.length ? Math.max(...c.T.whys) + gap + 0.2 : 1.3); c.T.root = r3(t); c.pop(`#${c.id("root")}`, t, { from: 1.15, d: 0.35 }); c.s("thud", t); }
   return { html, ...c };
 };
 
@@ -549,7 +554,7 @@ ${sceneCode}
 `;
 
 // duplicate id check across the assembled page (user SVG + generated)
-const ids = [...html.matchAll(/\sid="([^"]+)"/g)].map((m) => m[1]);
+const ids = [...html.matchAll(/\sid\s*=\s*(["'])(.*?)\1/g)].map((m) => m[2]);
 const dup = [...new Set(ids.filter((x, i) => ids.indexOf(x) !== i))];
 if (dup.length) {
   console.error(`✗ duplicate element ids: ${dup.join(", ")} — prefix SVG ids with the scene id (s1-, s2-, …)`);

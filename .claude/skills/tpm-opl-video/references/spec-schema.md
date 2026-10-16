@@ -60,7 +60,7 @@ Use these to line custom animation up with the generated layout; every `at` over
 | diagram | visual; points | 0.3; from 1.2, spread over the scene | point `at`, `callout.at` |
 | judgment | cards; stamps | 0.2; 0.8, 1.6, 2.4 … | card `at`, `banner.at` |
 | checklist | items; note | 0.5, 0.9, 1.3 …; after items + 0.3 | — |
-| whywhy | phenomenon; whys; root | 0.4; 1.1 + i·gap; after whys + 0.2 | why `at`, `gap` |
+| whywhy | phenomenon; whys; root | 0.4; 1.1 + i·gap; latest resolved why + gap + 0.2 | why `at`, `gap`, `root_at` / `root_cue` |
 | result | metric i: row, before bar, after bar, % | 0.5 + 1.3·i, +0.1, +0.5, +0.95 | — |
 
 ## 2. Text markup
@@ -157,6 +157,9 @@ Items without `svg` get a numbered circle. 2–4 items.
 between whys. A why can be an object `{ "text": "…", "tag": "流出 Why 1", "at": 4.2 }` — the tag replaces
 "Why n", which is how to show the occurrence (発生 hassei) and outflow (流出 ryūshutsu) chains in one scene;
 `phenomenon_tag` and `root_tag` rename the first and last rows.
+The default root time follows the latest resolved Why time (including `at` / `cue` overrides), plus
+`gap + 0.2` seconds. Explicit `root_at` / `root_cue` remain authoritative; ensure they follow the
+Whys and that the scene duration leaves enough time to read the root.
 
 ### result — kaizen numbers
 ```json
