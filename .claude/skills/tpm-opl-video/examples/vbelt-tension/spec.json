@@ -1,0 +1,79 @@
+{
+  "opl_type": "basic",
+  "form": { "no": "", "date": "", "author": "", "approver": "", "machine": "", "pillar": "AM" },
+  "title": { "line1": "การตรวจ", "line2": "V-belt Tension", "sub": "ความตึงสายพานตัววี — ตรวจให้ถูกวิธี" },
+  "scenes": [
+    {
+      "type": "title",
+      "svg": { "viewBox": "0 0 800 560", "body": "<g id=\"s1-v-pulleys\"></g><path id=\"s1-v-belt\" class=\"belt\"/><path id=\"s1-v-run\" class=\"belt-run\"/>" },
+      "js_file": "s1.js"
+    },
+    {
+      "type": "compare",
+      "heading": "ทำไมต้องตรวจ **V-belt Tension**?",
+      "left": {
+        "tone": "ng", "title": "หย่อนเกินไป",
+        "svg": { "viewBox": "0 0 520 190", "body": "<g id=\"s2-v-pl\"></g><path id=\"s2-v-belt-l\" class=\"belt\"/>" },
+        "bullets": ["สายพานลื่น (Slip) → กำลังส่งตก", "เสียงดังเอี๊ยด · สายพานร้อน", "ผิวมันวาว (Glazing) → สึกเร็ว"]
+      },
+      "right": {
+        "tone": "ng", "title": "ตึงเกินไป",
+        "svg": { "viewBox": "0 0 520 190", "body": "<g id=\"s2-v-pr\"></g><path id=\"s2-v-belt-r\" class=\"belt\"/><circle id=\"s2-v-hot1\" cx=\"95\" cy=\"100\" r=\"26\" fill=\"none\" stroke=\"#d0233a\" stroke-width=\"7\"/><circle id=\"s2-v-hot2\" cx=\"420\" cy=\"100\" r=\"26\" fill=\"none\" stroke=\"#d0233a\" stroke-width=\"7\"/>" },
+        "bullets": ["Bearing รับภาระเกิน → พังก่อนกำหนด", "เพลารับแรงดัดสูง → ล้า / คด", "สายพานยืด · อายุการใช้งานสั้น"]
+      },
+      "banner": { "text": "ทั้ง 2 แบบ → !!นำไปสู่ Breakdown!!", "tone": "ink" },
+      "sfx": [["squeal", 1.1]],
+      "js_file": "s2.js"
+    },
+    {
+      "type": "alert", "icon": "lock",
+      "pre": "ก่อนตรวจทุกครั้ง", "big": "หยุดเครื่อง + LOTO",
+      "note": "Lock-Out / Tag-Out · ห้ามเอามือเข้าใกล้สายพานขณะเครื่องเดิน"
+    },
+    {
+      "type": "diagram",
+      "heading": "วิธีตรวจ: วัดระยะยุบ δ **(たわみ Tawami = ระยะยุบตัว)**",
+      "svg": { "viewBox": "0 0 1100 640", "body": "<g id=\"s4-v-pulleys\"></g><path id=\"s4-v-ghost\" fill=\"none\" stroke=\"#1f5fbf\" stroke-width=\"4\" stroke-dasharray=\"14 12\"/><path id=\"s4-v-belt\" class=\"belt\"/><line id=\"s4-v-ext1\" stroke=\"#59606a\" stroke-width=\"3\" stroke-dasharray=\"8 8\"/><line id=\"s4-v-ext2\" stroke=\"#59606a\" stroke-width=\"3\" stroke-dasharray=\"8 8\"/><path id=\"s4-v-dim\" fill=\"none\" stroke=\"#1f5fbf\" stroke-width=\"5\"/><text id=\"s4-v-tlabel\" class=\"svg-label\" font-size=\"40\" fill=\"#1f5fbf\" text-anchor=\"middle\">t = Span</text><g id=\"s4-v-gauge\"><rect id=\"s4-v-gbody\" width=\"56\" height=\"150\" rx=\"14\" fill=\"#1a1d21\"/><rect id=\"s4-v-gwin\" width=\"34\" height=\"56\" rx=\"6\" fill=\"#f2a900\"/><path id=\"s4-v-gtip\" fill=\"#1a1d21\"/><text id=\"s4-v-flabel\" class=\"svg-label\" font-size=\"34\" fill=\"#1a1d21\">แรงกด F</text></g><g id=\"s4-v-delta\"><path id=\"s4-v-darrow\" fill=\"none\" stroke=\"#d0233a\" stroke-width=\"5\"/><text id=\"s4-v-dlabel\" class=\"svg-label\" font-size=\"44\" fill=\"#d0233a\">δ</text></g>" },
+      "points": [
+        { "text": "วัดระยะ **Span (t)** ระหว่างจุดสัมผัส Pulley ทั้งสอง", "at": 1.2 },
+        { "text": "กดกึ่งกลาง Span ด้วย **แรง F ตามตาราง** (ใช้ Tension Gauge)", "at": 2.8 },
+        { "text": "วัด **ระยะยุบ δ** แล้วเทียบกับเกณฑ์", "at": 4.8 }
+      ],
+      "callout": { "label": "เกณฑ์ทั่วไป (General rule)", "value": "δ ≈ 1.6 mm ต่อ Span 100 mm", "example": "ตัวอย่าง: t = 500 mm → δ ≈ 8 mm", "at": 5.8 },
+      "caption": "* ภาพขยายระยะยุบเกินจริงเพื่อให้เห็นชัด",
+      "js_file": "s4.js"
+    },
+    {
+      "type": "judgment",
+      "heading": "ตัดสินผล: เทียบ **δ** กับเกณฑ์",
+      "cards": [
+        { "label": "หย่อน", "verdict": "NG", "cond": "δ มากกว่าเกณฑ์", "act": "→ ปรับตั้งให้ตึงขึ้น แล้ววัดซ้ำ",
+          "svg": { "viewBox": "0 0 460 170", "body": "<g id=\"s5-v-d1\"></g><path id=\"s5-v-b1\" class=\"belt\"/>" } },
+        { "label": "พอดี", "verdict": "OK", "cond": "δ อยู่ในเกณฑ์", "act": "→ บันทึกผลลง Check Sheet",
+          "svg": { "viewBox": "0 0 460 170", "body": "<g id=\"s5-v-d2\"></g><path id=\"s5-v-b2\" class=\"belt\"/>" } },
+        { "label": "ตึง", "verdict": "NG", "cond": "δ น้อยกว่าเกณฑ์", "act": "→ ผ่อนความตึงลง แล้ววัดซ้ำ",
+          "svg": { "viewBox": "0 0 460 170", "body": "<g id=\"s5-v-d3\"></g><path id=\"s5-v-b3\" class=\"belt\"/>" } }
+      ],
+      "banner": { "text": "ปรับตั้งแล้ว → **วัดซ้ำจนอยู่ในเกณฑ์** → บันทึกผล", "tone": "ink" },
+      "js_file": "s5.js"
+    },
+    {
+      "type": "checklist",
+      "heading": "ตรวจเพิ่มทุกครั้งที่วัด Tension",
+      "items": [
+        { "title": "ผิวสายพานแตกร้าว / มันวาว (Glazing)", "sub": "พบแล้ว → แจ้งเปลี่ยนสายพาน",
+          "svg": { "viewBox": "0 0 150 104", "body": "<path d=\"M 20 30 L 130 30 L 110 84 L 40 84 Z\" fill=\"#1a1d21\"/><path d=\"M 52 30 L 60 48 L 52 62 M 80 30 L 88 46 L 82 60 M 106 30 L 112 44\" fill=\"none\" stroke=\"#f2a900\" stroke-width=\"5\" stroke-linecap=\"round\"/>" } },
+        { "title": "สายพานจมก้นร่อง Pulley", "sub": "สายพานหรือร่อง Pulley สึก → แจ้งช่าง PM",
+          "svg": { "viewBox": "0 0 150 104", "body": "<path d=\"M 10 14 L 52 96 L 98 96 L 140 14\" fill=\"none\" stroke=\"#59606a\" stroke-width=\"8\" stroke-linejoin=\"round\"/><path d=\"M 44 62 L 106 62 L 96 92 L 54 92 Z\" fill=\"#d0233a\"/>" } },
+        { "title": "แนว Pulley ตรงกัน (Alignment)", "sub": "ใช้ไม้บรรทัดเหล็กทาบหน้า Pulley ทั้งสอง",
+          "svg": { "viewBox": "0 0 150 104", "body": "<rect x=\"20\" y=\"12\" width=\"34\" height=\"80\" rx=\"6\" fill=\"#c9c1ae\" stroke=\"#1a1d21\" stroke-width=\"4\"/><rect x=\"96\" y=\"12\" width=\"34\" height=\"80\" rx=\"6\" fill=\"#c9c1ae\" stroke=\"#1a1d21\" stroke-width=\"4\"/><line x1=\"6\" y1=\"52\" x2=\"144\" y2=\"52\" stroke=\"#1f5fbf\" stroke-width=\"6\"/>" } }
+      ],
+      "note": "ค่าแรงกด F และเกณฑ์ δ ให้ยึดตามคู่มือเครื่อง / ตารางผู้ผลิตสายพาน"
+    }
+  ],
+  "outro": {
+    "tag": "ตรวจถูกวิธี = !!ป้องกัน Breakdown!!",
+    "standard": "จุดตรวจ V-belt ใน AM Check Sheet ของเครื่อง",
+    "yokoten": "ใช้วิธีเดียวกันกับทุกเครื่องที่ขับด้วย V-belt"
+  }
+}
